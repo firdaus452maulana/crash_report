@@ -50,7 +50,57 @@ class loginPage extends StatelessWidget {
                     ),
 
                     Container(
+                      margin: EdgeInsets.only(top: 24, left: 32),
+                      child: Row(
+                        children: [
+                          // TULISAN EMPLOYEE
+                          Container(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text("Employee",
+                                style: TextStyle(
+                                  fontFamily: 'OpenSans Bold',
+                                  fontSize: 12,
+                                ),),
+                                Container(
+                                  margin: EdgeInsets.only(top: 5),
+                                  width: 70,
+                                  height: 2,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.rectangle,
+                                    color: Colors.black,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
 
+                          // TULISAN TECHNICIAN
+                          Container(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text("Technician",
+                                  style: TextStyle(
+                                    fontFamily: 'OpenSans Bold',
+                                    fontSize: 12,
+                                    color: Color(0xff000000).withOpacity(.25)
+                                  ),),
+                                Container(
+                                  margin: EdgeInsets.only(top: 5),
+                                  width: 70,
+                                  height: 2,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.rectangle,
+                                    color: Color(0xff000000).withOpacity(.25)
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ],
                 ),
