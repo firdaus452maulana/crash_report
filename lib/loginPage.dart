@@ -38,14 +38,20 @@ class loginPage extends StatelessWidget {
 
                 child: Column(
                   children: <Widget>[
+
+                    // TULISAN SIGN IN
                     Container(
                       child: Text("Sign In",
                       style: new TextStyle(
-                        fontFamily: 'OpenSans',
+                        fontFamily: 'OpenSans Bold',
                         fontSize: 24,
                       ),),
                     margin: EdgeInsets.only(top: 32),
-                    )
+                    ),
+
+                    Container(
+
+                    ),
                   ],
                 ),
               )
