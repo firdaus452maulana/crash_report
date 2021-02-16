@@ -40,10 +40,9 @@ class loginPage extends StatelessWidget {
                   children: <Widget>[
                     Container(
                       child: Text("Sign In",
-                      style: TextStyle(
-                        fontFamily: 'openSans',
+                      style: new TextStyle(
+                        fontFamily: 'OpenSans',
                         fontSize: 24,
-                        fontWeight: FontWeight.bold,
                       ),),
                     margin: EdgeInsets.only(top: 32),
                     )
