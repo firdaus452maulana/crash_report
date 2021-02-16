@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'splashScreen.dart';
 import 'loginPage.dart';
 import 'dart:async';
 
