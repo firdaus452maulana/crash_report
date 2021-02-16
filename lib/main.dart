@@ -44,9 +44,9 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(),
       body: Center(
-        child: Image(
-          image: AssetImage('assets/logo_perang.png'),
-        ),
+        child: FlutterLogo(
+          size: 100,
+        )
       ),
     );
   }
