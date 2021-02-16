@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'splashScreen.dart';
+import 'loginPage.dart';
 import 'dart:async';
 
 void main() {
-  runApp(MaterialApp(
-    home: MyHomePage(),
-  ));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -14,40 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'PERANG',
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(
-      Duration(seconds: 3),
-      () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => splashScreen(),
-          ),
-        );
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: FlutterLogo(
-          size: 100,
-        )
-      ),
+      home: loginPage(),
     );
   }
 }
