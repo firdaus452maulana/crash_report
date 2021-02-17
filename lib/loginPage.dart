@@ -22,7 +22,7 @@ class loginPage extends StatelessWidget {
             Center(
               child: Container(
                 margin: EdgeInsets.only(left: 32, right: 32),
-                height: 380,
+                height: 480,
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(17.5)),
@@ -36,6 +36,7 @@ class loginPage extends StatelessWidget {
                           child: Column(
                             children: [
                               Text("Sign In", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),),
+                              SizedBox(height: 24,),
                               TextFormField(
                                 decoration:
                                     InputDecoration(labelText: "username"),
@@ -61,7 +62,17 @@ class loginPage extends StatelessWidget {
                                 onSaved: (value) {},
                               ),
 
-                              SizedBox(height: 24,),
+
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: FlatButton(
+                                  onPressed: (){},
+                                  child: Text("Forgot Password?", style: TextStyle(fontSize: 12),),
+                                ),
+                              ),
+
+
+                              SizedBox(height: 24),
 
                               RaisedButton(
                                 color: Color(0xFF031F4B),
@@ -96,7 +107,7 @@ class loginPage extends StatelessWidget {
                           children: [
                             Text(
                               "Don't have an account?",
-                              style: TextStyle(fontSize: 12),
+                              style: TextStyle(fontSize: 12, color: Color(0xFF000000).withOpacity(.25)),
                             ),
                             FlatButton(
                               padding: EdgeInsets.all(0.0),
