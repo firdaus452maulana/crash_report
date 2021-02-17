@@ -1,114 +1,127 @@
+import 'package:crash_report/registerPage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class loginPage extends StatelessWidget {
+  final GlobalKey<FormState> _formKey = GlobalKey();
+
+  void _submit() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/background.png'),
-          )
-        ),
-        child: SizedBox.expand(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-
-              // LOGO PERANG
-              Container(
-                margin: EdgeInsets.only(top: 64),
-                child: Image.asset(
-                  'assets/logo_perang.png',
-                  width: 100,
-                  height: 100,
-                ),
-              ),
-
-              // CONTAINER LOGIN
-              Container(
-                margin: EdgeInsets.only(top: 32),
-                width: 280,
+        backgroundColor: Colors.white,
+        body: Stack(
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/background.png'),
+                      fit: BoxFit.fill)),
+            ),
+            Center(
+              child: Container(
+                margin: EdgeInsets.only(left: 32, right: 32),
                 height: 380,
                 decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(17.5)),
-
-                child: Column(
+                child: Stack(
                   children: <Widget>[
-
-                    // TULISAN SIGN IN
                     Container(
-                      child: Text("Sign In",
-                      style: new TextStyle(
-                        fontFamily: 'OpenSans Bold',
-                        fontSize: 24,
-                      ),),
-                    margin: EdgeInsets.only(top: 32),
-                    ),
+                      padding: EdgeInsets.all(32),
+                      child: Form(
+                        key: _formKey,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Text("Sign In", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),),
+                              TextFormField(
+                                decoration:
+                                    InputDecoration(labelText: "username"),
+                                keyboardType: TextInputType.name,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Field is required";
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {},
+                              ),
+                              TextFormField(
+                                decoration:
+                                    InputDecoration(labelText: "password"),
+                                obscureText: true,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Field is required";
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {},
+                              ),
 
-                    Container(
-                      margin: EdgeInsets.only(top: 24, left: 32),
-                      child: Row(
-                        children: [
-                          // TULISAN EMPLOYEE
-                          Container(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text("Employee",
-                                style: TextStyle(
-                                  fontFamily: 'OpenSans Bold',
-                                  fontSize: 12,
-                                ),),
-                                Container(
-                                  margin: EdgeInsets.only(top: 5),
-                                  width: 70,
-                                  height: 2,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.rectangle,
-                                    color: Colors.black,
+                              SizedBox(height: 24,),
+
+                              RaisedButton(
+                                color: Color(0xFF031F4B),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30)),
+                                textColor: Colors.white,
+                                child: Container(
+                                  height: 48,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Sign In",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12),
                                   ),
-                                )
-                              ],
-                            ),
+                                ),
+                                onPressed: () {
+                                  _submit();
+                                },
+                              ),
+                            ],
                           ),
-
-                          // TULISAN TECHNICIAN
-                          Container(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text("Technician",
-                                  style: TextStyle(
-                                    fontFamily: 'OpenSans Bold',
-                                    fontSize: 12,
-                                    color: Color(0xff000000).withOpacity(.25)
-                                  ),),
-                                Container(
-                                  margin: EdgeInsets.only(top: 5),
-                                  width: 70,
-                                  height: 2,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.rectangle,
-                                    color: Color(0xff000000).withOpacity(.25)
-                                  ),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
+                        ),
                       ),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        margin: EdgeInsets.only(bottom: 16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Don't have an account?",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            FlatButton(
+                              padding: EdgeInsets.all(0.0),
+                              child: Text(
+                                "Sign Up",
+                                style: TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.bold),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => registerPage()));
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+
                     ),
                   ],
                 ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+              ),
+            )
+          ],
+        ));
   }
 }
