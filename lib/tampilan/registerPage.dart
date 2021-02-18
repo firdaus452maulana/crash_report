@@ -1,5 +1,4 @@
-import 'package:crash_report/loginPage.dart';
-import 'package:crash_report/registerPage.dart';
+import 'package:crash_report/tampilan/loginPage.dart';
 import 'package:flutter/material.dart';
 
 class registerPage extends StatelessWidget {

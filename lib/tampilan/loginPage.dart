@@ -1,5 +1,5 @@
-import 'package:crash_report/homePage.dart';
-import 'package:crash_report/registerPage.dart';
+import 'package:crash_report/tampilan/homePage.dart';
+import 'package:crash_report/tampilan/registerPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -113,7 +113,7 @@ class loginPage extends StatelessWidget {
                                       child: TextFormField(
                                         style: TextStyle(fontSize: 12),
                                         decoration: new InputDecoration(
-                                            fillColor: Colors.white,
+                                            fillColor: Colors.transparent,
                                             border: InputBorder.none,
                                             enabledBorder: OutlineInputBorder(
                                                 borderRadius: BorderRadius.all(
@@ -194,7 +194,7 @@ class loginPage extends StatelessWidget {
                                             Color(0xFF000000).withOpacity(.25)),
                                   ),
                                   Container(
-                                    width: 38,
+                                    width: 54,
                                     child: FlatButton(
                                       padding: EdgeInsets.all(0.0),
                                       child: Text(
@@ -225,6 +225,10 @@ class loginPage extends StatelessWidget {
             ),
           ],
         ));
+  }
+
+  void _submit(){
+
   }
 
 /*Future<void> _submit() async {
