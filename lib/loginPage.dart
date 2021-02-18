@@ -35,7 +35,7 @@ class loginPage extends StatelessWidget {
                   Container(
                     child: Container(
                       margin: EdgeInsets.only(left: 32, right: 32),
-                      height: 480,
+                      height: 380,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         boxShadow: [
@@ -66,71 +66,85 @@ class loginPage extends StatelessWidget {
                                     SizedBox(
                                       height: 24,
                                     ),
-                                    TextFormField(
-                                      decoration: new InputDecoration(
-                                          fillColor: Colors.white,
-                                          border: InputBorder.none,
-                                          enabledBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(30)),
-                                              borderSide: BorderSide(
-                                                  color: Color(0xFF000000)
-                                                      .withOpacity(0.25))),
-                                          focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(30)),
-                                              borderSide: BorderSide(
-                                                  color: Color(0xFF031F4B))),
-                                          filled: true,
-                                          contentPadding: EdgeInsets.only(
-                                              bottom: 10.0,
-                                              left: 24.0,
-                                              right: 24.0),
-                                          hintStyle: TextStyle(fontSize: 12),
-                                          hintText: "email"),
-                                      keyboardType: TextInputType.emailAddress,
-                                      validator: (value) {
-                                        if (value.isEmpty) {
-                                          return "Field is required";
-                                        }
-                                        return null;
-                                      },
-                                      onSaved: (value) => _email = value,
+
+                                    // EMAIL
+                                    Container(
+                                      height: 40,
+                                      child: TextFormField(
+                                        style: TextStyle(fontSize: 12),
+                                        decoration: new InputDecoration(
+                                            fillColor: Colors.white,
+                                            border: InputBorder.none,
+                                            enabledBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(30)),
+                                                borderSide: BorderSide(
+                                                    color: Color(0xFF000000)
+                                                        .withOpacity(0.15))),
+                                            focusedBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(30)),
+                                                borderSide: BorderSide(
+                                                    color: Color(0xFF031F4B))),
+                                            filled: true,
+                                            contentPadding: EdgeInsets.only(
+                                                left: 24.0, right: 24.0),
+                                            hintStyle: TextStyle(
+                                                fontSize: 12,
+                                                color: Color(0xFF000000)
+                                                    .withOpacity(0.15)),
+                                            hintText: "email"),
+                                        obscureText: false,
+                                        validator: (value) {
+                                          if (value.isEmpty) {
+                                            return "Field is required";
+                                          }
+                                          return null;
+                                        },
+                                        onSaved: (value) => _password = value,
+                                      ),
                                     ),
 
                                     SizedBox(height: 16),
 
-                                    TextFormField(
-                                      decoration: new InputDecoration(
-                                          fillColor: Colors.white,
-                                          border: InputBorder.none,
-                                          enabledBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(30)),
-                                              borderSide: BorderSide(
-                                                  color: Color(0xFF000000)
-                                                      .withOpacity(0.25))),
-                                          focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(30)),
-                                              borderSide: BorderSide(
-                                                  color: Color(0xFF031F4B))),
-                                          filled: true,
-                                          contentPadding: EdgeInsets.only(
-                                              bottom: 10.0,
-                                              left: 24.0,
-                                              right: 24.0),
-                                          hintStyle: TextStyle(fontSize: 12),
-                                          hintText: "password"),
-                                      obscureText: true,
-                                      validator: (value) {
-                                        if (value.isEmpty) {
-                                          return "Field is required";
-                                        }
-                                        return null;
-                                      },
-                                      onSaved: (value) => _password = value,
+                                    // PASSWORD
+                                    Container(
+                                      height: 40,
+                                      child: TextFormField(
+                                        style: TextStyle(fontSize: 12),
+                                        decoration: new InputDecoration(
+                                            fillColor: Colors.white,
+                                            border: InputBorder.none,
+                                            enabledBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(30)),
+                                                borderSide: BorderSide(
+                                                    color: Color(0xFF000000)
+                                                        .withOpacity(0.15))),
+                                            focusedBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(30)),
+                                                borderSide: BorderSide(
+                                                    color: Color(0xFF031F4B))),
+                                            filled: true,
+                                            contentPadding: EdgeInsets.only(
+                                                left: 24.0, right: 24.0),
+                                            hintStyle: TextStyle(
+                                                fontSize: 12,
+                                                color: Color(0xFF000000)
+                                                    .withOpacity(0.15)),
+                                            hintText: "password"),
+                                        obscureText: true,
+                                        validator: (value) {
+                                          if (value.isEmpty) {
+                                            return "Field is required";
+                                          }
+                                          return null;
+                                        },
+                                        onSaved: (value) => _password = value,
+                                      ),
                                     ),
+
                                     Align(
                                       alignment: Alignment.centerRight,
                                       child: FlatButton(
@@ -141,7 +155,7 @@ class loginPage extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(height: 24),
+                                    SizedBox(height: 12),
                                     RaisedButton(
                                       color: Color(0xFF031F4B),
                                       shape: RoundedRectangleBorder(
@@ -149,7 +163,7 @@ class loginPage extends StatelessWidget {
                                               BorderRadius.circular(30)),
                                       textColor: Colors.white,
                                       child: Container(
-                                        height: 48,
+                                        height: 40,
                                         alignment: Alignment.center,
                                         child: Text(
                                           "Sign In",
@@ -179,21 +193,24 @@ class loginPage extends StatelessWidget {
                                         color:
                                             Color(0xFF000000).withOpacity(.25)),
                                   ),
-                                  FlatButton(
-                                    padding: EdgeInsets.all(0.0),
-                                    child: Text(
-                                      "Sign Up",
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold),
+                                  Container(
+                                    width: 38,
+                                    child: FlatButton(
+                                      padding: EdgeInsets.all(0.0),
+                                      child: Text(
+                                        "Sign Up",
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    registerPage()));
+                                      },
                                     ),
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  registerPage()));
-                                    },
                                   ),
                                 ],
                               ),
