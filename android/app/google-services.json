@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "973374163414",
+    "project_id": "perang-airnav",
+    "storage_bucket": "perang-airnav.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:973374163414:android:0e1872ea5a473fcc3bfc77",
+        "android_client_info": {
+          "package_name": "com.example.crash_report"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "973374163414-8th02b1vc41i1t0sqhk8lk5didmgvj32.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQRx03x4N9EYUun3R7mkY6zMozKPIENm4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "973374163414-8th02b1vc41i1t0sqhk8lk5didmgvj32.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
