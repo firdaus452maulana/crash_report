@@ -16,6 +16,7 @@ class loginPage extends StatefulWidget {
 class _loginPageState extends State<loginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  String uid;
   Map<String, String> _authData = {
     'email': '',
     'password': '',
@@ -53,7 +54,8 @@ class _loginPageState extends State<loginPage> {
     try {
       UserCredential credential = await auth.signInWithEmailAndPassword(email: _emailContoller.text, password: _passwordController.text);
       User user = credential.user;
-      Navigator.push(context, MaterialPageRoute(builder: (context) => homePage(user: user,)));
+      uid = user.uid.toString();
+      Navigator.push(context, MaterialPageRoute(builder: (context) => homePage(uid: uid,)));
       showToastSignInSuccess();
     } catch (error) {
       //print(error.message);
