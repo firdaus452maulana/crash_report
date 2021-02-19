@@ -2,6 +2,8 @@ import '../models/authentication.dart';
 import 'package:crash_report/tampilan/loginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class registerPage extends StatefulWidget {
   @override
@@ -15,6 +17,8 @@ class _registerPageState extends State<registerPage> {
     'email': '',
     'password': '',
   };
+
+  final auth = FirebaseAuth.instance;
 
   // ERROR DIALOGBOX
   void _showErrorDialog(String msg) {
@@ -39,12 +43,30 @@ class _registerPageState extends State<registerPage> {
     _formKey.currentState.save();
 
     try {
-      await Provider.of<Authentication>(context, listen: false)
-          .signUp(_authData['email'], _authData['password']);
+
+      UserCredential credential = await auth.createUserWithEmailAndPassword(email: _authData['email'], password: _authData['password']);
+      User user = credential.user;
+      user.sendEmailVerification();
+
+      Navigator.of(context).pop();
+      Navigator.push(context, MaterialPageRoute(builder: (context) => loginPage()));
+      
+      showToastSignUpSuccess();
     } catch (error) {
       var errorMessage = '';
       _showErrorDialog(errorMessage);
     }
+  }
+
+  void showToastSignUpSuccess() {
+    Fluttertoast.showToast(
+        msg: 'Sign Up Success',
+        fontSize: 12,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.black);
   }
 
   // TAMPILAN
@@ -114,8 +136,8 @@ class _registerPageState extends State<registerPage> {
                             validator: (value) {
                               if (value.isEmpty) {
                                 return "Field is required";
-                              } else if (value.length <= 8) {
-                                return "at least 8 characters";
+                              } else if (value.length < 8) {
+                                return "Password at least 8 characters";
                               }
                               return null;
                             },

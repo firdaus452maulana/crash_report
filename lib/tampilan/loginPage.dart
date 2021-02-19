@@ -4,6 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../models/authentication.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class loginPage extends StatefulWidget {
   @override
@@ -18,20 +22,37 @@ class _loginPageState extends State<loginPage> {
     'password': '',
   };
 
+  final auth = FirebaseAuth.instance;
+
   // SUBMIT
   Future<void> _submit() async {
+
     if (!_formKey.currentState.validate()) {
       return;
     }
     _formKey.currentState.save();
 
     try {
-      await Provider.of<Authentication>(context, listen: false)
-          .signIn(_authData['email'], _authData['password']);
+      UserCredential credential = await auth.signInWithEmailAndPassword(email: _authData['email'], password: _authData['password']);
+      User user = credential.user;
+      Navigator.push(context, MaterialPageRoute(builder: (context) => homePage(user: user,)));
+      showToastSignInSuccess();
     } catch (error) {
+      //print(error.message);
       var errorMessage = 'Email atau password salah!';
       _showErrorDialog(errorMessage);
     }
+  }
+
+  void showToastSignInSuccess() {
+    Fluttertoast.showToast(
+        msg: 'Sign In Success',
+        fontSize: 12,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.grey,
+        textColor: Colors.black);
   }
 
   // ERROR DIALOGBOX
@@ -92,7 +113,8 @@ class _loginPageState extends State<loginPage> {
                       child: Stack(
                         children: <Widget>[
                           Container(
-                            padding: EdgeInsets.only(left: 24, right: 8, top: 24, bottom: 24),
+                            padding: EdgeInsets.only(
+                                left: 24, right: 8, top: 24, bottom: 24),
                             child: Form(
                               key: _formKey,
                               child: CupertinoScrollbar(
@@ -121,20 +143,23 @@ class _loginPageState extends State<loginPage> {
                                             decoration: new InputDecoration(
                                                 fillColor: Colors.white,
                                                 border: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(30)),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(30)),
                                                 ),
                                                 enabledBorder: OutlineInputBorder(
                                                     borderRadius: BorderRadius.all(
                                                         Radius.circular(30)),
                                                     borderSide: BorderSide(
                                                         color: Color(0xFF000000)
-                                                            .withOpacity(0.15))),
+                                                            .withOpacity(
+                                                                0.15))),
                                                 focusedBorder: OutlineInputBorder(
                                                     borderRadius: BorderRadius.all(
                                                         Radius.circular(30)),
                                                     borderSide: BorderSide(
-                                                        color: Color(0xFF031F4B))),
+                                                        color:
+                                                            Color(0xFF031F4B))),
                                                 filled: false,
                                                 contentPadding: EdgeInsets.only(
                                                     left: 24.0, right: 24.0),
@@ -143,10 +168,8 @@ class _loginPageState extends State<loginPage> {
                                                     color: Color(0xFF000000)
                                                         .withOpacity(0.15)),
                                                 hintText: "email",
-                                                errorBorder: OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(Radius.circular(30)),
-                                                    borderSide: BorderSide(color: Colors.red)),
+                                                errorBorder:
+                                                    OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30)), borderSide: BorderSide(color: Colors.red)),
                                                 focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30)), borderSide: BorderSide(color: Colors.red, width: 1)),
                                                 errorStyle: TextStyle(fontSize: 10)),
                                             obscureText: false,
@@ -177,16 +200,19 @@ class _loginPageState extends State<loginPage> {
                                                 ),
                                               ),
                                               enabledBorder: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(30)),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(30)),
                                                   borderSide: BorderSide(
                                                       color: Color(0xFF000000)
                                                           .withOpacity(0.15))),
                                               focusedBorder: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(30)),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(30)),
                                                   borderSide: BorderSide(
-                                                      color: Color(0xFF031F4B))),
+                                                      color:
+                                                          Color(0xFF031F4B))),
                                               filled: true,
                                               contentPadding: EdgeInsets.only(
                                                   left: 24.0, right: 24.0),
@@ -196,15 +222,17 @@ class _loginPageState extends State<loginPage> {
                                                       .withOpacity(0.15)),
                                               hintText: "password",
                                               errorBorder: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(30)),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(30)),
                                                   borderSide: BorderSide(
                                                       color: Colors.red)),
                                               focusedErrorBorder:
                                                   OutlineInputBorder(
                                                       borderRadius:
                                                           BorderRadius.all(
-                                                              Radius.circular(30)),
+                                                              Radius.circular(
+                                                                  30)),
                                                       borderSide: BorderSide(
                                                           color: Colors.red,
                                                           width: 1)),
@@ -276,7 +304,8 @@ class _loginPageState extends State<loginPage> {
                                                   "Sign Up",
                                                   style: TextStyle(
                                                       fontSize: 12,
-                                                      fontWeight: FontWeight.bold),
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
                                                 onPressed: () {
                                                   Navigator.push(
