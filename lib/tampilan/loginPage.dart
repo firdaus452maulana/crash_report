@@ -3,7 +3,6 @@ import 'package:crash_report/tampilan/registerPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../models/authentication.dart';
-import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,10 +21,29 @@ class _loginPageState extends State<loginPage> {
     'password': '',
   };
 
+  TextEditingController _emailContoller = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
   final auth = FirebaseAuth.instance;
+  final AuthenticationService _auth = AuthenticationService();
+
+  /*Future<void> _signIn() async {
+    dynamic result = await _auth.signIn(_emailContoller.text, _passwordController.text);
+    if (result == null) {
+      print("email is not valid");
+    } else {
+      print(result.toString());
+
+      UserCredential data = (await auth.currentUser) as UserCredential;
+      User userData = data.user;
+
+
+      Navigator.push(context, MaterialPageRoute(builder: (context) => homePage()));
+    }
+  }*/
 
   // SUBMIT
-  Future<void> _submit() async {
+  Future<void> _signIn() async {
 
     if (!_formKey.currentState.validate()) {
       return;
@@ -33,7 +51,7 @@ class _loginPageState extends State<loginPage> {
     _formKey.currentState.save();
 
     try {
-      UserCredential credential = await auth.signInWithEmailAndPassword(email: _authData['email'], password: _authData['password']);
+      UserCredential credential = await auth.signInWithEmailAndPassword(email: _emailContoller.text, password: _passwordController.text);
       User user = credential.user;
       Navigator.push(context, MaterialPageRoute(builder: (context) => homePage(user: user,)));
       showToastSignInSuccess();
@@ -136,6 +154,7 @@ class _loginPageState extends State<loginPage> {
                                         // EMAIL
                                         Container(
                                           child: TextFormField(
+                                            controller: _emailContoller,
                                             cursorColor: Colors.black,
                                             style: TextStyle(fontSize: 12),
                                             keyboardType:
@@ -190,6 +209,7 @@ class _loginPageState extends State<loginPage> {
                                         // PASSWORD
                                         Container(
                                           child: TextFormField(
+                                            controller: _passwordController,
                                             cursorColor: Colors.black,
                                             style: TextStyle(fontSize: 12),
                                             decoration: new InputDecoration(
@@ -247,9 +267,6 @@ class _loginPageState extends State<loginPage> {
                                               }
                                               return null;
                                             },
-                                            onSaved: (value) {
-                                              _authData['password'] = value;
-                                            },
                                           ),
                                         ),
 
@@ -281,7 +298,7 @@ class _loginPageState extends State<loginPage> {
                                             ),
                                           ),
                                           onPressed: () {
-                                            _submit();
+                                            _signIn();
                                           },
                                         ),
 

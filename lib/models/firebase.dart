@@ -9,12 +9,6 @@ class DatabaseManager {
       'name': name,
       'username': username
     });
-
-
-//    FirebaseAuth auth = FirebaseAuth.instance;
-//    String uid = auth.currentUser.uid.toString();
-//    users.doc(uid).set({'name': name});
-//    return;
   }
 
 }
