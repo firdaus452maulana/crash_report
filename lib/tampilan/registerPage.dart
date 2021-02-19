@@ -1,11 +1,53 @@
+import '../models/authentication.dart';
 import 'package:crash_report/tampilan/loginPage.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class registerPage extends StatelessWidget {
+class registerPage extends StatefulWidget {
+  @override
+  _registerPageState createState() => _registerPageState();
+}
+
+class _registerPageState extends State<registerPage> {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
-  void _submit() {}
+  Map<String, String> _authData = {
+    'email': '',
+    'password': '',
+  };
 
+  // ERROR DIALOGBOX
+  void _showErrorDialog(String msg) {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              title: Text(
+                "Something went wrong.",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              content: Text(msg, style: TextStyle(fontSize: 12)),
+            ));
+  }
+
+  // SUBMIT
+  Future<void> _submit() async {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+    _formKey.currentState.save();
+
+    try {
+      await Provider.of<Authentication>(context, listen: false)
+          .signUp(_authData['email'], _authData['password']);
+    } catch (error) {
+      var errorMessage = '';
+      _showErrorDialog(errorMessage);
+    }
+  }
+
+  // TAMPILAN
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,14 +97,16 @@ class registerPage extends StatelessWidget {
                           ),
                           TextFormField(
                             decoration: InputDecoration(labelText: "email"),
-                            keyboardType: TextInputType.name,
+                            keyboardType: TextInputType.emailAddress,
                             validator: (value) {
                               if (value.isEmpty) {
                                 return "Field is required";
                               }
                               return null;
                             },
-                            onSaved: (value) {},
+                            onSaved: (value) {
+                              _authData['email'] = value;
+                            },
                           ),
                           TextFormField(
                             decoration: InputDecoration(labelText: "password"),
@@ -70,10 +114,14 @@ class registerPage extends StatelessWidget {
                             validator: (value) {
                               if (value.isEmpty) {
                                 return "Field is required";
+                              } else if (value.length <= 8) {
+                                return "at least 8 characters";
                               }
                               return null;
                             },
-                            onSaved: (value) {},
+                            onSaved: (value) {
+                              _authData['password'] = value;
+                            },
                           ),
                           RaisedButton(
                             child: Text("Sign Up"),

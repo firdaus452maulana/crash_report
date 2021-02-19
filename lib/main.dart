@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: null)
+        ChangeNotifierProvider.value(value: Authentication())
       ],
       child: MaterialApp(
         title: 'PERANG',

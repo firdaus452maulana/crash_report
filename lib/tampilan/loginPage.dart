@@ -2,13 +2,54 @@ import 'package:crash_report/tampilan/homePage.dart';
 import 'package:crash_report/tampilan/registerPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import '../models/authentication.dart';
+import 'package:provider/provider.dart';
 
-class loginPage extends StatelessWidget {
-  String _email, _password;
+class loginPage extends StatefulWidget {
+  @override
+  _loginPageState createState() => _loginPageState();
+}
 
+class _loginPageState extends State<loginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  Map<String, String> _authData = {
+    'email': '',
+    'password': '',
+  };
+
+  // SUBMIT
+  Future<void> _submit() async {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+    _formKey.currentState.save();
+
+    try {
+      await Provider.of<Authentication>(context, listen: false)
+          .signIn(_authData['email'], _authData['password']);
+    } catch (error) {
+      var errorMessage = 'Email atau password salah!';
+      _showErrorDialog(errorMessage);
+    }
+  }
+
+  // ERROR DIALOGBOX
+  void _showErrorDialog(String msg) {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              title: Text(
+                "Something went wrong.",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              content: Text(msg, style: TextStyle(fontSize: 12)),
+            ));
+  }
+
+  // TAMPILAN
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,168 +92,207 @@ class loginPage extends StatelessWidget {
                       child: Stack(
                         children: <Widget>[
                           Container(
-                            padding: EdgeInsets.all(32),
+                            padding: EdgeInsets.only(left: 24, right: 8, top: 24, bottom: 24),
                             child: Form(
                               key: _formKey,
-                              child: SingleChildScrollView(
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      "Sign In",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 24),
-                                    ),
-                                    SizedBox(
-                                      height: 24,
-                                    ),
-
-                                    // EMAIL
-                                    Container(
-                                      height: 40,
-                                      child: TextFormField(
-                                        style: TextStyle(fontSize: 12),
-                                        decoration: new InputDecoration(
-                                            fillColor: Colors.white,
-                                            border: InputBorder.none,
-                                            enabledBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(30)),
-                                                borderSide: BorderSide(
-                                                    color: Color(0xFF000000)
-                                                        .withOpacity(0.15))),
-                                            focusedBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(30)),
-                                                borderSide: BorderSide(
-                                                    color: Color(0xFF031F4B))),
-                                            filled: true,
-                                            contentPadding: EdgeInsets.only(
-                                                left: 24.0, right: 24.0),
-                                            hintStyle: TextStyle(
-                                                fontSize: 12,
-                                                color: Color(0xFF000000)
-                                                    .withOpacity(0.15)),
-                                            hintText: "email"),
-                                        obscureText: false,
-                                        validator: (value) {
-                                          if (value.isEmpty) {
-                                            return "Field is required";
-                                          }
-                                          return null;
-                                        },
-                                        onSaved: (value) => _password = value,
-                                      ),
-                                    ),
-
-                                    SizedBox(height: 16),
-
-                                    // PASSWORD
-                                    Container(
-                                      height: 40,
-                                      child: TextFormField(
-                                        style: TextStyle(fontSize: 12),
-                                        decoration: new InputDecoration(
-                                            fillColor: Colors.transparent,
-                                            border: InputBorder.none,
-                                            enabledBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(30)),
-                                                borderSide: BorderSide(
-                                                    color: Color(0xFF000000)
-                                                        .withOpacity(0.15))),
-                                            focusedBorder: OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(30)),
-                                                borderSide: BorderSide(
-                                                    color: Color(0xFF031F4B))),
-                                            filled: true,
-                                            contentPadding: EdgeInsets.only(
-                                                left: 24.0, right: 24.0),
-                                            hintStyle: TextStyle(
-                                                fontSize: 12,
-                                                color: Color(0xFF000000)
-                                                    .withOpacity(0.15)),
-                                            hintText: "password"),
-                                        obscureText: true,
-                                        validator: (value) {
-                                          if (value.isEmpty) {
-                                            return "Field is required";
-                                          }
-                                          return null;
-                                        },
-                                        onSaved: (value) => _password = value,
-                                      ),
-                                    ),
-
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: FlatButton(
-                                        onPressed: () {},
-                                        child: Text(
-                                          "Forgot Password?",
-                                          style: TextStyle(fontSize: 12),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(height: 12),
-                                    RaisedButton(
-                                      color: Color(0xFF031F4B),
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(30)),
-                                      textColor: Colors.white,
-                                      child: Container(
-                                        height: 40,
-                                        alignment: Alignment.center,
-                                        child: Text(
+                              child: CupertinoScrollbar(
+                                child: Container(
+                                  padding: EdgeInsets.only(right: 16),
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        Text(
                                           "Sign In",
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 12),
+                                              fontSize: 24),
                                         ),
-                                      ),
-                                      onPressed: () {},
+                                        SizedBox(
+                                          height: 24,
+                                        ),
+
+                                        // EMAIL
+                                        Container(
+                                          child: TextFormField(
+                                            cursorColor: Colors.black,
+                                            style: TextStyle(fontSize: 12),
+                                            keyboardType:
+                                                TextInputType.emailAddress,
+                                            decoration: new InputDecoration(
+                                                fillColor: Colors.white,
+                                                border: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(30)),
+                                                ),
+                                                enabledBorder: OutlineInputBorder(
+                                                    borderRadius: BorderRadius.all(
+                                                        Radius.circular(30)),
+                                                    borderSide: BorderSide(
+                                                        color: Color(0xFF000000)
+                                                            .withOpacity(0.15))),
+                                                focusedBorder: OutlineInputBorder(
+                                                    borderRadius: BorderRadius.all(
+                                                        Radius.circular(30)),
+                                                    borderSide: BorderSide(
+                                                        color: Color(0xFF031F4B))),
+                                                filled: false,
+                                                contentPadding: EdgeInsets.only(
+                                                    left: 24.0, right: 24.0),
+                                                hintStyle: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Color(0xFF000000)
+                                                        .withOpacity(0.15)),
+                                                hintText: "email",
+                                                errorBorder: OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(Radius.circular(30)),
+                                                    borderSide: BorderSide(color: Colors.red)),
+                                                focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30)), borderSide: BorderSide(color: Colors.red, width: 1)),
+                                                errorStyle: TextStyle(fontSize: 10)),
+                                            obscureText: false,
+                                            validator: (value) {
+                                              if (value.isEmpty) {
+                                                return "Field is required";
+                                              }
+                                              return null;
+                                            },
+                                            onSaved: (value) {
+                                              _authData['email'] = value;
+                                            },
+                                          ),
+                                        ),
+
+                                        SizedBox(height: 16),
+
+                                        // PASSWORD
+                                        Container(
+                                          child: TextFormField(
+                                            cursorColor: Colors.black,
+                                            style: TextStyle(fontSize: 12),
+                                            decoration: new InputDecoration(
+                                              fillColor: Colors.transparent,
+                                              border: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(30),
+                                                ),
+                                              ),
+                                              enabledBorder: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(30)),
+                                                  borderSide: BorderSide(
+                                                      color: Color(0xFF000000)
+                                                          .withOpacity(0.15))),
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(30)),
+                                                  borderSide: BorderSide(
+                                                      color: Color(0xFF031F4B))),
+                                              filled: true,
+                                              contentPadding: EdgeInsets.only(
+                                                  left: 24.0, right: 24.0),
+                                              hintStyle: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Color(0xFF000000)
+                                                      .withOpacity(0.15)),
+                                              hintText: "password",
+                                              errorBorder: OutlineInputBorder(
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(30)),
+                                                  borderSide: BorderSide(
+                                                      color: Colors.red)),
+                                              focusedErrorBorder:
+                                                  OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(30)),
+                                                      borderSide: BorderSide(
+                                                          color: Colors.red,
+                                                          width: 1)),
+                                              errorStyle: TextStyle(
+                                                fontSize: 10,
+                                              ),
+                                            ),
+                                            obscureText: true,
+                                            validator: (value) {
+                                              if (value.isEmpty) {
+                                                return "Field is required";
+                                              }
+                                              return null;
+                                            },
+                                            onSaved: (value) {
+                                              _authData['password'] = value;
+                                            },
+                                          ),
+                                        ),
+
+                                        Align(
+                                          alignment: Alignment.centerRight,
+                                          child: FlatButton(
+                                            onPressed: () {},
+                                            child: Text(
+                                              "Forgot Password?",
+                                              style: TextStyle(fontSize: 12),
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 12),
+                                        RaisedButton(
+                                          color: Color(0xFF031F4B),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(30)),
+                                          textColor: Colors.white,
+                                          child: Container(
+                                            height: 48,
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              "Sign In",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 12),
+                                            ),
+                                          ),
+                                          onPressed: () {
+                                            _submit();
+                                          },
+                                        ),
+
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "Don't have an account?",
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: Color(0xFF000000)
+                                                      .withOpacity(.25)),
+                                            ),
+                                            Container(
+                                              width: 54,
+                                              child: FlatButton(
+                                                padding: EdgeInsets.all(0.0),
+                                                child: Text(
+                                                  "Sign Up",
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight: FontWeight.bold),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              registerPage()));
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Container(
-                              margin: EdgeInsets.only(bottom: 16),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Don't have an account?",
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color:
-                                            Color(0xFF000000).withOpacity(.25)),
-                                  ),
-                                  Container(
-                                    width: 54,
-                                    child: FlatButton(
-                                      padding: EdgeInsets.all(0.0),
-                                      child: Text(
-                                        "Sign Up",
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    registerPage()));
-                                      },
-                                    ),
-                                  ),
-                                ],
                               ),
                             ),
                           ),
@@ -226,22 +306,4 @@ class loginPage extends StatelessWidget {
           ],
         ));
   }
-
-  void _submit(){
-
-  }
-
-/*Future<void> _submit() async {
-    final formState = _formKey.currentState;
-    if(formState.validate()){
-      formState.save();
-      try{
-        AuthResult result =  await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
-        FirebaseUser user = result.user;
-        Navigator.push(context, MaterialPageRoute(builder: (context) => homePage()));
-      }catch(e){
-        print(e.message);
-      }
-    }
-  }*/
 }
