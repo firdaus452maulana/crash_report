@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../models/firebase.dart';
 
 class registerPage extends StatefulWidget {
   @override
@@ -13,12 +15,20 @@ class registerPage extends StatefulWidget {
 class _registerPageState extends State<registerPage> {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
+  String _uid = '';
+
   Map<String, String> _authData = {
     'email': '',
     'password': '',
   };
 
   final auth = FirebaseAuth.instance;
+  final AuthenticationService _auth = AuthenticationService();
+
+  TextEditingController _emailContoller = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _usernameController = TextEditingController();
 
   // ERROR DIALOGBOX
   void _showErrorDialog(String msg) {
@@ -35,29 +45,6 @@ class _registerPageState extends State<registerPage> {
             ));
   }
 
-  // SUBMIT
-  Future<void> _submit() async {
-    if (!_formKey.currentState.validate()) {
-      return;
-    }
-    _formKey.currentState.save();
-
-    try {
-
-      UserCredential credential = await auth.createUserWithEmailAndPassword(email: _authData['email'], password: _authData['password']);
-      User user = credential.user;
-      user.sendEmailVerification();
-
-      Navigator.of(context).pop();
-      Navigator.push(context, MaterialPageRoute(builder: (context) => loginPage()));
-      
-      showToastSignUpSuccess();
-    } catch (error) {
-      var errorMessage = '';
-      _showErrorDialog(errorMessage);
-    }
-  }
-
   void showToastSignUpSuccess() {
     Fluttertoast.showToast(
         msg: 'Sign Up Success',
@@ -67,6 +54,16 @@ class _registerPageState extends State<registerPage> {
         timeInSecForIos: 1,
         backgroundColor: Colors.grey,
         textColor: Colors.black);
+  }
+
+  // SUBMIT
+  Future<void> _signUp() async {
+    dynamic result = await _auth.createNewUser(_nameController.text, _usernameController.text, _emailContoller.text, _passwordController.text);
+    if (result == null) {
+      print("email is not valid");
+    } else {
+      print(result.toString());
+    }
   }
 
   // TAMPILAN
@@ -95,7 +92,9 @@ class _registerPageState extends State<registerPage> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
+                          // FULL NAME
                           TextFormField(
+                            controller: _nameController,
                             decoration: InputDecoration(labelText: "full name"),
                             keyboardType: TextInputType.name,
                             validator: (value) {
@@ -104,9 +103,11 @@ class _registerPageState extends State<registerPage> {
                               }
                               return null;
                             },
-                            onSaved: (value) {},
                           ),
+
+                          // USERNAME
                           TextFormField(
+                            controller: _usernameController,
                             decoration: InputDecoration(labelText: "username"),
                             keyboardType: TextInputType.name,
                             validator: (value) {
@@ -115,9 +116,11 @@ class _registerPageState extends State<registerPage> {
                               }
                               return null;
                             },
-                            onSaved: (value) {},
                           ),
+
+                          // EMAIL
                           TextFormField(
+                            controller: _emailContoller,
                             decoration: InputDecoration(labelText: "email"),
                             keyboardType: TextInputType.emailAddress,
                             validator: (value) {
@@ -126,29 +129,27 @@ class _registerPageState extends State<registerPage> {
                               }
                               return null;
                             },
-                            onSaved: (value) {
-                              _authData['email'] = value;
-                            },
                           ),
+
+                          // PASSWORD
                           TextFormField(
+                            controller: _passwordController,
                             decoration: InputDecoration(labelText: "password"),
                             obscureText: true,
                             validator: (value) {
                               if (value.isEmpty) {
                                 return "Field is required";
-                              } else if (value.length < 8) {
+                              } else if (value.length < 6) {
                                 return "Password at least 8 characters";
                               }
                               return null;
                             },
-                            onSaved: (value) {
-                              _authData['password'] = value;
-                            },
                           ),
+
                           RaisedButton(
                             child: Text("Sign Up"),
                             onPressed: () {
-                              _submit();
+                              _signUp();
                             },
                           ),
                           Align(
