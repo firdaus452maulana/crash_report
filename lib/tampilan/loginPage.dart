@@ -56,6 +56,7 @@ class _loginPageState extends State<loginPage> {
       User user = credential.user;
       uid = user.uid.toString();
       Navigator.push(context, MaterialPageRoute(builder: (context) => homePage(uid: uid,)));
+      Navigator.pop(context);
       showToastSignInSuccess();
     } catch (error) {
       //print(error.message);

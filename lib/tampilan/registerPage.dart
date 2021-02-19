@@ -63,6 +63,9 @@ class _registerPageState extends State<registerPage> {
       print("email is not valid");
     } else {
       print(result.toString());
+      Navigator.push(context, MaterialPageRoute(builder: (context) => loginPage()));
+      Navigator.pop(context);
+      showToastSignUpSuccess();
     }
   }
 
