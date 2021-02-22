@@ -56,7 +56,7 @@ class _loginPageState extends State<loginPage> {
       User user = credential.user;
       uid = user.uid.toString();
       Navigator.push(context, MaterialPageRoute(builder: (context) => homePage(uid: uid,)));
-      Navigator.pop(context);
+      //Navigator.pop(context);
       showToastSignInSuccess();
     } catch (error) {
       //print(error.message);
@@ -72,7 +72,7 @@ class _loginPageState extends State<loginPage> {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIos: 1,
-        backgroundColor: Colors.grey,
+        backgroundColor: Color(0xFF000000).withOpacity(0.15),
         textColor: Colors.black);
   }
 

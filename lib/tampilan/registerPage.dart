@@ -15,7 +15,12 @@ class registerPage extends StatefulWidget {
 class _registerPageState extends State<registerPage> {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
+  String valueDivisi;
   String _uid = '';
+
+  List divisi = [
+    "Divisi 1", "Divisi 2", "Divisi 3"
+  ];
 
   Map<String, String> _authData = {
     'email': '',
@@ -28,10 +33,10 @@ class _registerPageState extends State<registerPage> {
   TextEditingController _emailContoller = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
-  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _roleController = TextEditingController();
 
   // ERROR DIALOGBOX
-  void _showErrorDialog(String msg) {
+  void _showErrorDialog() {
     showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
@@ -41,7 +46,7 @@ class _registerPageState extends State<registerPage> {
                 "Something went wrong.",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              content: Text(msg, style: TextStyle(fontSize: 12)),
+              content: Text("Ulangi pengisian data", style: TextStyle(fontSize: 12)),
             ));
   }
 
@@ -52,19 +57,20 @@ class _registerPageState extends State<registerPage> {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIos: 1,
-        backgroundColor: Colors.grey,
+        backgroundColor: Color(0xFF000000).withOpacity(0.15),
         textColor: Colors.black);
   }
 
   // SUBMIT
   Future<void> _signUp() async {
-    dynamic result = await _auth.createNewUser(_nameController.text, _usernameController.text, _emailContoller.text, _passwordController.text);
+    dynamic result = await _auth.createNewUser(_nameController.text, _roleController.text, _emailContoller.text, _passwordController.text);
     if (result == null) {
-      print("email is not valid");
+      print("Something went wrong");
+      //_showErrorDialog();
     } else {
       print(result.toString());
       Navigator.push(context, MaterialPageRoute(builder: (context) => loginPage()));
-      Navigator.pop(context);
+      //Navigator.pop(context);
       showToastSignUpSuccess();
     }
   }
@@ -98,20 +104,74 @@ class _registerPageState extends State<registerPage> {
                           // FULL NAME
                           TextFormField(
                             controller: _nameController,
-                            decoration: InputDecoration(labelText: "full name"),
-                            keyboardType: TextInputType.name,
+                            cursorColor: Colors.black,
+                            style: TextStyle(fontSize: 12),
+                            keyboardType:
+                            TextInputType.emailAddress,
+                            decoration: new InputDecoration(
+                                fillColor: Colors.white,
+                                border: OutlineInputBorder(
+                                  borderRadius:
+                                  BorderRadius.all(
+                                      Radius.circular(30)),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(30)),
+                                    borderSide: BorderSide(
+                                        color: Color(0xFF000000)
+                                            .withOpacity(
+                                            0.15))),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(30)),
+                                    borderSide: BorderSide(
+                                        color:
+                                        Color(0xFF031F4B))),
+                                filled: false,
+                                contentPadding: EdgeInsets.only(
+                                    left: 24.0, right: 24.0),
+                                hintStyle: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF000000)
+                                        .withOpacity(0.15)),
+                                hintText: "email",
+                                errorBorder:
+                                OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30)), borderSide: BorderSide(color: Colors.red)),
+                                focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30)), borderSide: BorderSide(color: Colors.red, width: 1)),
+                                errorStyle: TextStyle(fontSize: 10)),
+                            obscureText: false,
                             validator: (value) {
                               if (value.isEmpty) {
                                 return "Field is required";
                               }
                               return null;
                             },
+                            onSaved: (value) {
+                              _authData['email'] = value;
+                            },
                           ),
 
-                          // USERNAME
+                          DropdownButton(
+                            hint: Text("Pilih Divisi"),
+                            value: valueDivisi,
+                            onChanged: (newValue){
+                              setState(() {
+                                valueDivisi = newValue;
+                              });
+                            },
+                            items: divisi.map((valueItem) {
+                              return DropdownMenuItem(
+                                value: valueItem,
+                                child: Text(valueItem),
+                              );
+                            }).toList(),
+                          ),
+
+                          // DIVISI
                           TextFormField(
-                            controller: _usernameController,
-                            decoration: InputDecoration(labelText: "username"),
+                            controller: _roleController,
+                            decoration: InputDecoration(labelText: "divisi"),
                             keyboardType: TextInputType.name,
                             validator: (value) {
                               if (value.isEmpty) {
@@ -124,13 +184,51 @@ class _registerPageState extends State<registerPage> {
                           // EMAIL
                           TextFormField(
                             controller: _emailContoller,
-                            decoration: InputDecoration(labelText: "email"),
-                            keyboardType: TextInputType.emailAddress,
+                            cursorColor: Colors.black,
+                            style: TextStyle(fontSize: 12),
+                            keyboardType:
+                            TextInputType.emailAddress,
+                            decoration: new InputDecoration(
+                                fillColor: Colors.white,
+                                border: OutlineInputBorder(
+                                  borderRadius:
+                                  BorderRadius.all(
+                                      Radius.circular(30)),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(30)),
+                                    borderSide: BorderSide(
+                                        color: Color(0xFF000000)
+                                            .withOpacity(
+                                            0.15))),
+                                focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(30)),
+                                    borderSide: BorderSide(
+                                        color:
+                                        Color(0xFF031F4B))),
+                                filled: false,
+                                contentPadding: EdgeInsets.only(
+                                    left: 24.0, right: 24.0),
+                                hintStyle: TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF000000)
+                                        .withOpacity(0.15)),
+                                hintText: "email",
+                                errorBorder:
+                                OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30)), borderSide: BorderSide(color: Colors.red)),
+                                focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30)), borderSide: BorderSide(color: Colors.red, width: 1)),
+                                errorStyle: TextStyle(fontSize: 10)),
+                            obscureText: false,
                             validator: (value) {
                               if (value.isEmpty) {
                                 return "Field is required";
                               }
                               return null;
+                            },
+                            onSaved: (value) {
+                              _authData['email'] = value;
                             },
                           ),
 
@@ -143,7 +241,7 @@ class _registerPageState extends State<registerPage> {
                               if (value.isEmpty) {
                                 return "Field is required";
                               } else if (value.length < 6) {
-                                return "Password at least 8 characters";
+                                return "Password at least 6 characters";
                               }
                               return null;
                             },
