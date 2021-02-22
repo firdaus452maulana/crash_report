@@ -283,7 +283,9 @@ class _loginPageState extends State<loginPage> {
                                             ),
                                           ),
                                         ),
+
                                         SizedBox(height: 12),
+
                                         RaisedButton(
                                           color: Color(0xFF031F4B),
                                           shape: RoundedRectangleBorder(

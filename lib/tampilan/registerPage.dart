@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 import '../models/authentication.dart';
 import 'package:crash_report/tampilan/loginPage.dart';
 import 'package:flutter/material.dart';
@@ -18,9 +20,7 @@ class _registerPageState extends State<registerPage> {
   String valueDivisi;
   String _uid = '';
 
-  List divisi = [
-    "Divisi 1", "Divisi 2", "Divisi 3"
-  ];
+  List divisi = ["Divisi 1", "Divisi 2", "Divisi 3"];
 
   Map<String, String> _authData = {
     'email': '',
@@ -46,7 +46,8 @@ class _registerPageState extends State<registerPage> {
                 "Something went wrong.",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              content: Text("Ulangi pengisian data", style: TextStyle(fontSize: 12)),
+              content:
+                  Text("Error bos", style: TextStyle(fontSize: 12)),
             ));
   }
 
@@ -63,13 +64,15 @@ class _registerPageState extends State<registerPage> {
 
   // SUBMIT
   Future<void> _signUp() async {
-    dynamic result = await _auth.createNewUser(_nameController.text, _roleController.text, _emailContoller.text, _passwordController.text);
+    dynamic result = await _auth.createNewUser(_nameController.text,
+        valueDivisi, _emailContoller.text, _passwordController.text);
     if (result == null) {
       print("Something went wrong");
-      //_showErrorDialog();
+      _showErrorDialog();
     } else {
       print(result.toString());
-      Navigator.push(context, MaterialPageRoute(builder: (context) => loginPage()));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => loginPage()));
       //Navigator.pop(context);
       showToastSignUpSuccess();
     }
@@ -95,193 +98,258 @@ class _registerPageState extends State<registerPage> {
                 child: Container(
                   height: 380,
                   width: 280,
-                  padding: EdgeInsets.all(16),
+                  padding: EdgeInsets.only(
+                      left: 24, right: 8, top: 24, bottom: 24),
                   child: Form(
                     key: _formKey,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          // FULL NAME
-                          TextFormField(
-                            controller: _nameController,
-                            cursorColor: Colors.black,
-                            style: TextStyle(fontSize: 12),
-                            keyboardType:
-                            TextInputType.emailAddress,
-                            decoration: new InputDecoration(
-                                fillColor: Colors.white,
-                                border: OutlineInputBorder(
-                                  borderRadius:
-                                  BorderRadius.all(
-                                      Radius.circular(30)),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(30)),
-                                    borderSide: BorderSide(
-                                        color: Color(0xFF000000)
-                                            .withOpacity(
-                                            0.15))),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(30)),
-                                    borderSide: BorderSide(
-                                        color:
-                                        Color(0xFF031F4B))),
-                                filled: false,
-                                contentPadding: EdgeInsets.only(
-                                    left: 24.0, right: 24.0),
-                                hintStyle: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF000000)
-                                        .withOpacity(0.15)),
-                                hintText: "email",
-                                errorBorder:
-                                OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30)), borderSide: BorderSide(color: Colors.red)),
-                                focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30)), borderSide: BorderSide(color: Colors.red, width: 1)),
-                                errorStyle: TextStyle(fontSize: 10)),
-                            obscureText: false,
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return "Field is required";
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              _authData['email'] = value;
-                            },
-                          ),
+                    child: CupertinoScrollbar(
+                      child: Container(
+                        padding: EdgeInsets.only(right: 16),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
 
-                          DropdownButton(
-                            hint: Text("Pilih Divisi"),
-                            value: valueDivisi,
-                            onChanged: (newValue){
-                              setState(() {
-                                valueDivisi = newValue;
-                              });
-                            },
-                            items: divisi.map((valueItem) {
-                              return DropdownMenuItem(
-                                value: valueItem,
-                                child: Text(valueItem),
-                              );
-                            }).toList(),
-                          ),
-
-                          // DIVISI
-                          TextFormField(
-                            controller: _roleController,
-                            decoration: InputDecoration(labelText: "divisi"),
-                            keyboardType: TextInputType.name,
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return "Field is required";
-                              }
-                              return null;
-                            },
-                          ),
-
-                          // EMAIL
-                          TextFormField(
-                            controller: _emailContoller,
-                            cursorColor: Colors.black,
-                            style: TextStyle(fontSize: 12),
-                            keyboardType:
-                            TextInputType.emailAddress,
-                            decoration: new InputDecoration(
-                                fillColor: Colors.white,
-                                border: OutlineInputBorder(
-                                  borderRadius:
-                                  BorderRadius.all(
-                                      Radius.circular(30)),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(30)),
-                                    borderSide: BorderSide(
-                                        color: Color(0xFF000000)
-                                            .withOpacity(
-                                            0.15))),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(30)),
-                                    borderSide: BorderSide(
-                                        color:
-                                        Color(0xFF031F4B))),
-                                filled: false,
-                                contentPadding: EdgeInsets.only(
-                                    left: 24.0, right: 24.0),
-                                hintStyle: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF000000)
-                                        .withOpacity(0.15)),
-                                hintText: "email",
-                                errorBorder:
-                                OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30)), borderSide: BorderSide(color: Colors.red)),
-                                focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30)), borderSide: BorderSide(color: Colors.red, width: 1)),
-                                errorStyle: TextStyle(fontSize: 10)),
-                            obscureText: false,
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return "Field is required";
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              _authData['email'] = value;
-                            },
-                          ),
-
-                          // PASSWORD
-                          TextFormField(
-                            controller: _passwordController,
-                            decoration: InputDecoration(labelText: "password"),
-                            obscureText: true,
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return "Field is required";
-                              } else if (value.length < 6) {
-                                return "Password at least 6 characters";
-                              }
-                              return null;
-                            },
-                          ),
-
-                          RaisedButton(
-                            child: Text("Sign Up"),
-                            onPressed: () {
-                              _signUp();
-                            },
-                          ),
-                          Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Container(
-                              margin: EdgeInsets.only(bottom: 16),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Don't have an account?",
-                                    style: TextStyle(
+                              // FULL NAME
+                              TextFormField(
+                                controller: _nameController,
+                                cursorColor: Colors.black,
+                                style: TextStyle(fontSize: 12),
+                                keyboardType: TextInputType.text,
+                                decoration: new InputDecoration(
+                                    fillColor: Colors.white,
+                                    border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(30)),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.all(Radius.circular(30)),
+                                        borderSide: BorderSide(
+                                            color: Color(0xFF000000)
+                                                .withOpacity(0.15))),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.all(Radius.circular(30)),
+                                        borderSide:
+                                            BorderSide(color: Color(0xFF031F4B))),
+                                    filled: false,
+                                    contentPadding:
+                                        EdgeInsets.only(left: 24.0, right: 24.0),
+                                    hintStyle: TextStyle(
                                         fontSize: 12,
-                                        color:
-                                            Color(0xFF000000).withOpacity(.25)),
-                                  ),
-                                  FlatButton(
-                                    child: Text("Sign In"),
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  loginPage()));
-                                    },
-                                  ),
-                                ],
+                                        color: Color(0xFF000000).withOpacity(0.15)),
+                                    hintText: "full name",
+                                    errorBorder: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.all(Radius.circular(30)),
+                                        borderSide: BorderSide(color: Colors.red)),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.all(Radius.circular(30)),
+                                        borderSide: BorderSide(
+                                            color: Colors.red, width: 1)),
+                                    errorStyle: TextStyle(fontSize: 10)),
+                                obscureText: false,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Field is required";
+                                  }
+                                  return null;
+                                },
                               ),
-                            ),
+
+                              SizedBox(
+                                height: 16,
+                              ),
+
+                              // EMAIL
+                              TextFormField(
+                                controller: _emailContoller,
+                                cursorColor: Colors.black,
+                                style: TextStyle(fontSize: 12),
+                                keyboardType: TextInputType.emailAddress,
+                                decoration: new InputDecoration(
+                                    fillColor: Colors.white,
+                                    border: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(30)),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.all(Radius.circular(30)),
+                                        borderSide: BorderSide(
+                                            color: Color(0xFF000000)
+                                                .withOpacity(0.15))),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.all(Radius.circular(30)),
+                                        borderSide:
+                                            BorderSide(color: Color(0xFF031F4B))),
+                                    filled: false,
+                                    contentPadding:
+                                        EdgeInsets.only(left: 24.0, right: 24.0),
+                                    hintStyle: TextStyle(
+                                        fontSize: 12,
+                                        color: Color(0xFF000000).withOpacity(0.15)),
+                                    hintText: "email",
+                                    errorBorder: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.all(Radius.circular(30)),
+                                        borderSide: BorderSide(color: Colors.red)),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                        borderRadius:
+                                            BorderRadius.all(Radius.circular(30)),
+                                        borderSide: BorderSide(
+                                            color: Colors.red, width: 1)),
+                                    errorStyle: TextStyle(fontSize: 10)),
+                                obscureText: false,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Field is required";
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {
+                                  _authData['email'] = value;
+                                },
+                              ),
+
+                              SizedBox(
+                                height: 16,
+                              ),
+
+                              // PASSWORD
+                              TextFormField(
+                                controller: _passwordController,
+                                cursorColor: Colors.black,
+                                style: TextStyle(fontSize: 12),
+                                decoration: new InputDecoration(
+                                  fillColor: Colors.transparent,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(30),
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(30)),
+                                      borderSide: BorderSide(
+                                          color:
+                                              Color(0xFF000000).withOpacity(0.15))),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(30)),
+                                      borderSide:
+                                          BorderSide(color: Color(0xFF031F4B))),
+                                  filled: true,
+                                  contentPadding:
+                                      EdgeInsets.only(left: 24.0, right: 24.0),
+                                  hintStyle: TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF000000).withOpacity(0.15)),
+                                  hintText: "password",
+                                  errorBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(30)),
+                                      borderSide: BorderSide(color: Colors.red)),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(30)),
+                                      borderSide:
+                                          BorderSide(color: Colors.red, width: 1)),
+                                  errorStyle: TextStyle(
+                                    fontSize: 10,
+                                  ),
+                                ),
+                                obscureText: true,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Field is required";
+                                  }
+                                  return null;
+                                },
+                              ),
+
+                              SizedBox(
+                                height: 16,
+                              ),
+
+                              // DIVISI
+                              Container(
+                                padding: EdgeInsets.only(left: 24, right: 24),
+                                width: 500,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Color(0xFF000000).withOpacity(0.15)),
+                                    borderRadius: BorderRadius.circular(30)),
+                                child: DropdownButton(
+                                  hint: Text("divisi", style: TextStyle(fontSize: 12,color: Color(0xFF000000).withOpacity(.25)),),
+                                  value: valueDivisi,
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      valueDivisi = newValue;
+                                    });
+                                  },
+                                  items: divisi.map((valueItem) {
+                                    return DropdownMenuItem(
+                                      value: valueItem,
+                                      child: Text(valueItem, style: TextStyle(fontSize: 12,color: Color(0xFF000000)),),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+
+                              RaisedButton(
+                                color: Color(0xFF031F4B),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(30)),
+                                textColor: Colors.white,
+                                child: Container(
+                                  height: 48,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Sign Up",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  _signUp();
+                                },
+                              ),
+                              Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Container(
+                                  margin: EdgeInsets.only(bottom: 16),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Don't have an account?",
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color:
+                                                Color(0xFF000000).withOpacity(.25)),
+                                      ),
+                                      FlatButton(
+                                        child: Text("Sign In"),
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      loginPage()));
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
