@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
+import 'package:google_fonts/google_fonts.dart';
 import '../models/authentication.dart';
 import 'package:crash_report/tampilan/loginPage.dart';
 import 'package:flutter/material.dart';
@@ -115,8 +116,8 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                               // TULISAN SIGN UP
                               Text(
                                 "Sign Up",
-                                style: TextStyle(
-                                    fontSize: 24, fontWeight: FontWeight.w900),
+                                style: GoogleFonts.openSans(
+                                    fontSize: 24, fontWeight: FontWeight.bold),
                               ),
 
                               SizedBox(
@@ -372,9 +373,8 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                                   alignment: Alignment.center,
                                   child: Text(
                                     "Sign Up",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12),
+                                    style: GoogleFonts.openSans(
+                                        fontSize: 12, fontWeight: FontWeight.bold),
                                   ),
                                 ),
                                 onPressed: () {
@@ -402,9 +402,8 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                                           padding: EdgeInsets.all(0.0),
                                           child: Text(
                                             "Sign In",
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold),
+                                            style: GoogleFonts.openSans(
+                                                fontSize: 12, fontWeight: FontWeight.bold),
                                           ),
                                           onPressed: () {
                                             Navigator.push(

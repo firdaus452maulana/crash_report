@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class loginPage extends StatefulWidget {
   @override
@@ -174,9 +175,8 @@ class _loginPageState extends State<loginPage> {
                                       children: [
                                         Text(
                                           "Sign In",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 24),
+                                          style: GoogleFonts.openSans(
+                                              fontSize: 24, fontWeight: FontWeight.bold),
                                         ),
                                         SizedBox(
                                           height: 24,
@@ -366,9 +366,8 @@ class _loginPageState extends State<loginPage> {
                                             alignment: Alignment.center,
                                             child: Text(
                                               "Sign In",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 12),
+                                              style: GoogleFonts.openSans(
+                                                  fontSize: 12, fontWeight: FontWeight.bold),
                                             ),
                                           ),
                                           onPressed: () {
@@ -393,10 +392,8 @@ class _loginPageState extends State<loginPage> {
                                                 padding: EdgeInsets.all(0.0),
                                                 child: Text(
                                                   "Sign Up",
-                                                  style: TextStyle(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.bold),
+                                                  style: GoogleFonts.openSans(
+                                                      fontSize: 12, fontWeight: FontWeight.bold),
                                                 ),
                                                 onPressed: () {
                                                   Navigator.push(

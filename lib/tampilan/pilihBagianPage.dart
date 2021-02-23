@@ -1,6 +1,7 @@
 import 'package:crash_report/tampilan/registerPage.dart';
 import '../tampilan/registerPageTeknisi.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class pilihBagianPage extends StatefulWidget {
   @override
@@ -34,7 +35,7 @@ class _pilihBagianPageState extends State<pilihBagianPage> {
                 children: [
                   Text(
                     "Pilih Bagian",
-                    style: TextStyle(fontSize: 24),
+                    style: GoogleFonts.openSans(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
 
                   SizedBox(height: 24,),
@@ -55,7 +56,8 @@ class _pilihBagianPageState extends State<pilihBagianPage> {
                               image: AssetImage('assets/background.png'),
                               colorFilter: new ColorFilter.mode(Colors.white.withOpacity(0.2), BlendMode.dstATop),
                               fit: BoxFit.fill)),
-                      child: Text("Pegawai"),
+                      child: Text("Pegawai", style: GoogleFonts.openSans(
+                          fontSize: 12, fontWeight: FontWeight.bold),),
                     ),
                     onPressed: () {
                       Navigator.push(
@@ -84,7 +86,8 @@ class _pilihBagianPageState extends State<pilihBagianPage> {
                               image: AssetImage('assets/background.png'),
                               colorFilter: new ColorFilter.mode(Colors.white.withOpacity(0.2), BlendMode.dstATop),
                               fit: BoxFit.fill)),
-                      child: Text("Teknisi"),
+                      child: Text("Teknisi", style: GoogleFonts.openSans(
+                          fontSize: 12, fontWeight: FontWeight.bold),),
                     ),
                     onPressed: () {
                       Navigator.push(
