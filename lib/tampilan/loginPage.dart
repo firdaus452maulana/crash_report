@@ -1,4 +1,4 @@
-import 'package:crash_report/tampilan/homePage.dart';
+import 'package:crash_report/tampilan/mainMenuUser.dart';
 import 'package:crash_report/tampilan/registerPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +55,7 @@ class _loginPageState extends State<loginPage> {
       UserCredential credential = await auth.signInWithEmailAndPassword(email: _emailContoller.text, password: _passwordController.text);
       User user = credential.user;
       uid = user.uid.toString();
-      Navigator.push(context, MaterialPageRoute(builder: (context) => homePage(uid: uid,)));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => mainMenuUser()));
       //Navigator.pop(context);
       showToastSignInSuccess();
     } catch (error) {
