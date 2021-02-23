@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-enum DialogAction {save, close}
-
-class addBarang{
-  String namaAlat;
-  String lokasi;
-  String divisi;
+class mainMenuUser extends StatefulWidget {
+  @override
+  _mainMenuUserState createState() => _mainMenuUserState();
 }
 
-class mainMenuUser extends StatelessWidget {
+class _mainMenuUserState extends State<mainMenuUser> {
 
+  TextEditingController _namaAlatController, _lokasiController, _divisiController;
+
+  @override
+  void initState() {
+    super.initState();
+    _namaAlatController = TextEditingController();
+    _lokasiController = TextEditingController();
+    _divisiController = TextEditingController();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,15 +29,18 @@ class mainMenuUser extends StatelessWidget {
         onPressed: () {
           return showDialog(
               context: context,
-            builder: (context) {
+              builder: (context) {
                 return AlertDialog(
 
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)
+                      borderRadius: BorderRadius.circular(20)
                   ),
                   title: Text(
                     "Tambah Barang",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: GoogleFonts.openSans(
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   content: Column (
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -45,6 +56,7 @@ class mainMenuUser extends StatelessWidget {
                           style: TextStyle(fontSize: 12),
                           keyboardType:
                           TextInputType.text,
+                          controller: _namaAlatController,
                           decoration: new InputDecoration(
                               fillColor: Colors.white,
                               border: OutlineInputBorder(
@@ -96,6 +108,7 @@ class mainMenuUser extends StatelessWidget {
                           style: TextStyle(fontSize: 12),
                           keyboardType:
                           TextInputType.text,
+                          controller: _lokasiController,
                           decoration: new InputDecoration(
                               fillColor: Colors.white,
                               border: OutlineInputBorder(
@@ -147,6 +160,7 @@ class mainMenuUser extends StatelessWidget {
                           style: TextStyle(fontSize: 12),
                           keyboardType:
                           TextInputType.text,
+                          controller: _divisiController,
                           decoration: new InputDecoration(
                               fillColor: Colors.white,
                               border: OutlineInputBorder(
@@ -188,10 +202,38 @@ class mainMenuUser extends StatelessWidget {
                           onSaved: (value) {},
                         ),
                       ),
+
+                      SizedBox(height: 16),
+
+                      //Button
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: RaisedButton(
+                          color: Color(0xFF031F4B),
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                              BorderRadius.circular(30)),
+                          textColor: Colors.white,
+                          child: Container(
+                            height: 42.5,
+                            width: 85,
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Save",
+                              style: GoogleFonts.openSans(
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          onPressed: () {},
+                        ),
+                      ),
+
                     ],
                   ),
                 );
-            });
+              });
         },
       ),
     );
