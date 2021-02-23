@@ -16,6 +16,7 @@ class loginPage extends StatefulWidget {
 class _loginPageState extends State<loginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  bool _secureText = true;
   String uid;
   Map<String, String> _authData = {
     'email': '',
@@ -45,17 +46,18 @@ class _loginPageState extends State<loginPage> {
 
   // SUBMIT
   Future<void> _signIn() async {
-
     if (!_formKey.currentState.validate()) {
       return;
     }
     _formKey.currentState.save();
 
     try {
-      UserCredential credential = await auth.signInWithEmailAndPassword(email: _emailContoller.text, password: _passwordController.text);
+      UserCredential credential = await auth.signInWithEmailAndPassword(
+          email: _emailContoller.text, password: _passwordController.text);
       User user = credential.user;
       uid = user.uid.toString();
-      Navigator.push(context, MaterialPageRoute(builder: (context) => mainMenuUser()));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => mainMenuUser()));
       //Navigator.pop(context);
       showToastSignInSuccess();
     } catch (error) {
@@ -72,7 +74,7 @@ class _loginPageState extends State<loginPage> {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIos: 1,
-        backgroundColor: Color(0xFF000000).withOpacity(0.15),
+        backgroundColor: Color(0xFF000000).withOpacity(0.05),
         textColor: Colors.black);
   }
 
@@ -163,6 +165,16 @@ class _loginPageState extends State<loginPage> {
                                             keyboardType:
                                                 TextInputType.emailAddress,
                                             decoration: new InputDecoration(
+                                                prefixIcon: Padding(
+                                                  padding:
+                                                      EdgeInsets.only(left: 8),
+                                                  child: Icon(
+                                                    Icons.email,
+                                                    color: Color(0xFF000000)
+                                                        .withOpacity(0.25),
+                                                    size: 16,
+                                                  ),
+                                                ),
                                                 fillColor: Colors.white,
                                                 border: OutlineInputBorder(
                                                   borderRadius:
@@ -183,15 +195,16 @@ class _loginPageState extends State<loginPage> {
                                                         color:
                                                             Color(0xFF031F4B))),
                                                 filled: false,
-                                                contentPadding: EdgeInsets.only(
-                                                    left: 24.0, right: 24.0),
+                                                contentPadding:
+                                                    EdgeInsets.only(left: 24.0),
                                                 hintStyle: TextStyle(
                                                     fontSize: 12,
                                                     color: Color(0xFF000000)
-                                                        .withOpacity(0.15)),
+                                                        .withOpacity(0.25)),
                                                 hintText: "email",
-                                                errorBorder:
-                                                    OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30)), borderSide: BorderSide(color: Colors.red)),
+                                                errorBorder: OutlineInputBorder(
+                                                    borderRadius: BorderRadius.all(Radius.circular(30)),
+                                                    borderSide: BorderSide(color: Colors.red)),
                                                 focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30)), borderSide: BorderSide(color: Colors.red, width: 1)),
                                                 errorStyle: TextStyle(fontSize: 10)),
                                             obscureText: false,
@@ -216,6 +229,36 @@ class _loginPageState extends State<loginPage> {
                                             cursorColor: Colors.black,
                                             style: TextStyle(fontSize: 12),
                                             decoration: new InputDecoration(
+                                              prefixIcon: Padding(
+                                                padding:
+                                                    EdgeInsets.only(left: 8),
+                                                child: Icon(
+                                                  Icons.lock,
+                                                  color: Color(0xFF000000)
+                                                      .withOpacity(0.25),
+                                                  size: 16,
+                                                ),
+                                              ),
+                                              suffixIcon: Padding(
+                                                padding:
+                                                    EdgeInsets.only(right: 8),
+                                                child: IconButton(
+                                                  icon: Icon(
+                                                    _secureText
+                                                        ? Icons.remove_red_eye
+                                                        : Icons.remove,
+                                                    color: Color(0xFF000000)
+                                                        .withOpacity(0.25),
+                                                    size: 16,
+                                                  ),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      _secureText =
+                                                          !_secureText;
+                                                    });
+                                                  },
+                                                ),
+                                              ),
                                               fillColor: Colors.transparent,
                                               border: OutlineInputBorder(
                                                 borderRadius: BorderRadius.all(
@@ -237,12 +280,12 @@ class _loginPageState extends State<loginPage> {
                                                       color:
                                                           Color(0xFF031F4B))),
                                               filled: true,
-                                              contentPadding: EdgeInsets.only(
-                                                  left: 24.0, right: 24.0),
+                                              contentPadding:
+                                                  EdgeInsets.only(left: 24.0),
                                               hintStyle: TextStyle(
                                                   fontSize: 12,
                                                   color: Color(0xFF000000)
-                                                      .withOpacity(0.15)),
+                                                      .withOpacity(0.25)),
                                               hintText: "password",
                                               errorBorder: OutlineInputBorder(
                                                   borderRadius:
@@ -263,7 +306,7 @@ class _loginPageState extends State<loginPage> {
                                                 fontSize: 10,
                                               ),
                                             ),
-                                            obscureText: true,
+                                            obscureText: _secureText,
                                             validator: (value) {
                                               if (value.isEmpty) {
                                                 return "Field is required";

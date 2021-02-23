@@ -18,6 +18,7 @@ class registerPage extends StatefulWidget {
 class _registerPageState extends State<registerPage> {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
+  bool _secureText = true;
   String valueDivisi;
   String _uid = '';
 
@@ -47,8 +48,7 @@ class _registerPageState extends State<registerPage> {
                 "Something went wrong.",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              content:
-                  Text("Error bos", style: TextStyle(fontSize: 12)),
+              content: Text("Error bos", style: TextStyle(fontSize: 12)),
             ));
   }
 
@@ -59,12 +59,16 @@ class _registerPageState extends State<registerPage> {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIos: 1,
-        backgroundColor: Color(0xFF000000).withOpacity(0.15),
+        backgroundColor: Color(0xFF000000).withOpacity(0.05),
         textColor: Colors.black);
   }
 
   // SUBMIT
   Future<void> _signUp() async {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+    _formKey.currentState.save();
     dynamic result = await _auth.createNewUser(_nameController.text,
         valueDivisi, _emailContoller.text, _passwordController.text);
     if (result == null) {
@@ -97,10 +101,10 @@ class _registerPageState extends State<registerPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(17.5)),
                 child: Container(
-                  height: 380,
+                  height: 520,
                   width: 280,
-                  padding: EdgeInsets.only(
-                      left: 24, right: 8, top: 24, bottom: 24),
+                  padding:
+                      EdgeInsets.only(left: 24, right: 8, top: 24, bottom: 24),
                   child: Form(
                     key: _formKey,
                     child: CupertinoScrollbar(
@@ -109,6 +113,16 @@ class _registerPageState extends State<registerPage> {
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
+                              // TULISAN SIGN UP
+                              Text(
+                                "Sign Up",
+                                style: TextStyle(
+                                    fontSize: 24, fontWeight: FontWeight.w900),
+                              ),
+
+                              SizedBox(
+                                height: 24,
+                              ),
 
                               // FULL NAME
                               TextFormField(
@@ -117,38 +131,46 @@ class _registerPageState extends State<registerPage> {
                                 style: TextStyle(fontSize: 12),
                                 keyboardType: TextInputType.text,
                                 decoration: new InputDecoration(
+                                    prefixIcon: Padding(
+                                      padding: EdgeInsets.only(left: 8),
+                                      child: Icon(
+                                        Icons.person,
+                                        color:
+                                            Color(0xFF000000).withOpacity(0.25),
+                                        size: 16,
+                                      ),
+                                    ),
                                     fillColor: Colors.white,
                                     border: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(30)),
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.all(Radius.circular(30)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(30)),
                                         borderSide: BorderSide(
                                             color: Color(0xFF000000)
                                                 .withOpacity(0.15))),
                                     focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.all(Radius.circular(30)),
-                                        borderSide:
-                                            BorderSide(color: Color(0xFF031F4B))),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(30)),
+                                        borderSide: BorderSide(
+                                            color: Color(0xFF031F4B))),
                                     filled: false,
-                                    contentPadding:
-                                        EdgeInsets.only(left: 24.0, right: 24.0),
+                                    contentPadding: EdgeInsets.only(
+                                        left: 24.0, right: 24.0),
                                     hintStyle: TextStyle(
                                         fontSize: 12,
-                                        color: Color(0xFF000000).withOpacity(0.15)),
+                                        color: Color(0xFF000000)
+                                            .withOpacity(0.25)),
                                     hintText: "full name",
                                     errorBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.all(Radius.circular(30)),
-                                        borderSide: BorderSide(color: Colors.red)),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.all(Radius.circular(30)),
-                                        borderSide: BorderSide(
-                                            color: Colors.red, width: 1)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(30)),
+                                        borderSide:
+                                            BorderSide(color: Colors.red)),
+                                    focusedErrorBorder:
+                                        OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30)), borderSide: BorderSide(color: Colors.red, width: 1)),
                                     errorStyle: TextStyle(fontSize: 10)),
                                 obscureText: false,
                                 validator: (value) {
@@ -170,38 +192,46 @@ class _registerPageState extends State<registerPage> {
                                 style: TextStyle(fontSize: 12),
                                 keyboardType: TextInputType.emailAddress,
                                 decoration: new InputDecoration(
+                                    prefixIcon: Padding(
+                                      padding: EdgeInsets.only(left: 8),
+                                      child: Icon(
+                                        Icons.email,
+                                        color:
+                                            Color(0xFF000000).withOpacity(0.25),
+                                        size: 16,
+                                      ),
+                                    ),
                                     fillColor: Colors.white,
                                     border: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(30)),
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.all(Radius.circular(30)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(30)),
                                         borderSide: BorderSide(
                                             color: Color(0xFF000000)
                                                 .withOpacity(0.15))),
                                     focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.all(Radius.circular(30)),
-                                        borderSide:
-                                            BorderSide(color: Color(0xFF031F4B))),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(30)),
+                                        borderSide: BorderSide(
+                                            color: Color(0xFF031F4B))),
                                     filled: false,
-                                    contentPadding:
-                                        EdgeInsets.only(left: 24.0, right: 24.0),
+                                    contentPadding: EdgeInsets.only(
+                                        left: 24.0, right: 24.0),
                                     hintStyle: TextStyle(
                                         fontSize: 12,
-                                        color: Color(0xFF000000).withOpacity(0.15)),
+                                        color: Color(0xFF000000)
+                                            .withOpacity(0.25)),
                                     hintText: "email",
                                     errorBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.all(Radius.circular(30)),
-                                        borderSide: BorderSide(color: Colors.red)),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.all(Radius.circular(30)),
-                                        borderSide: BorderSide(
-                                            color: Colors.red, width: 1)),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(30)),
+                                        borderSide:
+                                            BorderSide(color: Colors.red)),
+                                    focusedErrorBorder:
+                                        OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30)), borderSide: BorderSide(color: Colors.red, width: 1)),
                                     errorStyle: TextStyle(fontSize: 10)),
                                 obscureText: false,
                                 validator: (value) {
@@ -225,6 +255,33 @@ class _registerPageState extends State<registerPage> {
                                 cursorColor: Colors.black,
                                 style: TextStyle(fontSize: 12),
                                 decoration: new InputDecoration(
+                                  prefixIcon: Padding(
+                                    padding: EdgeInsets.only(left: 8),
+                                    child: Icon(
+                                      Icons.lock,
+                                      color:
+                                          Color(0xFF000000).withOpacity(0.25),
+                                      size: 16,
+                                    ),
+                                  ),
+                                  suffixIcon: Padding(
+                                    padding: EdgeInsets.only(right: 8),
+                                    child: IconButton(
+                                      icon: Icon(
+                                        _secureText
+                                            ? Icons.remove_red_eye
+                                            : Icons.remove,
+                                        color:
+                                            Color(0xFF000000).withOpacity(0.25),
+                                        size: 16,
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          _secureText = !_secureText;
+                                        });
+                                      },
+                                    ),
+                                  ),
                                   fillColor: Colors.transparent,
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
@@ -235,8 +292,8 @@ class _registerPageState extends State<registerPage> {
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(30)),
                                       borderSide: BorderSide(
-                                          color:
-                                              Color(0xFF000000).withOpacity(0.15))),
+                                          color: Color(0xFF000000)
+                                              .withOpacity(0.15))),
                                   focusedBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(30)),
@@ -247,17 +304,19 @@ class _registerPageState extends State<registerPage> {
                                       EdgeInsets.only(left: 24.0, right: 24.0),
                                   hintStyle: TextStyle(
                                       fontSize: 12,
-                                      color: Color(0xFF000000).withOpacity(0.15)),
+                                      color:
+                                          Color(0xFF000000).withOpacity(0.25)),
                                   hintText: "password",
                                   errorBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(30)),
-                                      borderSide: BorderSide(color: Colors.red)),
+                                      borderSide:
+                                          BorderSide(color: Colors.red)),
                                   focusedErrorBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(30)),
-                                      borderSide:
-                                          BorderSide(color: Colors.red, width: 1)),
+                                      borderSide: BorderSide(
+                                          color: Colors.red, width: 1)),
                                   errorStyle: TextStyle(
                                     fontSize: 10,
                                   ),
@@ -281,30 +340,82 @@ class _registerPageState extends State<registerPage> {
                                 width: 500,
                                 decoration: BoxDecoration(
                                     border: Border.all(
-                                        color: Color(0xFF000000).withOpacity(0.15)),
+                                        color: Color(0xFF000000)
+                                            .withOpacity(0.15)),
                                     borderRadius: BorderRadius.circular(30)),
-                                child: DropdownButton(
-                                  hint: Text("divisi", style: TextStyle(fontSize: 12,color: Color(0xFF000000).withOpacity(.25)),),
-                                  value: valueDivisi,
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      valueDivisi = newValue;
-                                    });
-                                  },
-                                  items: divisi.map((valueItem) {
-                                    return DropdownMenuItem(
-                                      value: valueItem,
-                                      child: Text(valueItem, style: TextStyle(fontSize: 12,color: Color(0xFF000000)),),
-                                    );
-                                  }).toList(),
+                                child: DropdownButtonHideUnderline(
+                                  child: DropdownButton(
+                                    icon: Icon(
+                                      Icons.keyboard_arrow_down,
+                                      color:
+                                          Color(0xFF000000).withOpacity(0.25),
+                                      size: 20,
+                                    ),
+                                    hint: Text(
+                                      "divisi",
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          color: Color(0xFF000000)
+                                              .withOpacity(.25)),
+                                    ),
+                                    value: valueDivisi,
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        valueDivisi = newValue;
+                                      });
+                                    },
+                                    items: divisi.map((valueItem) {
+                                      return DropdownMenuItem(
+                                        value: valueItem,
+                                        child: Text(
+                                          valueItem,
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              color: Color(0xFF000000)),
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
                                 ),
                               ),
 
+                              SizedBox(
+                                height: 16,
+                              ),
+
+                              Stack(
+                                alignment: AlignmentDirectional.center,
+                                children: [
+
+                                  Container(
+                                    margin:
+                                        EdgeInsets.only(left: 24, right: 24),
+                                    height: 1,
+                                    color: Color(0xFF000000).withOpacity(0.25),
+                                  ),
+
+                                  Container(
+                                    alignment: Alignment.center,
+                                    width: 24,
+                                    height: 24,
+                                    color: Colors.white,
+                                    child: Text(
+                                      "or",
+                                      style: TextStyle(fontSize: 12, color: Color(0xFF000000).withOpacity(0.25)),
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              SizedBox(
+                                height: 24,
+                              ),
+
+                              // BUTTON SUBMIT SIGN UP
                               RaisedButton(
                                 color: Color(0xFF031F4B),
                                 shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                    BorderRadius.circular(30)),
+                                    borderRadius: BorderRadius.circular(30)),
                                 textColor: Colors.white,
                                 child: Container(
                                   height: 48,
@@ -320,6 +431,7 @@ class _registerPageState extends State<registerPage> {
                                   _signUp();
                                 },
                               ),
+
                               Align(
                                 alignment: Alignment.bottomCenter,
                                 child: Container(
@@ -328,21 +440,30 @@ class _registerPageState extends State<registerPage> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        "Don't have an account?",
+                                        "Already have an account?",
                                         style: TextStyle(
                                             fontSize: 12,
-                                            color:
-                                                Color(0xFF000000).withOpacity(.25)),
+                                            color: Color(0xFF000000)
+                                                .withOpacity(.25)),
                                       ),
-                                      FlatButton(
-                                        child: Text("Sign In"),
-                                        onPressed: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      loginPage()));
-                                        },
+                                      Container(
+                                        width: 54,
+                                        child: FlatButton(
+                                          padding: EdgeInsets.all(0.0),
+                                          child: Text(
+                                            "Sign In",
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          onPressed: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        loginPage()));
+                                          },
+                                        ),
                                       ),
                                     ],
                                   ),
