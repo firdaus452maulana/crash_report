@@ -1,4 +1,6 @@
+import 'package:crash_report/tampilan/homePage.dart';
 import 'package:crash_report/tampilan/mainMenuUser.dart';
+import 'package:crash_report/tampilan/pilihBagianPage.dart';
 import 'package:crash_report/tampilan/registerPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +17,15 @@ class loginPage extends StatefulWidget {
 
 class _loginPageState extends State<loginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final CollectionReference pegawaiList =
+      FirebaseFirestore.instance.collection('pegawai');
+  final CollectionReference teknisiList =
+      FirebaseFirestore.instance.collection('teknisi');
+  final CollectionReference usersList =
+  FirebaseFirestore.instance.collection('users');
 
   bool _secureText = true;
-  String uid;
+  String uid, bagian;
   Map<String, String> _authData = {
     'email': '',
     'password': '',
@@ -56,8 +64,26 @@ class _loginPageState extends State<loginPage> {
           email: _emailContoller.text, password: _passwordController.text);
       User user = credential.user;
       uid = user.uid.toString();
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => mainMenuUser()));
+      try {
+        DocumentSnapshot variable = await usersList.doc(uid).get();
+        print("ini print bagian users: " + variable['bagian']);
+        bagian = variable['bagian'].toString();
+
+        try {
+          if (bagian == "pegawai") {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => homePage(uid: uid)));
+          }
+          if (bagian == "teknisi") {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => mainMenuUser()));
+          }
+        } catch (error) {
+          print(error.message);
+        }
+      } catch (error) {
+        print(error.message);
+      }
       //Navigator.pop(context);
       showToastSignInSuccess();
     } catch (error) {
@@ -377,7 +403,7 @@ class _loginPageState extends State<loginPage> {
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              registerPage()));
+                                                              pilihBagianPage()));
                                                 },
                                               ),
                                             ),

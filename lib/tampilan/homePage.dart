@@ -3,16 +3,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class homePage extends StatefulWidget {
-
   final auth = FirebaseAuth.instance;
 
   String uid;
-  homePage({Key key, @required this.uid}) : super(key : key);
+
+  homePage({Key key, @required this.uid}) : super(key: key);
 
   /*const homePage({Key key,
     @required this._uid
   }) : super(key: key);*/
-  
+
   //String _uid = user.uid.toString();
 
   @override
@@ -21,6 +21,7 @@ class homePage extends StatefulWidget {
 
 class _homePageState extends State<homePage> {
   String uid;
+
   _homePageState(this.uid);
 
   @override
@@ -31,19 +32,23 @@ class _homePageState extends State<homePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             StreamBuilder<DocumentSnapshot>(
-              stream: FirebaseFirestore.instance.collection('users').doc(uid).snapshots(),
-              builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot){
-                if(snapshot.hasError){
+              stream: FirebaseFirestore.instance
+                  .collection('pegawai')
+                  .doc(uid)
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<DocumentSnapshot> snapshot) {
+                if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
                 }
-                switch(snapshot.connectionState){
-                  case ConnectionState.waiting: return Text('Loading..');
+                switch (snapshot.connectionState) {
+                  case ConnectionState.waiting:
+                    return Text('Loading..');
                   default:
-                    return Text("Selamat Datang "+snapshot.data['name']);
+                    return Text("Selamat Datang " + snapshot.data['name']);
                 }
               },
             ),
-
             Text(uid),
           ],
         ),

@@ -5,12 +5,24 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AuthenticationService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future createNewUser(String name, String role, String email, String password) async {
+  Future createPegawai(String name, String role, String email, String password) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User user = result.user;
-      await DatabaseManager().userSetup(name, role, user.uid);
+      await DatabaseManager().setPegawai(name, role, user.uid);
+      return user;
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future createTeknisi(String name, String email, String password) async {
+    try {
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      User user = result.user;
+      await DatabaseManager().setTeknisi(name, user.uid);
       return user;
     } catch (e) {
       print(e.toString());
