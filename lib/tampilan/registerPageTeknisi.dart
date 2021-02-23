@@ -10,12 +10,12 @@ import "packag"
     "e:cloud_firestore/cloud_firestore.dart";
 import '../models/firebase.dart';
 
-class registerPage extends StatefulWidget {
+class registerPageTeknisi extends StatefulWidget {
   @override
-  _registerPageState createState() => _registerPageState();
+  _registerPageTeknisiState createState() => _registerPageTeknisiState();
 }
 
-class _registerPageState extends State<registerPage> {
+class _registerPageTeknisiState extends State<registerPageTeknisi> {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   bool _secureText = true;
@@ -69,8 +69,7 @@ class _registerPageState extends State<registerPage> {
       return;
     }
     _formKey.currentState.save();
-    dynamic result = await _auth.createNewUser(_nameController.text,
-        valueDivisi, _emailContoller.text, _passwordController.text);
+    dynamic result = await _auth.createTeknisi(_nameController.text, _emailContoller.text, _passwordController.text);
     if (result == null) {
       print("Something went wrong");
       _showErrorDialog();
@@ -101,7 +100,7 @@ class _registerPageState extends State<registerPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(17.5)),
                 child: Container(
-                  height: 520,
+                  height: 460,
                   width: 280,
                   padding:
                       EdgeInsets.only(left: 24, right: 8, top: 24, bottom: 24),
@@ -328,55 +327,6 @@ class _registerPageState extends State<registerPage> {
                                   }
                                   return null;
                                 },
-                              ),
-
-                              SizedBox(
-                                height: 16,
-                              ),
-
-                              // DIVISI
-                              Container(
-                                padding: EdgeInsets.only(left: 24, right: 24),
-                                width: 500,
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Color(0xFF000000)
-                                            .withOpacity(0.15)),
-                                    borderRadius: BorderRadius.circular(30)),
-                                child: DropdownButtonHideUnderline(
-                                  child: DropdownButton(
-                                    icon: Icon(
-                                      Icons.keyboard_arrow_down,
-                                      color:
-                                          Color(0xFF000000).withOpacity(0.25),
-                                      size: 20,
-                                    ),
-                                    hint: Text(
-                                      "divisi",
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xFF000000)
-                                              .withOpacity(.25)),
-                                    ),
-                                    value: valueDivisi,
-                                    onChanged: (newValue) {
-                                      setState(() {
-                                        valueDivisi = newValue;
-                                      });
-                                    },
-                                    items: divisi.map((valueItem) {
-                                      return DropdownMenuItem(
-                                        value: valueItem,
-                                        child: Text(
-                                          valueItem,
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFF000000)),
-                                        ),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ),
                               ),
 
                               SizedBox(

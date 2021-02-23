@@ -69,7 +69,7 @@ class _registerPageState extends State<registerPage> {
       return;
     }
     _formKey.currentState.save();
-    dynamic result = await _auth.createNewUser(_nameController.text,
+    dynamic result = await _auth.createPegawai(_nameController.text,
         valueDivisi, _emailContoller.text, _passwordController.text);
     if (result == null) {
       print("Something went wrong");

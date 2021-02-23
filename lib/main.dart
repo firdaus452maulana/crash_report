@@ -1,3 +1,4 @@
+import 'package:crash_report/tampilan/pilihBagianPage.dart';
 import 'package:flutter/material.dart';
 import 'tampilan/loginPage.dart';
 import 'models/authentication.dart';
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'PERANG',
         theme: ThemeData(fontFamily: 'OpenSans'),
-        home: loginPage(),
+        home: pilihBagianPage(),
     );
   }
 }

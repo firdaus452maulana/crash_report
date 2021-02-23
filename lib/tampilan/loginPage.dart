@@ -1,5 +1,6 @@
 import 'package:crash_report/tampilan/homePage.dart';
 import 'package:crash_report/tampilan/mainMenuUser.dart';
+import 'package:crash_report/tampilan/pilihBagianPage.dart';
 import 'package:crash_report/tampilan/registerPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -83,9 +84,6 @@ class _loginPageState extends State<loginPage> {
       } catch (error) {
         print(error.message);
       }
-
-      /*Navigator.push(
-          context, MaterialPageRoute(builder: (context) => homePage(uid: uid)));*/
       //Navigator.pop(context);
       showToastSignInSuccess();
     } catch (error) {
@@ -405,7 +403,7 @@ class _loginPageState extends State<loginPage> {
                                                       context,
                                                       MaterialPageRoute(
                                                           builder: (context) =>
-                                                              registerPage()));
+                                                              pilihBagianPage()));
                                                 },
                                               ),
                                             ),
