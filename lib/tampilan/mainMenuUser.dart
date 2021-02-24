@@ -1,7 +1,11 @@
+import 'package:crash_report/tampilan/loginPage.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 class mainMenuUser extends StatefulWidget {
   @override
@@ -10,6 +14,7 @@ class mainMenuUser extends StatefulWidget {
 
 class _mainMenuUserState extends State<mainMenuUser> {
 
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   TextEditingController _namaAlatController, _lokasiController, _divisiController;
 
   DatabaseReference _ref;
@@ -22,13 +27,28 @@ class _mainMenuUserState extends State<mainMenuUser> {
     _ref = FirebaseDatabase.instance.reference().child('listBarang');
   }
 
+  Future<void> _signOut(BuildContext context) async {
+    await _auth.signOut().then((value) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => loginPage()));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
-
+        children: <Widget>[
+          RaisedButton(
+            onPressed: () async {
+              SharedPreferences preference = await SharedPreferences.getInstance();
+              preference.remove('email');
+              _signOut(context);
+            },
+          )
+        ],
       ),
+
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         backgroundColor: Color(0xFF031F4B),

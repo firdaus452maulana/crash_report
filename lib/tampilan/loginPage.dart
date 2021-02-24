@@ -11,6 +11,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class loginPage extends StatefulWidget {
   @override
@@ -66,6 +67,8 @@ class _loginPageState extends State<loginPage> {
           email: _emailContoller.text, password: _passwordController.text);
       User user = credential.user;
       uid = user.uid.toString();
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      preferences.setString('email', _emailContoller.text);
       //FirebaseDatabase.instance.reference().child(path)
 
       try {
