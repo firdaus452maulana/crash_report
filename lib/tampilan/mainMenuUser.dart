@@ -30,6 +30,8 @@ class _mainMenuUserState extends State<mainMenuUser> {
 
       ),
       floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        backgroundColor: Color(0xFF031F4B),
         onPressed: () {
           return showDialog(
               context: context,
