@@ -2,6 +2,7 @@ import 'package:crash_report/tampilan/homePage.dart';
 import 'package:crash_report/tampilan/mainMenuUser.dart';
 import 'package:crash_report/tampilan/pilihBagianPage.dart';
 import 'package:crash_report/tampilan/registerPage.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../models/authentication.dart';
@@ -65,6 +66,8 @@ class _loginPageState extends State<loginPage> {
           email: _emailContoller.text, password: _passwordController.text);
       User user = credential.user;
       uid = user.uid.toString();
+      //FirebaseDatabase.instance.reference().child(path)
+
       try {
         DocumentSnapshot variable = await usersList.doc(uid).get();
         print("ini print bagian users: " + variable['bagian']);

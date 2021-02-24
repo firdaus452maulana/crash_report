@@ -10,7 +10,7 @@ class AuthenticationService {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User user = result.user;
-      await DatabaseManager().setPegawai(name, role, user.uid);
+      await DatabaseManager().setPegawai(name, email, role, user.uid);
       return user;
     } catch (e) {
       print(e.toString());
@@ -22,7 +22,7 @@ class AuthenticationService {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User user = result.user;
-      await DatabaseManager().setTeknisi(name, user.uid);
+      await DatabaseManager().setTeknisi(name, email, user.uid);
       return user;
     } catch (e) {
       print(e.toString());
