@@ -1,5 +1,6 @@
 import 'package:crash_report/tampilan/loginPage.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,6 +17,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   TextEditingController _namaAlatController, _lokasiController, _divisiController;
 
+  Query _query;
   DatabaseReference _ref;
   @override
   void initState() {
@@ -24,6 +26,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
     _lokasiController = TextEditingController();
     _divisiController = TextEditingController();
     _ref = FirebaseDatabase.instance.reference().child('listBarang');
+    _query = FirebaseDatabase.instance.reference().child('listBarang').orderByChild('nama');
   }
 
   void _showDialogPenambahan(){
@@ -270,6 +273,94 @@ class _mainMenuUserState extends State<mainMenuUser> {
         });
   }
 
+  Widget _buildListBarang({Map barang}){
+    Color statusColor = getStatusColor(barang['status']);
+    return Container(
+      //height: 150,
+      color: Colors.white,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.05),
+              spreadRadius: 10,
+              blurRadius: 10,
+              offset: Offset(0, 0),
+            )
+          ],
+          borderRadius: BorderRadius.circular(17.5),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 12.0, bottom: 12.0, left: 24.0, right: 24.0),
+          child: Stack(
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                //posisi
+                mainAxisSize: MainAxisSize.min,
+                // untuk mengatur agar widget column mengikuti widget
+                children: <Widget>[
+                  Text(barang['nama'],
+                    style: GoogleFonts.openSans(
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                    ),
+                  ),
+                  Text(barang['letak'],
+                    style: GoogleFonts.openSans(
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 12,
+                        color: Colors.black.withOpacity(0.25)
+                    ),
+                  ),
+                  Text(barang['divisi'],
+                    style: GoogleFonts.openSans(
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w300,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                //posisi
+                mainAxisSize: MainAxisSize.min,
+                // untuk mengatur agar widget column mengikuti widget
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Text("Status",
+                      style: GoogleFonts.openSans(
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(barang['status'],
+                      style: GoogleFonts.openSans(
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                        color: statusColor,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Future<void> _signOut(BuildContext context) async {
     await _auth.signOut().then((value) {
       Navigator.push(context, MaterialPageRoute(builder: (context) => loginPage()));
@@ -288,7 +379,12 @@ class _mainMenuUserState extends State<mainMenuUser> {
               preference.clear();
               _signOut(context);
             },
-          )
+          ),
+          FirebaseAnimatedList(query: _query,itemBuilder: (BuildContext context,
+              DataSnapshot snapshot, Animation<double>animation, int index){
+            Map barang = snapshot.value;
+            return _buildListBarang(barang: barang);
+          },),
         ],
       ),
 
@@ -323,6 +419,18 @@ class _mainMenuUserState extends State<mainMenuUser> {
       _lokasiController.clear();
       _divisiController.clear();
     });
+  }
+
+  Color getStatusColor(String status){
+    Color color = Theme.of(context).accentColor;
+
+    if(status == 'Normal'){
+      color = Colors.green;
+    }
+    if(status == 'Rusak'){
+      color = Colors.red;
+    }
+    return color;
   }
 }
 
