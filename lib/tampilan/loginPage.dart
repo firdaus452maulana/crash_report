@@ -5,6 +5,7 @@ import 'package:crash_report/tampilan/registerPage.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../models/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,10 +21,6 @@ class loginPage extends StatefulWidget {
 
 class _loginPageState extends State<loginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final CollectionReference pegawaiList =
-      FirebaseFirestore.instance.collection('pegawai');
-  final CollectionReference teknisiList =
-      FirebaseFirestore.instance.collection('teknisi');
   final CollectionReference usersList =
   FirebaseFirestore.instance.collection('users');
 
@@ -40,21 +37,6 @@ class _loginPageState extends State<loginPage> {
   final auth = FirebaseAuth.instance;
   final AuthenticationService _auth = AuthenticationService();
 
-  /*Future<void> _signIn() async {
-    dynamic result = await _auth.signIn(_emailContoller.text, _passwordController.text);
-    if (result == null) {
-      print("email is not valid");
-    } else {
-      print(result.toString());
-
-      UserCredential data = (await auth.currentUser) as UserCredential;
-      User userData = data.user;
-
-
-      Navigator.push(context, MaterialPageRoute(builder: (context) => homePage()));
-    }
-  }*/
-
   // SUBMIT
   Future<void> _signIn() async {
     if (!_formKey.currentState.validate()) {
@@ -67,14 +49,18 @@ class _loginPageState extends State<loginPage> {
           email: _emailContoller.text, password: _passwordController.text);
       User user = credential.user;
       uid = user.uid.toString();
-      SharedPreferences preferences = await SharedPreferences.getInstance();
-      preferences.setString('email', _emailContoller.text);
+
       //FirebaseDatabase.instance.reference().child(path)
 
       try {
         DocumentSnapshot variable = await usersList.doc(uid).get();
         print("ini print bagian users: " + variable['bagian']);
         bagian = variable['bagian'].toString();
+
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        SharedPreferences preferences2 = await SharedPreferences.getInstance();
+        preferences.setString('role', bagian);
+        preferences2.setString('uid', uid);
 
         try {
           if (bagian == "pegawai") {
