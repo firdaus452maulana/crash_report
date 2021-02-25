@@ -22,50 +22,46 @@ class loginPage extends StatefulWidget {
 class _loginPageState extends State<loginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final CollectionReference usersList =
-  FirebaseFirestore.instance.collection('users');
+      FirebaseFirestore.instance.collection('users');
+  final auth = FirebaseAuth.instance;
 
   bool _secureText = true;
   String uid, bagian;
-  Map<String, String> _authData = {
-    'email': '',
-    'password': '',
-  };
 
   TextEditingController _emailContoller = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
-  final auth = FirebaseAuth.instance;
-  final AuthenticationService _auth = AuthenticationService();
-
-  // SUBMIT
+  // FUNGSI SUBMIT LOGIN
   Future<void> _signIn() async {
+
+    // BUAT VALIDASI FORMFIELD
     if (!_formKey.currentState.validate()) {
       return;
     }
     _formKey.currentState.save();
 
+    // PROSES LOGIN
     try {
       UserCredential credential = await auth.signInWithEmailAndPassword(
           email: _emailContoller.text, password: _passwordController.text);
       User user = credential.user;
       uid = user.uid.toString();
 
-      //FirebaseDatabase.instance.reference().child(path)
-
       try {
         DocumentSnapshot variable = await usersList.doc(uid).get();
         print("ini print bagian users: " + variable['bagian']);
         bagian = variable['bagian'].toString();
 
-        SharedPreferences preferences = await SharedPreferences.getInstance();
-        SharedPreferences preferences2 = await SharedPreferences.getInstance();
-        preferences.setString('role', bagian);
-        preferences2.setString('uid', uid);
+        // NYIMPAN SHARE PREFERENCE
+        SharedPreferences pref_role = await SharedPreferences.getInstance();
+        SharedPreferences pref_uid = await SharedPreferences.getInstance();
+        pref_role.setString('role', bagian);
+        pref_uid.setString('uid', uid);
 
         try {
           if (bagian == "pegawai") {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => homePage(uid: uid)));
+                MaterialPageRoute(builder: (context) => homePage()));
           }
           if (bagian == "teknisi") {
             Navigator.push(context,
@@ -77,7 +73,6 @@ class _loginPageState extends State<loginPage> {
       } catch (error) {
         print(error.message);
       }
-      //Navigator.pop(context);
       showToastSignInSuccess();
     } catch (error) {
       //print(error.message);
@@ -86,6 +81,7 @@ class _loginPageState extends State<loginPage> {
     }
   }
 
+  // TOAST LOGIN BERHASIL
   void showToastSignInSuccess() {
     Fluttertoast.showToast(
         msg: 'Sign In Success',
@@ -168,7 +164,8 @@ class _loginPageState extends State<loginPage> {
                                         Text(
                                           "Sign In",
                                           style: GoogleFonts.openSans(
-                                              fontSize: 24, fontWeight: FontWeight.bold),
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.bold),
                                         ),
                                         SizedBox(
                                           height: 24,
@@ -233,7 +230,6 @@ class _loginPageState extends State<loginPage> {
                                               return null;
                                             },
                                             onSaved: (value) {
-                                              _authData['email'] = value;
                                             },
                                           ),
                                         ),
@@ -359,7 +355,8 @@ class _loginPageState extends State<loginPage> {
                                             child: Text(
                                               "Sign In",
                                               style: GoogleFonts.openSans(
-                                                  fontSize: 12, fontWeight: FontWeight.bold),
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.bold),
                                             ),
                                           ),
                                           onPressed: () {
@@ -385,7 +382,9 @@ class _loginPageState extends State<loginPage> {
                                                 child: Text(
                                                   "Sign Up",
                                                   style: GoogleFonts.openSans(
-                                                      fontSize: 12, fontWeight: FontWeight.bold),
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
                                                 onPressed: () {
                                                   Navigator.push(

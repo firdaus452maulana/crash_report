@@ -1,14 +1,10 @@
 import 'package:flutter/cupertino.dart';
-
 import 'package:google_fonts/google_fonts.dart';
 import '../models/authentication.dart';
 import 'package:crash_report/tampilan/loginPage.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import "package:cloud_firestore/cloud_firestore.dart";
-import '../models/firebase.dart';
 
 class registerPage extends StatefulWidget {
   @override
@@ -20,14 +16,8 @@ class _registerPageState extends State<registerPage> {
 
   bool _secureText = true;
   String valueDivisi;
-  String _uid = '';
 
   List divisi = ["Divisi 1", "Divisi 2", "Divisi 3"];
-
-  Map<String, String> _authData = {
-    'email': '',
-    'password': '',
-  };
 
   final auth = FirebaseAuth.instance;
   final AuthenticationService _auth = AuthenticationService();
@@ -35,7 +25,6 @@ class _registerPageState extends State<registerPage> {
   TextEditingController _emailContoller = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
-  TextEditingController _roleController = TextEditingController();
 
   // ERROR DIALOGBOX
   void _showErrorDialog() {
@@ -48,7 +37,7 @@ class _registerPageState extends State<registerPage> {
                 "Something went wrong.",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              content: Text("Error bos", style: TextStyle(fontSize: 12)),
+              content: Text("Terjadi kesalahan, mohon isi kembali.", style: TextStyle(fontSize: 12)),
             ));
   }
 
@@ -241,7 +230,6 @@ class _registerPageState extends State<registerPage> {
                                   return null;
                                 },
                                 onSaved: (value) {
-                                  _authData['email'] = value;
                                 },
                               ),
 

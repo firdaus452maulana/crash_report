@@ -2,107 +2,79 @@ import 'package:crash_report/tampilan/loginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class homePage extends StatefulWidget {
-  final auth = FirebaseAuth.instance;
-  String uid;
-  homePage({Key key, @required this.uid}) : super(key: key);
-
-  /*const homePage({Key key,
-    @required this._uid
-  }) : super(key: key);*/
-
-  //String _uid = user.uid.toString();
-
   @override
-  _homePageState createState() => _homePageState(uid);
+  _homePageState createState() => _homePageState();
 }
 
 class _homePageState extends State<homePage> {
 
-  var role;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String uid;
-  _homePageState(this.uid);
 
+  // BUAT NGERUN FUNGSI PAS APP START
+  @override
+  void initState() {
+    _ambilPreference();
+  }
+
+  // FUNGSI SIGN OUT
   Future<void> _signOut(BuildContext context) async {
     await _auth.signOut().then((value) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => loginPage()));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => loginPage()));
     });
   }
 
-  Future<void> ambilPreference() async {
-    SharedPreferences preferences2 = await SharedPreferences.getInstance();
-    role = preferences2.getString('uid');
-    uid = role.toString();
+  // FUNGSI SHARED PREFERENCES
+  Future<void> _ambilPreference() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      uid = preferences.getString('uid');
+    });
   }
 
+  // TAMPILAN
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
 
-    if(uid == null){
-      return Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              RaisedButton(
-                onPressed: () async {
-                  SharedPreferences preference = await SharedPreferences.getInstance();
-                  preference.remove('role');
-                  _signOut(context);
-                },
-              ),
-              Text("Kosong"),
-            ],
-          ),
+            RaisedButton(
+              onPressed: () async {
+                SharedPreferences preference =
+                    await SharedPreferences.getInstance();
+                preference.remove('role');
+                _signOut(context);
+              },
+            ),
+
+            StreamBuilder<DocumentSnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(uid)
+                  .snapshots(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<DocumentSnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                }
+                switch (snapshot.connectionState) {
+                  case ConnectionState.waiting:
+                    return Text('Loading..');
+                  default:
+                    return Text("Selamat Datang " + snapshot.data['name']);
+                }
+              },
+            ),
+          ],
         ),
-      );
-    }
-
-    else {
-      return Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-
-              StreamBuilder<DocumentSnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('users')
-                    .doc(uid)
-                    .snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<DocumentSnapshot> snapshot) {
-                  if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  }
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.waiting:
-                      return Text('Loading..');
-                    default:
-                      return Text("Selamat Datang " + snapshot.data['name']);
-                  }
-                },
-              ),
-
-              RaisedButton(
-                onPressed: () async {
-                  SharedPreferences preference = await SharedPreferences.getInstance();
-                  preference.remove('role');
-                  _signOut(context);
-                },
-              ),
-
-              Text(uid),
-
-            ],
-          ),
-        ),
-      );
-    }
+      ),
+    );
   }
 }
