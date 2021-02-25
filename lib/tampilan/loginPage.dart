@@ -121,7 +121,8 @@ class _loginPageState extends State<loginPage> {
                       image: AssetImage('assets/background.png'),
                       fit: BoxFit.fill)),
             ),
-            Center(
+            Container(
+              alignment: Alignment.center,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -151,6 +152,7 @@ class _loginPageState extends State<loginPage> {
                       child: Stack(
                         children: <Widget>[
                           Container(
+                            alignment: Alignment.center,
                             padding: EdgeInsets.only(
                                 left: 24, right: 8, top: 24, bottom: 24),
                             child: Form(

@@ -1,4 +1,5 @@
 import 'package:crash_report/tampilan/registerPage.dart';
+import 'package:flutter/cupertino.dart';
 import '../tampilan/registerPageTeknisi.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,82 +23,86 @@ class _pilihBagianPageState extends State<pilihBagianPage> {
           ),
           Center(
             child: Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.all(24),
-              margin: EdgeInsets.only(left: 32, right: 32),
-              width: double.infinity,
-              height: 500,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(17.5)),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Pilih Bagian",
-                    style: GoogleFonts.openSans(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-
-                  SizedBox(height: 24,),
-
-                  // PILIH PEGAWAI
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(17.5)),
+              padding: EdgeInsets.only(top: 64, bottom: 64),
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(24),
+                margin: EdgeInsets.all(32),
+                width: double.infinity,
+                decoration: BoxDecoration(
                     color: Colors.white,
-                    padding: EdgeInsets.all(0),
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: double.infinity,
-                      height: 144,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(17.5),
-                          image: DecorationImage(
-                              image: AssetImage('assets/background.png'),
-                              colorFilter: new ColorFilter.mode(Colors.white.withOpacity(0.2), BlendMode.dstATop),
-                              fit: BoxFit.fill)),
-                      child: Text("Pegawai", style: GoogleFonts.openSans(
-                          fontSize: 12, fontWeight: FontWeight.bold),),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  registerPage()));
-                    },
-                  ),
+                    borderRadius: BorderRadius.circular(17.5)),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Pilih Bagian",
+                        style: GoogleFonts.openSans(fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
 
-                  SizedBox(height: 16,),
+                      SizedBox(height: 24,),
 
-                  // PILIH TEKNISI
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(17.5)),
-                    color: Colors.white,
-                    padding: EdgeInsets.all(0),
-                    child: Container(
-                      alignment: Alignment.center,
-                      width: double.infinity,
-                      height: 144,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(17.5),
-                          image: DecorationImage(
-                              image: AssetImage('assets/background.png'),
-                              colorFilter: new ColorFilter.mode(Colors.white.withOpacity(0.2), BlendMode.dstATop),
-                              fit: BoxFit.fill)),
-                      child: Text("Teknisi", style: GoogleFonts.openSans(
-                          fontSize: 12, fontWeight: FontWeight.bold),),
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  registerPageTeknisi()));
-                    },
+                      // PILIH PEGAWAI
+                      RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(17.5)),
+                        color: Colors.white,
+                        padding: EdgeInsets.all(0),
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: double.infinity,
+                          height: 144,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(17.5),
+                              image: DecorationImage(
+                                  image: AssetImage('assets/background.png'),
+                                  colorFilter: new ColorFilter.mode(Colors.white.withOpacity(0.2), BlendMode.dstATop),
+                                  fit: BoxFit.fill)),
+                          child: Text("Pegawai", style: GoogleFonts.openSans(
+                              fontSize: 12, fontWeight: FontWeight.bold),),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      registerPage()));
+                        },
+                      ),
+
+                      SizedBox(height: 16,),
+
+                      // PILIH TEKNISI
+                      RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(17.5)),
+                        color: Colors.white,
+                        padding: EdgeInsets.all(0),
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: double.infinity,
+                          height: 144,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(17.5),
+                              image: DecorationImage(
+                                  image: AssetImage('assets/background.png'),
+                                  colorFilter: new ColorFilter.mode(Colors.white.withOpacity(0.2), BlendMode.dstATop),
+                                  fit: BoxFit.fill)),
+                          child: Text("Teknisi", style: GoogleFonts.openSans(
+                              fontSize: 12, fontWeight: FontWeight.bold),),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      registerPageTeknisi()));
+                        },
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           )
