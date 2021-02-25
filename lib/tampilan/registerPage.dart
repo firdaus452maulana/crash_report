@@ -317,7 +317,7 @@ class _registerPageState extends State<registerPage> {
                                   fontSize: 10,
                                 ),
                               ),
-                              obscureText: true,
+                              obscureText: _secureText,
                               validator: (value) {
                                 if (value.isEmpty) {
                                   return "Field is required";

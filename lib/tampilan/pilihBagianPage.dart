@@ -56,7 +56,7 @@ class _pilihBagianPageState extends State<pilihBagianPage> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(17.5),
                               image: DecorationImage(
-                                  image: AssetImage('assets/background.png'),
+                                  image: AssetImage('assets/pegawai.jpg'),
                                   colorFilter: new ColorFilter.mode(Colors.white.withOpacity(0.2), BlendMode.dstATop),
                                   fit: BoxFit.fill)),
                           child: Text("Pegawai", style: GoogleFonts.openSans(
@@ -86,7 +86,7 @@ class _pilihBagianPageState extends State<pilihBagianPage> {
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(17.5),
                               image: DecorationImage(
-                                  image: AssetImage('assets/background.png'),
+                                  image: AssetImage('assets/teknisi.jpeg'),
                                   colorFilter: new ColorFilter.mode(Colors.white.withOpacity(0.2), BlendMode.dstATop),
                                   fit: BoxFit.fill)),
                           child: Text("Teknisi", style: GoogleFonts.openSans(

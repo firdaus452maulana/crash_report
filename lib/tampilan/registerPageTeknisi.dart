@@ -168,7 +168,7 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                                   focusedErrorBorder:
                                       OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30)), borderSide: BorderSide(color: Colors.red, width: 1)),
                                   errorStyle: TextStyle(fontSize: 10)),
-                              obscureText: false,
+                              obscureText: _secureText,
                               validator: (value) {
                                 if (value.isEmpty) {
                                   return "Field is required";
