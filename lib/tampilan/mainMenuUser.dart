@@ -325,36 +325,33 @@ class _mainMenuUserState extends State<mainMenuUser> {
                   ),
                 ],
               ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  //posisi
-                  mainAxisSize: MainAxisSize.min,
-                  // untuk mengatur agar widget column mengikuti widget
-                  children: <Widget>[
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Text("Status",
-                        style: GoogleFonts.openSans(
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 12,
-                        ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                //posisi
+                mainAxisSize: MainAxisSize.min,
+                // untuk mengatur agar widget column mengikuti widget
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Text("Status",
+                      style: GoogleFonts.openSans(
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 12,
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(barang['status'],
-                        style: GoogleFonts.openSans(
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
-                        ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Text(barang['status'],
+                      style: GoogleFonts.openSans(
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ],
           ),
