@@ -28,7 +28,7 @@ class _homePageState extends State<homePage> {
     });
   }
 
-  // FUNGSI SHARED PREFERENCES
+  // AMBIL SHARED PREFERENCES
   Future<void> _ambilPreference() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
@@ -44,15 +44,6 @@ class _homePageState extends State<homePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-
-            RaisedButton(
-              onPressed: () async {
-                SharedPreferences preference =
-                    await SharedPreferences.getInstance();
-                preference.remove('role');
-                _signOut(context);
-              },
-            ),
 
             StreamBuilder<DocumentSnapshot>(
               stream: FirebaseFirestore.instance
@@ -72,6 +63,16 @@ class _homePageState extends State<homePage> {
                 }
               },
             ),
+
+            RaisedButton(
+              onPressed: () async {
+                SharedPreferences preference =
+                await SharedPreferences.getInstance();
+                preference.clear();
+                _signOut(context);
+              },
+            ),
+
           ],
         ),
       ),

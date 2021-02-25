@@ -1,11 +1,9 @@
-import 'package:crash_report/tampilan/homePage.dart';
-import 'package:crash_report/tampilan/mainMenuUser.dart';
-import 'package:crash_report/tampilan/pilihBagianPage.dart';
+import 'package:crash_report/tampilan/loadingPage.dart';
 import 'package:flutter/material.dart';
 import 'tampilan/loginPage.dart';
-import 'models/authentication.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 
 
 Future<void> main() async {
@@ -18,7 +16,7 @@ Future<void> main() async {
   runApp(MaterialApp(
     title: 'PERANG',
     theme: ThemeData(fontFamily: 'OpenSans'),
-    home: role == "pegawai" ? homePage() : pilihBagianPage(),
+    home: role != null ? loadingPage() : loginPage(),
   ));
 
   //runApp(MyApp());
