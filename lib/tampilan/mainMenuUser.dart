@@ -274,7 +274,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
   }
 
   Widget _buildListBarang({Map barang}){
-
+    Color statusColor = getStatusColor(barang['status']);
     return Container(
       //height: 150,
       color: Colors.white,
@@ -348,6 +348,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
                         fontStyle: FontStyle.normal,
                         fontWeight: FontWeight.bold,
                         fontSize: 12,
+                        color: statusColor,
                       ),
                     ),
                   ),
@@ -418,6 +419,18 @@ class _mainMenuUserState extends State<mainMenuUser> {
       _lokasiController.clear();
       _divisiController.clear();
     });
+  }
+
+  Color getStatusColor(String status){
+    Color color = Theme.of(context).accentColor;
+
+    if(status == 'Normal'){
+      color = Colors.green;
+    }
+    if(status == 'Rusak'){
+      color = Colors.red;
+    }
+    return color;
   }
 }
 
