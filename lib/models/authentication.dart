@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 
 class AuthenticationService {
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future createPegawai(String name, String role, String email, String password) async {
@@ -35,6 +36,14 @@ class AuthenticationService {
           email: email, password: password);
       User user = result.user;
       return user;
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future createResetPassword(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
     } catch (e) {
       print(e.toString());
     }

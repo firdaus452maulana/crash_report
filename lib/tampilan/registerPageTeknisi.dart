@@ -171,7 +171,7 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                               obscureText: _secureText,
                               validator: (value) {
                                 if (value.isEmpty) {
-                                  return "Field is required";
+                                  return "Nama harus diisi!";
                                 }
                                 return null;
                               },
@@ -232,7 +232,7 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                               obscureText: false,
                               validator: (value) {
                                 if (value.isEmpty) {
-                                  return "Field is required";
+                                  return "Email harus diisi";
                                 }
                                 return null;
                               },
@@ -319,7 +319,7 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                               obscureText: true,
                               validator: (value) {
                                 if (value.isEmpty) {
-                                  return "Field is required";
+                                  return "Password harus diisi!";
                                 }
                                 return null;
                               },
@@ -329,7 +329,7 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                               height: 16,
                             ),
 
-                            Stack(
+                            /*Stack(
                               alignment: AlignmentDirectional.center,
                               children: [
 
@@ -351,7 +351,7 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                                   ),
                                 ),
                               ],
-                            ),
+                            ),*/
 
                             SizedBox(
                               height: 24,

@@ -1,3 +1,4 @@
+import 'package:crash_report/tampilan/forgotPasswordPage.dart';
 import 'package:crash_report/tampilan/homePage.dart';
 import 'package:crash_report/tampilan/mainMenuUser.dart';
 import 'package:crash_report/tampilan/pilihBagianPage.dart';
@@ -234,7 +235,7 @@ class _loginPageState extends State<loginPage> {
                                             obscureText: false,
                                             validator: (value) {
                                               if (value.isEmpty) {
-                                                return "Field is required";
+                                                return "Email harus diisi!";
                                               }
                                               return null;
                                             },
@@ -331,7 +332,7 @@ class _loginPageState extends State<loginPage> {
                                             obscureText: _secureText,
                                             validator: (value) {
                                               if (value.isEmpty) {
-                                                return "Field is required";
+                                                return "Password harus diisi!";
                                               }
                                               return null;
                                             },
@@ -341,7 +342,13 @@ class _loginPageState extends State<loginPage> {
                                         Align(
                                           alignment: Alignment.centerRight,
                                           child: FlatButton(
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          forgotPasswordPage()));
+                                            },
                                             child: Text(
                                               "Forgot Password?",
                                               style: TextStyle(fontSize: 12),
