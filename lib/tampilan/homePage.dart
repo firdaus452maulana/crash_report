@@ -10,7 +10,6 @@ class homePage extends StatefulWidget {
 }
 
 class _homePageState extends State<homePage> {
-
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String uid;
 
@@ -20,11 +19,19 @@ class _homePageState extends State<homePage> {
     _ambilPreference();
   }
 
+  // NAVIGASI KE HALAMAN LOGIN
+  _navLogOutSuccess() {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => loginPage()),
+      (route) => false,
+    );
+  }
+
   // FUNGSI SIGN OUT
   Future<void> _signOut(BuildContext context) async {
     await _auth.signOut().then((value) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => loginPage()));
+      _navLogOutSuccess();
     });
   }
 
@@ -44,7 +51,6 @@ class _homePageState extends State<homePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-
             StreamBuilder<DocumentSnapshot>(
               stream: FirebaseFirestore.instance
                   .collection('users')
@@ -63,16 +69,14 @@ class _homePageState extends State<homePage> {
                 }
               },
             ),
-
             RaisedButton(
               onPressed: () async {
                 SharedPreferences preference =
-                await SharedPreferences.getInstance();
+                    await SharedPreferences.getInstance();
                 preference.clear();
                 _signOut(context);
               },
             ),
-
           ],
         ),
       ),

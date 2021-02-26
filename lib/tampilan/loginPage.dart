@@ -1,14 +1,10 @@
 import 'package:crash_report/tampilan/homePage.dart';
 import 'package:crash_report/tampilan/mainMenuUser.dart';
 import 'package:crash_report/tampilan/pilihBagianPage.dart';
-import 'package:crash_report/tampilan/registerPage.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../models/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -31,9 +27,27 @@ class _loginPageState extends State<loginPage> {
   TextEditingController _emailContoller = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
+  // NAVIGASI KE HALAMAN HOME PEGAWAI DAN TEKNISI
+  _navSignInSuccess() {
+    if (bagian == "pegawai") {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => homePage()),
+        (route) => false,
+      );
+    }
+
+    if (bagian == "teknisi") {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => mainMenuUser()),
+        (route) => false,
+      );
+    }
+  }
+
   // FUNGSI SUBMIT LOGIN
   Future<void> _signIn() async {
-
     // BUAT VALIDASI FORMFIELD
     if (!_formKey.currentState.validate()) {
       return;
@@ -59,14 +73,7 @@ class _loginPageState extends State<loginPage> {
         pref_uid.setString('uid', uid);
 
         try {
-          if (bagian == "pegawai") {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => homePage()));
-          }
-          if (bagian == "teknisi") {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => mainMenuUser()));
-          }
+          _navSignInSuccess();
         } catch (error) {
           print(error.message);
         }
@@ -231,8 +238,7 @@ class _loginPageState extends State<loginPage> {
                                               }
                                               return null;
                                             },
-                                            onSaved: (value) {
-                                            },
+                                            onSaved: (value) {},
                                           ),
                                         ),
 

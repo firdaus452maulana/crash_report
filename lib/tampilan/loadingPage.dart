@@ -25,6 +25,9 @@ class _loadingPageState extends State<loadingPage> {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => homePage()));
       }
+      else{
+        _ambilPreference();
+      }
     });
   }
 
