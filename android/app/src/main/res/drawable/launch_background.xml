@@ -7,6 +7,6 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/logo_perang_low"/>
+            android:src="@mipmap/ic_perang_splash"/>
     </item>
 </layer-list>

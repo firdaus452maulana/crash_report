@@ -8,7 +8,7 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="Perang"
-        android:icon="@drawable/logo_perang">
+        android:icon="@mipmap/logo_perang_only">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
