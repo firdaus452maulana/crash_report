@@ -1,3 +1,4 @@
+import 'package:crash_report/models/firebase.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/authentication.dart';
@@ -21,6 +22,7 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
 
   final auth = FirebaseAuth.instance;
   final AuthenticationService _auth = AuthenticationService();
+  final DatabaseManager _dbManager = DatabaseManager();
 
   TextEditingController _emailContoller = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -37,7 +39,8 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                 "Something went wrong.",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
-              content: Text("Terjadi kesalahan, mohon isi kembali.", style: TextStyle(fontSize: 12)),
+              content: Text("Terjadi kesalahan, mohon isi kembali.",
+                  style: TextStyle(fontSize: 12)),
             ));
   }
 
@@ -58,7 +61,8 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
       return;
     }
     _formKey.currentState.save();
-    dynamic result = await _auth.createTeknisi(_nameController.text, _emailContoller.text, _passwordController.text);
+    dynamic result = await _auth.createTeknisi(
+        _nameController.text, _emailContoller.text, _passwordController.text);
     if (result == null) {
       print("Something went wrong");
       _showErrorDialog();
@@ -142,31 +146,34 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                                         BorderRadius.all(Radius.circular(30)),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(30)),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(30)),
                                       borderSide: BorderSide(
                                           color: Color(0xFF000000)
                                               .withOpacity(0.15))),
                                   focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(30)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF031F4B))),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(30)),
+                                      borderSide:
+                                          BorderSide(color: Color(0xFF031F4B))),
                                   filled: false,
-                                  contentPadding: EdgeInsets.only(
-                                      left: 24.0, right: 24.0),
+                                  contentPadding:
+                                      EdgeInsets.only(left: 24.0, right: 24.0),
                                   hintStyle: TextStyle(
                                       fontSize: 12,
-                                      color: Color(0xFF000000)
-                                          .withOpacity(0.25)),
+                                      color:
+                                          Color(0xFF000000).withOpacity(0.25)),
                                   hintText: "full name",
                                   errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(30)),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(30)),
                                       borderSide:
                                           BorderSide(color: Colors.red)),
-                                  focusedErrorBorder:
-                                      OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30)), borderSide: BorderSide(color: Colors.red, width: 1)),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(30)),
+                                      borderSide: BorderSide(
+                                          color: Colors.red, width: 1)),
                                   errorStyle: TextStyle(fontSize: 10)),
                               obscureText: _secureText,
                               validator: (value) {
@@ -203,31 +210,34 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                                         BorderRadius.all(Radius.circular(30)),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(30)),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(30)),
                                       borderSide: BorderSide(
                                           color: Color(0xFF000000)
                                               .withOpacity(0.15))),
                                   focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(30)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF031F4B))),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(30)),
+                                      borderSide:
+                                          BorderSide(color: Color(0xFF031F4B))),
                                   filled: false,
-                                  contentPadding: EdgeInsets.only(
-                                      left: 24.0, right: 24.0),
+                                  contentPadding:
+                                      EdgeInsets.only(left: 24.0, right: 24.0),
                                   hintStyle: TextStyle(
                                       fontSize: 12,
-                                      color: Color(0xFF000000)
-                                          .withOpacity(0.25)),
+                                      color:
+                                          Color(0xFF000000).withOpacity(0.25)),
                                   hintText: "email",
                                   errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(30)),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(30)),
                                       borderSide:
                                           BorderSide(color: Colors.red)),
-                                  focusedErrorBorder:
-                                      OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30)), borderSide: BorderSide(color: Colors.red, width: 1)),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(30)),
+                                      borderSide: BorderSide(
+                                          color: Colors.red, width: 1)),
                                   errorStyle: TextStyle(fontSize: 10)),
                               obscureText: false,
                               validator: (value) {
@@ -236,8 +246,7 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                                 }
                                 return null;
                               },
-                              onSaved: (value) {
-                              },
+                              onSaved: (value) {},
                             ),
 
                             SizedBox(
@@ -254,8 +263,7 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                                   padding: EdgeInsets.only(left: 8),
                                   child: Icon(
                                     Icons.lock,
-                                    color:
-                                        Color(0xFF000000).withOpacity(0.25),
+                                    color: Color(0xFF000000).withOpacity(0.25),
                                     size: 16,
                                   ),
                                 ),
@@ -299,14 +307,12 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                                     EdgeInsets.only(left: 24.0, right: 24.0),
                                 hintStyle: TextStyle(
                                     fontSize: 12,
-                                    color:
-                                        Color(0xFF000000).withOpacity(0.25)),
+                                    color: Color(0xFF000000).withOpacity(0.25)),
                                 hintText: "password",
                                 errorBorder: OutlineInputBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(30)),
-                                    borderSide:
-                                        BorderSide(color: Colors.red)),
+                                    borderSide: BorderSide(color: Colors.red)),
                                 focusedErrorBorder: OutlineInputBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(30)),
@@ -369,7 +375,8 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                                 child: Text(
                                   "Sign Up",
                                   style: GoogleFonts.openSans(
-                                      fontSize: 12, fontWeight: FontWeight.bold),
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ),
                               onPressed: () {
@@ -397,7 +404,8 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                                         child: Text(
                                           "Sign In",
                                           style: GoogleFonts.openSans(
-                                              fontSize: 12, fontWeight: FontWeight.bold),
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold),
                                         ),
                                         onPressed: () {
                                           Navigator.push(

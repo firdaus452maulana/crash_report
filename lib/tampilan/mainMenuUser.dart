@@ -6,19 +6,20 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
 class mainMenuUser extends StatefulWidget {
   @override
   _mainMenuUserState createState() => _mainMenuUserState();
 }
 
 class _mainMenuUserState extends State<mainMenuUser> {
-
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  TextEditingController _namaAlatController, _lokasiController, _divisiController;
+  TextEditingController _namaAlatController,
+      _lokasiController,
+      _divisiController;
 
   Query _query;
   DatabaseReference _ref;
+
   @override
   void initState() {
     super.initState();
@@ -26,40 +27,41 @@ class _mainMenuUserState extends State<mainMenuUser> {
     _lokasiController = TextEditingController();
     _divisiController = TextEditingController();
     _ref = FirebaseDatabase.instance.reference().child('listBarang');
-    _query = FirebaseDatabase.instance.reference().child('listBarang').orderByChild('nama');
+    _query = FirebaseDatabase.instance
+        .reference()
+        .child('listBarang')
+        .orderByChild('nama');
   }
 
-  void _showDialogPenambahan(){
+  void _showDialogPenambahan() {
     showDialog(
         context: context,
         builder: (context) {
           return Dialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20)
-            ),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             child: Container(
               padding: EdgeInsets.all(24),
               child: Stack(
-                children: <Widget> [
+                children: <Widget>[
                   Container(
-                    padding: EdgeInsets.only(top: 16, bottom: 16, left: 8, right: 8),
-                    child: Column (
+                    padding:
+                        EdgeInsets.only(top: 16, bottom: 16, left: 8, right: 8),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       //posisi
                       mainAxisSize: MainAxisSize.min,
                       // untuk mengatur agar widget column mengikuti widget
                       children: <Widget>[
-
                         Container(
                             child: Text(
-                              "Tambah Barang",
-                              style: GoogleFonts.openSans(
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            )
-                        ),
+                          "Tambah Barang",
+                          style: GoogleFonts.openSans(
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        )),
 
                         SizedBox(height: 16),
 
@@ -68,39 +70,41 @@ class _mainMenuUserState extends State<mainMenuUser> {
                           child: TextFormField(
                             cursorColor: Colors.black,
                             style: TextStyle(fontSize: 12),
-                            keyboardType:
-                            TextInputType.text,
+                            keyboardType: TextInputType.text,
                             controller: _namaAlatController,
                             decoration: new InputDecoration(
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(30)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
                                 ),
                                 enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(30)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
                                     borderSide: BorderSide(
                                         color: Color(0xFF000000)
                                             .withOpacity(0.15))),
                                 focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(30)),
-                                    borderSide: BorderSide(
-                                        color: Color(0xFF031F4B))),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                    borderSide:
+                                        BorderSide(color: Color(0xFF031F4B))),
                                 filled: false,
-                                contentPadding: EdgeInsets.only(
-                                    left: 24.0, right: 24.0),
+                                contentPadding:
+                                    EdgeInsets.only(left: 24.0, right: 24.0),
                                 hintStyle: TextStyle(
                                     fontSize: 12,
-                                    color: Color(0xFF000000)
-                                        .withOpacity(0.15)),
+                                    color: Color(0xFF000000).withOpacity(0.15)),
                                 hintText: "Nama Alat",
                                 errorBorder: OutlineInputBorder(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(30)),
+                                        BorderRadius.all(Radius.circular(30)),
                                     borderSide: BorderSide(color: Colors.red)),
-                                focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30)), borderSide: BorderSide(color: Colors.red, width: 1)),
+                                focusedErrorBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                    borderSide: BorderSide(
+                                        color: Colors.red, width: 1)),
                                 errorStyle: TextStyle(fontSize: 10)),
                             obscureText: false,
                             validator: (value) {
@@ -120,39 +124,41 @@ class _mainMenuUserState extends State<mainMenuUser> {
                           child: TextFormField(
                             cursorColor: Colors.black,
                             style: TextStyle(fontSize: 12),
-                            keyboardType:
-                            TextInputType.text,
+                            keyboardType: TextInputType.text,
                             controller: _lokasiController,
                             decoration: new InputDecoration(
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(30)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
                                 ),
                                 enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(30)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
                                     borderSide: BorderSide(
                                         color: Color(0xFF000000)
                                             .withOpacity(0.15))),
                                 focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(30)),
-                                    borderSide: BorderSide(
-                                        color: Color(0xFF031F4B))),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                    borderSide:
+                                        BorderSide(color: Color(0xFF031F4B))),
                                 filled: false,
-                                contentPadding: EdgeInsets.only(
-                                    left: 24.0, right: 24.0),
+                                contentPadding:
+                                    EdgeInsets.only(left: 24.0, right: 24.0),
                                 hintStyle: TextStyle(
                                     fontSize: 12,
-                                    color: Color(0xFF000000)
-                                        .withOpacity(0.15)),
+                                    color: Color(0xFF000000).withOpacity(0.15)),
                                 hintText: "Lokasi",
                                 errorBorder: OutlineInputBorder(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(30)),
+                                        BorderRadius.all(Radius.circular(30)),
                                     borderSide: BorderSide(color: Colors.red)),
-                                focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30)), borderSide: BorderSide(color: Colors.red, width: 1)),
+                                focusedErrorBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                    borderSide: BorderSide(
+                                        color: Colors.red, width: 1)),
                                 errorStyle: TextStyle(fontSize: 10)),
                             obscureText: false,
                             validator: (value) {
@@ -172,39 +178,41 @@ class _mainMenuUserState extends State<mainMenuUser> {
                           child: TextFormField(
                             cursorColor: Colors.black,
                             style: TextStyle(fontSize: 12),
-                            keyboardType:
-                            TextInputType.text,
+                            keyboardType: TextInputType.text,
                             controller: _divisiController,
                             decoration: new InputDecoration(
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(30)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
                                 ),
                                 enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(30)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
                                     borderSide: BorderSide(
                                         color: Color(0xFF000000)
                                             .withOpacity(0.15))),
                                 focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(30)),
-                                    borderSide: BorderSide(
-                                        color: Color(0xFF031F4B))),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                    borderSide:
+                                        BorderSide(color: Color(0xFF031F4B))),
                                 filled: false,
-                                contentPadding: EdgeInsets.only(
-                                    left: 24.0, right: 24.0),
+                                contentPadding:
+                                    EdgeInsets.only(left: 24.0, right: 24.0),
                                 hintStyle: TextStyle(
                                     fontSize: 12,
-                                    color: Color(0xFF000000)
-                                        .withOpacity(0.15)),
+                                    color: Color(0xFF000000).withOpacity(0.15)),
                                 hintText: "Divisi",
                                 errorBorder: OutlineInputBorder(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(30)),
+                                        BorderRadius.all(Radius.circular(30)),
                                     borderSide: BorderSide(color: Colors.red)),
-                                focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(30)), borderSide: BorderSide(color: Colors.red, width: 1)),
+                                focusedErrorBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                    borderSide: BorderSide(
+                                        color: Colors.red, width: 1)),
                                 errorStyle: TextStyle(fontSize: 10)),
                             obscureText: false,
                             validator: (value) {
@@ -225,8 +233,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
                           child: RaisedButton(
                             color: Color(0xFF031F4B),
                             shape: RoundedRectangleBorder(
-                                borderRadius:
-                                BorderRadius.circular(30)),
+                                borderRadius: BorderRadius.circular(30)),
                             textColor: Colors.white,
                             child: Container(
                               height: 42.5,
@@ -245,7 +252,6 @@ class _mainMenuUserState extends State<mainMenuUser> {
                             },
                           ),
                         ),
-
                       ],
                     ),
                   ),
@@ -253,7 +259,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
                   Positioned(
                     right: 0.0,
                     child: GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         Navigator.pop(context);
                       },
                       child: Align(
@@ -261,7 +267,10 @@ class _mainMenuUserState extends State<mainMenuUser> {
                         child: CircleAvatar(
                           radius: 14,
                           backgroundColor: Color(0xFF031F4B),
-                          child: Icon(Icons.close, color: Colors.white,),
+                          child: Icon(
+                            Icons.close,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
@@ -273,7 +282,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
         });
   }
 
-  Widget _buildListBarang({Map barang}){
+  Widget _buildListBarang({Map barang}) {
     Color statusColor = getStatusColor(barang['status']);
     return Container(
       //height: 150,
@@ -292,7 +301,8 @@ class _mainMenuUserState extends State<mainMenuUser> {
           borderRadius: BorderRadius.circular(17.5),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(top: 12.0, bottom: 12.0, left: 24.0, right: 24.0),
+          padding: const EdgeInsets.only(
+              top: 12.0, bottom: 12.0, left: 24.0, right: 24.0),
           child: Stack(
             children: <Widget>[
               Column(
@@ -301,22 +311,24 @@ class _mainMenuUserState extends State<mainMenuUser> {
                 mainAxisSize: MainAxisSize.min,
                 // untuk mengatur agar widget column mengikuti widget
                 children: <Widget>[
-                  Text(barang['nama'],
+                  Text(
+                    barang['nama'],
                     style: GoogleFonts.openSans(
                       fontStyle: FontStyle.normal,
                       fontWeight: FontWeight.w700,
                       fontSize: 16,
                     ),
                   ),
-                  Text(barang['letak'],
+                  Text(
+                    barang['letak'],
                     style: GoogleFonts.openSans(
                         fontStyle: FontStyle.normal,
                         fontWeight: FontWeight.normal,
                         fontSize: 12,
-                        color: Colors.black.withOpacity(0.25)
-                    ),
+                        color: Colors.black.withOpacity(0.25)),
                   ),
-                  Text(barang['divisi'],
+                  Text(
+                    barang['divisi'],
                     style: GoogleFonts.openSans(
                       fontStyle: FontStyle.normal,
                       fontWeight: FontWeight.w300,
@@ -333,7 +345,8 @@ class _mainMenuUserState extends State<mainMenuUser> {
                 children: <Widget>[
                   Align(
                     alignment: Alignment.centerRight,
-                    child: Text("Status",
+                    child: Text(
+                      "Status",
                       style: GoogleFonts.openSans(
                         fontStyle: FontStyle.normal,
                         fontWeight: FontWeight.normal,
@@ -343,7 +356,8 @@ class _mainMenuUserState extends State<mainMenuUser> {
                   ),
                   Align(
                     alignment: Alignment.centerRight,
-                    child: Text(barang['status'],
+                    child: Text(
+                      barang['status'],
                       style: GoogleFonts.openSans(
                         fontStyle: FontStyle.normal,
                         fontWeight: FontWeight.bold,
@@ -366,7 +380,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => loginPage()),
-          (route) => false,
+      (route) => false,
     );
   }
 
@@ -384,26 +398,34 @@ class _mainMenuUserState extends State<mainMenuUser> {
       body: Stack(
         children: <Widget>[
 
-          FirebaseAnimatedList(query: _query,itemBuilder: (BuildContext context,
-              DataSnapshot snapshot, Animation<double>animation, int index){
-            Map barang = snapshot.value;
-            return _buildListBarang(barang: barang);
-          },),
-
+          Container(
+            height: 256,
+            color: Color(0xFF031F4B),
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 24, right: 24, bottom: 24, top: 160),
+            child: FirebaseAnimatedList(
+              query: _query,
+              itemBuilder: (BuildContext context, DataSnapshot snapshot,
+                  Animation<double> animation, int index) {
+                Map barang = snapshot.value;
+                return _buildListBarang(barang: barang);
+              },
+            ),
+          ),
           Container(
             alignment: Alignment.bottomCenter,
             child: RaisedButton(
               onPressed: () async {
-                SharedPreferences preference = await SharedPreferences.getInstance();
+                SharedPreferences preference =
+                    await SharedPreferences.getInstance();
                 preference.clear();
                 _signOut(context);
               },
             ),
           ),
-
         ],
       ),
-
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         backgroundColor: Color(0xFF031F4B),
@@ -415,19 +437,17 @@ class _mainMenuUserState extends State<mainMenuUser> {
   }
 
   void saveBarang() {
-
     String namaAlat = _namaAlatController.text;
     String lokasi = _lokasiController.text;
     String divisi = _divisiController.text;
     String status = 'Normal';
 
-    Map<String,String> barang = {
-      'nama':namaAlat,
-      'letak':lokasi,
-      'divisi':divisi,
-      'status':status,
+    Map<String, String> barang = {
+      'nama': namaAlat,
+      'letak': lokasi,
+      'divisi': divisi,
+      'status': status,
     };
-
 
     _ref.push().set(barang).then((value) {
       Navigator.pop(context);
@@ -437,16 +457,15 @@ class _mainMenuUserState extends State<mainMenuUser> {
     });
   }
 
-  Color getStatusColor(String status){
+  Color getStatusColor(String status) {
     Color color = Theme.of(context).accentColor;
 
-    if(status == 'Normal'){
+    if (status == 'Normal') {
       color = Colors.green;
     }
-    if(status == 'Rusak'){
+    if (status == 'Rusak') {
       color = Colors.red;
     }
     return color;
   }
 }
-
