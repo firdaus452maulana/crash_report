@@ -2,6 +2,7 @@ import 'package:crash_report/tampilan/forgotPasswordPage.dart';
 import 'package:crash_report/tampilan/homePage.dart';
 import 'package:crash_report/tampilan/mainMenuUser.dart';
 import 'package:crash_report/tampilan/pilihBagianPage.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,9 +22,10 @@ class _loginPageState extends State<loginPage> {
   final CollectionReference usersList =
       FirebaseFirestore.instance.collection('users');
   final auth = FirebaseAuth.instance;
+  DatabaseReference userData = FirebaseDatabase.instance.reference().child('users');
 
   bool _secureText = true;
-  String uid, bagian;
+  String uid, bagian, name;
 
   TextEditingController _emailContoller = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -63,15 +65,37 @@ class _loginPageState extends State<loginPage> {
       uid = user.uid.toString();
 
       try {
-        DocumentSnapshot variable = await usersList.doc(uid).get();
-        print("ini print bagian users: " + variable['bagian']);
-        bagian = variable['bagian'].toString();
+
+        // AMBIL DATA DARI REALTIME DATABASE
+        await userData.child(uid).once().then((DataSnapshot snapshot) {
+          Map<dynamic, dynamic>.from(snapshot.value).forEach((key,values) {
+            setState(() {
+              print("snapshot value: " + values.toString());
+              if (key == 'name'){
+                name = values.toString();
+                print("nama: " + name);
+              }
+              else if (key == 'bagian'){
+                bagian = values.toString();
+                print("bagian: " + bagian);
+              } else{
+                print("bukan value yg dicari");
+              }
+            });
+          });
+        });
+
+        //DocumentSnapshot variable = await usersList.doc(uid).get();
+        //print("ini print bagian users: " + variable['bagian']);
+        //bagian = variable['bagian'].toString();
 
         // NYIMPAN SHARE PREFERENCE
         SharedPreferences pref_role = await SharedPreferences.getInstance();
         SharedPreferences pref_uid = await SharedPreferences.getInstance();
+        SharedPreferences pref_nama = await SharedPreferences.getInstance();
         pref_role.setString('role', bagian);
         pref_uid.setString('uid', uid);
+        pref_nama.setString('name', name);
 
         try {
           _navSignInSuccess();

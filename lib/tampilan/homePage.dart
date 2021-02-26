@@ -1,7 +1,7 @@
 import 'package:crash_report/tampilan/loginPage.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class homePage extends StatefulWidget {
@@ -11,12 +11,15 @@ class homePage extends StatefulWidget {
 
 class _homePageState extends State<homePage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  String uid;
+  String uid, name;
+
+  DatabaseReference userData = FirebaseDatabase.instance.reference().child('users');
 
   // BUAT NGERUN FUNGSI PAS APP START
   @override
   void initState() {
     _ambilPreference();
+    _getUserData();
   }
 
   // NAVIGASI KE HALAMAN LOGIN
@@ -40,6 +43,24 @@ class _homePageState extends State<homePage> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       uid = preferences.getString('uid');
+      name = preferences.getString('name');
+    });
+  }
+
+  Future<void> _getUserData() async {
+    // AMBIL DATA DARI REALTIME DATABASE
+    await userData.child(uid).once().then((DataSnapshot snapshot) {
+      Map<dynamic, dynamic>.from(snapshot.value).forEach((key,values) {
+        setState(() {
+          print("snapshot value: " + values.toString());
+          if (key == 'name'){
+            name = values.toString();
+            print("nama pegawai: " + name);
+          } else{
+            print("bukan bagian");
+          }
+        });
+      });
     });
   }
 
@@ -51,24 +72,11 @@ class _homePageState extends State<homePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            StreamBuilder<DocumentSnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection('users')
-                  .doc(uid)
-                  .snapshots(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<DocumentSnapshot> snapshot) {
-                if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                }
-                switch (snapshot.connectionState) {
-                  case ConnectionState.waiting:
-                    return Text('Loading..');
-                  default:
-                    return Text("Selamat Datang " + snapshot.data['name']);
-                }
-              },
-            ),
+
+            Text(name),
+            Text(uid),
+            Text(uid),
+
             RaisedButton(
               onPressed: () async {
                 SharedPreferences preference =

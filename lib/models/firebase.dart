@@ -16,8 +16,8 @@ class DatabaseManager {
 
   Future<void> setPegawaiRealtime(
       String name, String email, String role, String uid) async {
-    return await userListRealtime
-        .push()
+    return await DatabaseManager()
+        .userListRealtime
         .child(uid)
         .set({'name': name, 'email': email, 'role': role, 'bagian': "pegawai"});
   }
@@ -26,16 +26,13 @@ class DatabaseManager {
     return await userList
         .doc(uid)
         .set({'name': name, 'email': email, 'bagian': "teknisi"}).then(
-            (value) async {
-    });
+            (value) async {});
   }
 
   Future<void> setTeknisiRealtime(String name, String email, String uid) async {
     return await DatabaseManager()
         .userListRealtime
-        .push()
         .child(uid)
         .set({'name': name, 'email': email, 'bagian': "teknisi"});
   }
-
 }

@@ -17,6 +17,7 @@ Future<void> main() async {
     title: 'PERANG',
     theme: ThemeData(fontFamily: 'OpenSans'),
     home: role != null ? loadingPage() : loginPage(),
+    //home: loginPage(),
   ));
 
   //runApp(MyApp());
