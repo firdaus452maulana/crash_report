@@ -11,7 +11,7 @@ class homePage extends StatefulWidget {
 
 class _homePageState extends State<homePage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  String uid, name;
+  String uid, name, role;
 
   DatabaseReference userData = FirebaseDatabase.instance.reference().child('users');
 
@@ -44,6 +44,7 @@ class _homePageState extends State<homePage> {
     setState(() {
       uid = preferences.getString('uid');
       name = preferences.getString('name');
+      role = preferences.getString('role');
     });
   }
 
@@ -73,9 +74,9 @@ class _homePageState extends State<homePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
 
+            Text("Selamat Datang,"),
             Text(name),
-            Text(uid),
-            Text(uid),
+            Text(role),
 
             RaisedButton(
               onPressed: () async {

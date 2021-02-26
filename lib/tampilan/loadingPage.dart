@@ -10,11 +10,11 @@ class loadingPage extends StatefulWidget {
 
 class _loadingPageState extends State<loadingPage> {
 
-  String role;
+  String bagian;
 
   // NAVIGASI KE HALAMAN HOME PEGAWAI DAN TEKNISI
   _navSignInSuccess() {
-    if (role == "pegawai") {
+    if (bagian == "pegawai") {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => homePage()),
@@ -22,7 +22,7 @@ class _loadingPageState extends State<loadingPage> {
       );
     }
 
-    if (role == "teknisi") {
+    if (bagian == "teknisi") {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => mainMenuUser()),
@@ -35,7 +35,7 @@ class _loadingPageState extends State<loadingPage> {
   Future<void> _ambilPreference() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
-      role = preferences.getString('role');
+      bagian = preferences.getString('bagian');
       _navSignInSuccess();
     });
   }
@@ -43,7 +43,11 @@ class _loadingPageState extends State<loadingPage> {
   // BUAT NGERUN FUNGSI PAS APP START
   @override
   void initState() {
-    _ambilPreference();
+    try{
+      _ambilPreference();
+    }catch(e){
+      print(e);
+    }
   }
 
   @override

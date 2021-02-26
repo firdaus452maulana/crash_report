@@ -11,12 +11,12 @@ Future<void> main() async {
   await Firebase.initializeApp();
 
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  var role = preferences.getString('role');
+  var bagian = preferences.getString('bagian');
 
   runApp(MaterialApp(
     title: 'PERANG',
     theme: ThemeData(fontFamily: 'OpenSans'),
-    home: role != null ? loadingPage() : loginPage(),
+    home: bagian != null ? loadingPage() : loginPage(),
     //home: loginPage(),
   ));
 

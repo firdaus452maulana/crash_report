@@ -22,10 +22,11 @@ class _loginPageState extends State<loginPage> {
   final CollectionReference usersList =
       FirebaseFirestore.instance.collection('users');
   final auth = FirebaseAuth.instance;
-  DatabaseReference userData = FirebaseDatabase.instance.reference().child('users');
+  DatabaseReference userData =
+      FirebaseDatabase.instance.reference().child('users');
 
   bool _secureText = true;
-  String uid, bagian, name;
+  String uid, bagian, name, role;
 
   TextEditingController _emailContoller = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -65,20 +66,21 @@ class _loginPageState extends State<loginPage> {
       uid = user.uid.toString();
 
       try {
-
         // AMBIL DATA DARI REALTIME DATABASE
         await userData.child(uid).once().then((DataSnapshot snapshot) {
-          Map<dynamic, dynamic>.from(snapshot.value).forEach((key,values) {
+          Map<dynamic, dynamic>.from(snapshot.value).forEach((key, values) {
             setState(() {
               print("snapshot value: " + values.toString());
-              if (key == 'name'){
+              if (key == 'name') {
                 name = values.toString();
                 print("nama: " + name);
-              }
-              else if (key == 'bagian'){
+              } else if (key == 'bagian') {
                 bagian = values.toString();
                 print("bagian: " + bagian);
-              } else{
+              } else if (key == 'role') {
+                role = values.toString();
+                print("divisi: " + role);
+              } else {
                 print("bukan value yg dicari");
               }
             });
@@ -90,12 +92,14 @@ class _loginPageState extends State<loginPage> {
         //bagian = variable['bagian'].toString();
 
         // NYIMPAN SHARE PREFERENCE
-        SharedPreferences pref_role = await SharedPreferences.getInstance();
+        SharedPreferences pref_bagian = await SharedPreferences.getInstance();
         SharedPreferences pref_uid = await SharedPreferences.getInstance();
         SharedPreferences pref_nama = await SharedPreferences.getInstance();
-        pref_role.setString('role', bagian);
+        SharedPreferences pref_role = await SharedPreferences.getInstance();
+        pref_bagian.setString('bagian', bagian);
         pref_uid.setString('uid', uid);
         pref_nama.setString('name', name);
+        pref_role.setString('role', role);
 
         try {
           _navSignInSuccess();
