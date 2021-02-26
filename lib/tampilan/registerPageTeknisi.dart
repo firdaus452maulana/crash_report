@@ -175,7 +175,7 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                                       borderSide: BorderSide(
                                           color: Colors.red, width: 1)),
                                   errorStyle: TextStyle(fontSize: 10)),
-                              obscureText: _secureText,
+                              obscureText: false,
                               validator: (value) {
                                 if (value.isEmpty) {
                                   return "Nama harus diisi!";
@@ -322,7 +322,7 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                                   fontSize: 10,
                                 ),
                               ),
-                              obscureText: true,
+                              obscureText: _secureText,
                               validator: (value) {
                                 if (value.isEmpty) {
                                   return "Password harus diisi!";

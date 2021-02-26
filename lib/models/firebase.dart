@@ -27,8 +27,6 @@ class DatabaseManager {
         .doc(uid)
         .set({'name': name, 'email': email, 'bagian': "teknisi"}).then(
             (value) async {
-      SharedPreferences preferences = await SharedPreferences.getInstance();
-      preferences.setString('email', email);
     });
   }
 
