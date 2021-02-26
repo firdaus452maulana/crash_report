@@ -361,9 +361,19 @@ class _mainMenuUserState extends State<mainMenuUser> {
     );
   }
 
+  // NAVIGASI KE HALAMAN LOGIN
+  _navLogOutSuccess() {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => loginPage()),
+          (route) => false,
+    );
+  }
+
+  // FUNGSI SIGN OUT
   Future<void> _signOut(BuildContext context) async {
     await _auth.signOut().then((value) {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => loginPage()));
+      _navLogOutSuccess();
     });
   }
 
@@ -373,18 +383,24 @@ class _mainMenuUserState extends State<mainMenuUser> {
       backgroundColor: Colors.white,
       body: Stack(
         children: <Widget>[
-          RaisedButton(
-            onPressed: () async {
-              SharedPreferences preference = await SharedPreferences.getInstance();
-              preference.clear();
-              _signOut(context);
-            },
-          ),
+
           FirebaseAnimatedList(query: _query,itemBuilder: (BuildContext context,
               DataSnapshot snapshot, Animation<double>animation, int index){
             Map barang = snapshot.value;
             return _buildListBarang(barang: barang);
           },),
+
+          Container(
+            alignment: Alignment.bottomCenter,
+            child: RaisedButton(
+              onPressed: () async {
+                SharedPreferences preference = await SharedPreferences.getInstance();
+                preference.clear();
+                _signOut(context);
+              },
+            ),
+          ),
+
         ],
       ),
 

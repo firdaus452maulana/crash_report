@@ -12,22 +12,31 @@ class _loadingPageState extends State<loadingPage> {
 
   String role;
 
+  // NAVIGASI KE HALAMAN HOME PEGAWAI DAN TEKNISI
+  _navSignInSuccess() {
+    if (role == "pegawai") {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => homePage()),
+            (route) => false,
+      );
+    }
+
+    if (role == "teknisi") {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => mainMenuUser()),
+            (route) => false,
+      );
+    }
+  }
+
   // FUNGSI SHARED PREFERENCES
   Future<void> _ambilPreference() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     setState(() {
       role = preferences.getString('role');
-      if (role == "teknisi") {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => mainMenuUser()));
-      }
-      if (role == "pegawai") {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => homePage()));
-      }
-      else{
-        _ambilPreference();
-      }
+      _navSignInSuccess();
     });
   }
 
@@ -35,10 +44,6 @@ class _loadingPageState extends State<loadingPage> {
   @override
   void initState() {
     _ambilPreference();
-    if (role == "pegawai") {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => homePage()));
-    }
   }
 
   @override
