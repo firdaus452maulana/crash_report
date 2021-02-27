@@ -50,7 +50,6 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
         fontSize: 12,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
         backgroundColor: Color(0xFF000000).withOpacity(0.05),
         textColor: Colors.black);
   }

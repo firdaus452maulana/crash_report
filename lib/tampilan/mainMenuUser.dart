@@ -291,6 +291,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
       //height: 150,
       color: Colors.white,
       child: Container(
+        margin: EdgeInsets.only(bottom: 8, left: 16, right: 16),
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
@@ -446,6 +447,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
             ),
           ),
 
+          // LIST BARANG
           Container(
             margin: EdgeInsets.only(left: 24, right: 24, bottom: 24, top: 180),
             child: FirebaseAnimatedList(
@@ -507,10 +509,10 @@ class _mainMenuUserState extends State<mainMenuUser> {
     Color color = Theme.of(context).accentColor;
 
     if (status == 'Normal') {
-      color = Colors.green;
+      color = Color(0xFF628C57);
     }
     if (status == 'Rusak') {
-      color = Colors.red;
+      color = Color(0xFFFF6A6A);
     }
     return color;
   }

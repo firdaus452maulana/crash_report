@@ -20,27 +20,22 @@ class _forgotPasswordPageState extends State<forgotPasswordPage> {
       return;
     }
     _formKey.currentState.save();
-    dynamic result = await _auth.createResetPassword(_emailContoller.text);
-    if (result == null) {
-      print("Something went wrong");
-      _showErrorDialog();
-    } else {
-      print(result.toString());
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => loginPage()));
-      showToastResetSuccess();
-    }
+
+    await _auth.createResetPassword(_emailContoller.text);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => loginPage()));
+    showToastResetSuccess();
   }
 
   void showToastResetSuccess() {
     Fluttertoast.showToast(
-        msg: "A password reset link has been sent to " + _emailContoller.text,
-        fontSize: 12,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
-        backgroundColor: Color(0xFF000000).withOpacity(0.05),
-        textColor: Colors.black);
+      msg: "A password reset link has been sent to\n" + _emailContoller.text,
+      fontSize: 12,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Color(0xFF000000).withOpacity(0.05),
+      textColor: Colors.black,
+    );
   }
 
   // ERROR DIALOGBOX
