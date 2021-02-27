@@ -17,7 +17,7 @@ class _loadingPageState extends State<loadingPage> {
     if (bagian == "pegawai") {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => homePage()),
+        MaterialPageRoute(builder: (context) => mainMenuUser()),
             (route) => false,
       );
     }
@@ -25,7 +25,7 @@ class _loadingPageState extends State<loadingPage> {
     if (bagian == "teknisi") {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => mainMenuUser()),
+        MaterialPageRoute(builder: (context) => homePage()),
             (route) => false,
       );
     }

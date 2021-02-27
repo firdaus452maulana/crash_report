@@ -19,6 +19,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
 
   Query _query;
   DatabaseReference _ref;
+  String uid, name, role;
 
   @override
   void initState() {
@@ -31,8 +32,10 @@ class _mainMenuUserState extends State<mainMenuUser> {
         .reference()
         .child('listBarang')
         .orderByChild('nama');
+    _ambilPreference();
   }
 
+  // DIALOG ADD BARANG
   void _showDialogPenambahan() {
     showDialog(
         context: context,
@@ -375,6 +378,16 @@ class _mainMenuUserState extends State<mainMenuUser> {
     );
   }
 
+  // AMBIL SHARED PREFERENCES
+  Future<void> _ambilPreference() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      uid = preferences.getString('uid');
+      name = preferences.getString('name');
+      role = preferences.getString('role');
+    });
+  }
+
   // NAVIGASI KE HALAMAN LOGIN
   _navLogOutSuccess() {
     Navigator.pushAndRemoveUntil(
@@ -397,13 +410,44 @@ class _mainMenuUserState extends State<mainMenuUser> {
       backgroundColor: Colors.white,
       body: Stack(
         children: <Widget>[
+          Container(
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.only(top: 64, left: 32, right: 32),
+            height: 256,
+            width: double.infinity,
+            color: Color(0xFF031F4B),
+
+            // SELAMAT DATANG USER
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  "Selamat Datang,",
+                  style: TextStyle(
+                      color: Color(0xFF949090),
+                      fontWeight: FontWeight.w300,
+                      fontSize: 16),
+                ),
+                Text(
+                  name,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20),
+                ),
+                Text(
+                  role,
+                  style: TextStyle(
+                      color: Color(0xFFADABAB),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14),
+                ),
+              ],
+            ),
+          ),
 
           Container(
-            height: 256,
-            color: Color(0xFF031F4B),
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 24, right: 24, bottom: 24, top: 160),
+            margin: EdgeInsets.only(left: 24, right: 24, bottom: 24, top: 180),
             child: FirebaseAnimatedList(
               query: _query,
               itemBuilder: (BuildContext context, DataSnapshot snapshot,
@@ -413,9 +457,11 @@ class _mainMenuUserState extends State<mainMenuUser> {
               },
             ),
           ),
+
           Container(
             alignment: Alignment.bottomCenter,
             child: RaisedButton(
+              child: Text("Log Out"),
               onPressed: () async {
                 SharedPreferences preference =
                     await SharedPreferences.getInstance();

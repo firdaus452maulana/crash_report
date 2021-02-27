@@ -36,7 +36,7 @@ class _loginPageState extends State<loginPage> {
     if (bagian == "pegawai") {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => homePage()),
+        MaterialPageRoute(builder: (context) => mainMenuUser()),
         (route) => false,
       );
     }
@@ -44,7 +44,7 @@ class _loginPageState extends State<loginPage> {
     if (bagian == "teknisi") {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => mainMenuUser()),
+        MaterialPageRoute(builder: (context) => homePage()),
         (route) => false,
       );
     }
