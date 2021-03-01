@@ -1,11 +1,9 @@
-import 'package:crash_report/tampilan/loginPage.dart';
 import 'package:crash_report/tampilan/sideBar.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class mainMenuUser extends StatefulWidget {
   @override
@@ -14,7 +12,6 @@ class mainMenuUser extends StatefulWidget {
 
 class _mainMenuUserState extends State<mainMenuUser> {
   var scaffoldKey = GlobalKey<ScaffoldState>();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   TextEditingController _namaAlatController,
       _lokasiController,
       _divisiController;
@@ -24,7 +21,9 @@ class _mainMenuUserState extends State<mainMenuUser> {
 
   Query _query;
   DatabaseReference _ref;
-  String uid, name, role;
+  String uid = '';
+  String name = '';
+  String role = '';
 
   @override
   void initState() {
@@ -476,22 +475,6 @@ class _mainMenuUserState extends State<mainMenuUser> {
       uid = preferences.getString('uid');
       name = preferences.getString('name');
       role = preferences.getString('role');
-    });
-  }
-
-  // NAVIGASI KE HALAMAN LOGIN
-  _navLogOutSuccess() {
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => loginPage()),
-      (route) => false,
-    );
-  }
-
-  // FUNGSI SIGN OUT
-  Future<void> _signOut(BuildContext context) async {
-    await _auth.signOut().then((value) {
-      _navLogOutSuccess();
     });
   }
 

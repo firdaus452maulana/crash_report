@@ -31,6 +31,12 @@ class _loginPageState extends State<loginPage> {
   TextEditingController _emailContoller = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    _clearPreference();
+  }
+
   // NAVIGASI KE HALAMAN HOME PEGAWAI DAN TEKNISI
   _navSignInSuccess() {
     if (bagian == "pegawai") {
@@ -48,6 +54,13 @@ class _loginPageState extends State<loginPage> {
         (route) => false,
       );
     }
+  }
+
+  Future<void> _clearPreference() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      preferences.clear();
+    });
   }
 
   // FUNGSI SUBMIT LOGIN
@@ -87,19 +100,12 @@ class _loginPageState extends State<loginPage> {
           });
         });
 
-        //DocumentSnapshot variable = await usersList.doc(uid).get();
-        //print("ini print bagian users: " + variable['bagian']);
-        //bagian = variable['bagian'].toString();
-
         // NYIMPAN SHARE PREFERENCE
-        SharedPreferences pref_bagian = await SharedPreferences.getInstance();
-        SharedPreferences pref_uid = await SharedPreferences.getInstance();
-        SharedPreferences pref_nama = await SharedPreferences.getInstance();
-        SharedPreferences pref_role = await SharedPreferences.getInstance();
-        pref_bagian.setString('bagian', bagian);
-        pref_uid.setString('uid', uid);
-        pref_nama.setString('name', name);
-        pref_role.setString('role', role);
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        preferences.setString('bagian', bagian);
+        preferences.setString('uid', uid);
+        preferences.setString('name', name);
+        preferences.setString('role', role);
 
         try {
           _navSignInSuccess();
@@ -369,6 +375,8 @@ class _loginPageState extends State<loginPage> {
                                         Align(
                                           alignment: Alignment.centerRight,
                                           child: FlatButton(
+                                            splashColor: Colors.transparent,
+                                            highlightColor: Colors.transparent,
                                             onPressed: () {
                                               Navigator.push(
                                                   context,
@@ -421,6 +429,8 @@ class _loginPageState extends State<loginPage> {
                                               width: 54,
                                               child: FlatButton(
                                                 padding: EdgeInsets.all(0.0),
+                                                splashColor: Colors.transparent,
+                                                highlightColor: Colors.transparent,
                                                 child: Text(
                                                   "Sign Up",
                                                   style: GoogleFonts.openSans(

@@ -48,56 +48,106 @@ class _sideBarState extends State<sideBar> {
     });
   }
 
+  // TAMPILAN
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-          padding: EdgeInsets.only(left: 32, right: 32, bottom: 24, top: 24),
+          padding: EdgeInsets.only(left: 16, right: 16, bottom: 24, top: 24),
           color: Color(0xFF031F4B),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
+          child: Stack(
+            children: [
+              // ATAS (LOGO, TENTANG APP, REPORT BUG)
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 8, right: 8, top: 24, bottom: 16),
+                    child: Text(
+                      "PERANG APP",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  Container(
+                    height: 1,
+                    color: Colors.white,
+                  ),
+
+                  SizedBox(height: 16,),
+
+                  FlatButton.icon(
+                    icon: Icon(Icons.info, color: Colors.white, size: 14,),
+                    label: Text(
+                      "Tentang Aplikasi",
+                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    ),
+                    onPressed: () {},
+                  ),
+                  FlatButton.icon(
+                    icon: Icon(Icons.bug_report, color: Colors.white, size: 16,),
+                    label: Text(
+                      "Report Bug",
+                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    ),
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+
+              // BAWAH (USER LOGOUT)
               Container(
-                padding: EdgeInsets.only(bottom: 16, left: 4, right: 4),
+                margin: EdgeInsets.only(left: 16, right: 16),
+                width: double.infinity,
+                alignment: Alignment.bottomRight,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      name,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold),
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(bottom: 16, left: 4, right: 4),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            name,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            role,
+                            style: TextStyle(
+                                color: Color(0xFFADABAB),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w300),
+                          ),
+                        ],
+                      ),
                     ),
-                    Text(
-                      role,
-                      style: TextStyle(
-                          color: Color(0xFFADABAB),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w300),
-                    ),
+                    RaisedButton.icon(
+                      label: Text(
+                        "Log Out",
+                        style:
+                            TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                      ),
+                      icon: Icon(
+                        Icons.arrow_back,
+                        size: 16,
+                      ),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(17.5)),
+                      onPressed: () async {
+                        SharedPreferences preference =
+                            await SharedPreferences.getInstance();
+                        preference.clear();
+                        _signOut(context);
+                      },
+                    )
                   ],
                 ),
               ),
-              RaisedButton.icon(
-                label: Text(
-                  "Log Out",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-                ),
-                icon: Icon(
-                  Icons.arrow_back,
-                  size: 16,
-                ),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(17.5)),
-                onPressed: () async {
-                  SharedPreferences preference =
-                      await SharedPreferences.getInstance();
-                  preference.clear();
-                  _signOut(context);
-                },
-              )
             ],
           )),
     );
