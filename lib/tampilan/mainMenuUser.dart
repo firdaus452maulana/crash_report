@@ -1,4 +1,5 @@
 import 'package:crash_report/tampilan/loginPage.dart';
+import 'package:crash_report/tampilan/sideBar.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ class mainMenuUser extends StatefulWidget {
 }
 
 class _mainMenuUserState extends State<mainMenuUser> {
+  var scaffoldKey = GlobalKey<ScaffoldState>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   TextEditingController _namaAlatController,
       _lokasiController,
@@ -192,47 +194,42 @@ class _mainMenuUserState extends State<mainMenuUser> {
                                 padding: EdgeInsets.only(left: 8),
                                 child: Icon(
                                   Icons.assignment_ind,
-                                  color:
-                                  Color(0xFF000000).withOpacity(0.25),
+                                  color: Color(0xFF000000).withOpacity(0.25),
                                   size: 16,
                                 ),
                               ),
                               fillColor: Colors.white,
                               border: OutlineInputBorder(
                                 borderRadius:
-                                BorderRadius.all(Radius.circular(30)),
+                                    BorderRadius.all(Radius.circular(30)),
                               ),
                               enabledBorder: OutlineInputBorder(
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
+                                      BorderRadius.all(Radius.circular(30)),
                                   borderSide: BorderSide(
-                                      color: Color(0xFF000000)
-                                          .withOpacity(0.15))),
+                                      color:
+                                          Color(0xFF000000).withOpacity(0.15))),
                               focusedBorder: OutlineInputBorder(
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
+                                      BorderRadius.all(Radius.circular(30)),
                                   borderSide:
-                                  BorderSide(color: Color(0xFF031F4B))),
+                                      BorderSide(color: Color(0xFF031F4B))),
                               filled: false,
                               contentPadding:
-                              EdgeInsets.only(left: 24.0, right: 0),
+                                  EdgeInsets.only(left: 24.0, right: 0),
                               hintStyle: TextStyle(
                                   fontSize: 12,
-                                  color:
-                                  Color(0xFF000000).withOpacity(0.25)),
+                                  color: Color(0xFF000000).withOpacity(0.25)),
                               errorBorder: OutlineInputBorder(
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
-                                  borderSide:
-                                  BorderSide(color: Colors.red)),
+                                      BorderRadius.all(Radius.circular(30)),
+                                  borderSide: BorderSide(color: Colors.red)),
                               focusedErrorBorder: OutlineInputBorder(
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
-                                  borderSide: BorderSide(
-                                      color: Colors.red, width: 1)
-                              ),
-                              errorStyle: TextStyle(fontSize: 10)
-                          ),
+                                      BorderRadius.all(Radius.circular(30)),
+                                  borderSide:
+                                      BorderSide(color: Colors.red, width: 1)),
+                              errorStyle: TextStyle(fontSize: 10)),
                           hint: Text(
                             "divisi",
                             style: TextStyle(
@@ -440,15 +437,19 @@ class _mainMenuUserState extends State<mainMenuUser> {
     });
   }
 
+  // TAMPILAN
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       backgroundColor: Colors.white,
+      drawer: sideBar(),
       body: Stack(
         children: <Widget>[
+
           Container(
             alignment: Alignment.centerLeft,
-            padding: EdgeInsets.only(top: 64, left: 32, right: 32),
+            padding: EdgeInsets.only(top: 16, left: 8, right: 8, bottom: 0),
             height: 256,
             width: double.infinity,
             color: Color(0xFF031F4B),
@@ -457,27 +458,48 @@ class _mainMenuUserState extends State<mainMenuUser> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  "Selamat Datang,",
-                  style: TextStyle(
-                      color: Color(0xFF949090),
-                      fontWeight: FontWeight.w300,
-                      fontSize: 16),
+
+                IconButton(
+                  icon: Icon(
+                    Icons.menu,
+                    color: Colors.white,
+                  ),
+                  onPressed: (){
+                    scaffoldKey.currentState.openDrawer();
+                  },
                 ),
-                Text(
-                  name,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20),
+
+                Container(
+                  margin: EdgeInsets.only(left: 24, right: 24, top: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Selamat Datang,",
+                        style: TextStyle(
+                            color: Color(0xFF949090),
+                            fontWeight: FontWeight.w300,
+                            fontSize: 16),
+                      ),
+                      Text(
+                        name,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20),
+                      ),
+                      Text(
+                        role,
+                        style: TextStyle(
+                            color: Color(0xFFADABAB),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14),
+                      ),
+                    ],
+                  ),
+
                 ),
-                Text(
-                  role,
-                  style: TextStyle(
-                      color: Color(0xFFADABAB),
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14),
-                ),
+
               ],
             ),
           ),
@@ -491,19 +513,6 @@ class _mainMenuUserState extends State<mainMenuUser> {
                   Animation<double> animation, int index) {
                 Map barang = snapshot.value;
                 return _buildListBarang(barang: barang);
-              },
-            ),
-          ),
-
-          Container(
-            alignment: Alignment.bottomCenter,
-            child: RaisedButton(
-              child: Text("Log Out"),
-              onPressed: () async {
-                SharedPreferences preference =
-                    await SharedPreferences.getInstance();
-                preference.clear();
-                _signOut(context);
               },
             ),
           ),
