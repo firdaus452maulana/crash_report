@@ -411,6 +411,58 @@ class _mainMenuUserState extends State<mainMenuUser> {
                 ],
               ),
             ),
+            children: <Widget>[
+              Container(
+                child: TextFormField(
+                  cursorColor: Colors.black,
+                  style: TextStyle(fontSize: 12),
+                  keyboardType: TextInputType.text,
+                  controller: _namaAlatController,
+                  decoration: new InputDecoration(
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius:
+                        BorderRadius.all(Radius.circular(30)),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(30)),
+                          borderSide: BorderSide(
+                              color: Color(0xFF000000)
+                                  .withOpacity(0.15))),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(30)),
+                          borderSide:
+                          BorderSide(color: Color(0xFF031F4B))),
+                      filled: false,
+                      contentPadding:
+                      EdgeInsets.only(left: 24.0, right: 24.0),
+                      hintStyle: TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFF000000).withOpacity(0.15)),
+                      hintText: "Nama Alat",
+                      errorBorder: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(30)),
+                          borderSide: BorderSide(color: Colors.red)),
+                      focusedErrorBorder: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(30)),
+                          borderSide: BorderSide(
+                              color: Colors.red, width: 1)),
+                      errorStyle: TextStyle(fontSize: 10)),
+                  obscureText: false,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return "Field is required";
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {},
+                ),
+              ),
+            ],
           ),
         )
       ),
