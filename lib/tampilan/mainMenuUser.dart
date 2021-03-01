@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:expandable_group/expandable_group_widget.dart';
 
 class mainMenuUser extends StatefulWidget {
   @override
@@ -16,6 +17,9 @@ class _mainMenuUserState extends State<mainMenuUser> {
   TextEditingController _namaAlatController,
       _lokasiController,
       _divisiController;
+  String valueDivisi;
+
+  List divisi = ["Divisi 1", "Divisi 2", "Divisi 3"];
 
   Query _query;
   DatabaseReference _ref;
@@ -177,55 +181,86 @@ class _mainMenuUserState extends State<mainMenuUser> {
                         SizedBox(height: 16),
 
                         // DIVISI
-                        Container(
-                          child: TextFormField(
-                            cursorColor: Colors.black,
-                            style: TextStyle(fontSize: 12),
-                            keyboardType: TextInputType.text,
-                            controller: _divisiController,
-                            decoration: new InputDecoration(
-                                fillColor: Colors.white,
-                                border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(30)),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(30)),
-                                    borderSide: BorderSide(
-                                        color: Color(0xFF000000)
-                                            .withOpacity(0.15))),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(30)),
-                                    borderSide:
-                                        BorderSide(color: Color(0xFF031F4B))),
-                                filled: false,
-                                contentPadding:
-                                    EdgeInsets.only(left: 24.0, right: 24.0),
-                                hintStyle: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF000000).withOpacity(0.15)),
-                                hintText: "Divisi",
-                                errorBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(30)),
-                                    borderSide: BorderSide(color: Colors.red)),
-                                focusedErrorBorder: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(30)),
-                                    borderSide: BorderSide(
-                                        color: Colors.red, width: 1)),
-                                errorStyle: TextStyle(fontSize: 10)),
-                            obscureText: false,
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return "Field is required";
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {},
+                        DropdownButtonFormField(
+                          icon: Icon(
+                            Icons.keyboard_arrow_down,
+                            color: Color(0xFF000000).withOpacity(0.25),
+                            size: 20,
                           ),
+                          decoration: InputDecoration(
+                              prefixIcon: Padding(
+                                padding: EdgeInsets.only(left: 8),
+                                child: Icon(
+                                  Icons.assignment_ind,
+                                  color:
+                                  Color(0xFF000000).withOpacity(0.25),
+                                  size: 16,
+                                ),
+                              ),
+                              fillColor: Colors.white,
+                              border: OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(30)),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(30)),
+                                  borderSide: BorderSide(
+                                      color: Color(0xFF000000)
+                                          .withOpacity(0.15))),
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(30)),
+                                  borderSide:
+                                  BorderSide(color: Color(0xFF031F4B))),
+                              filled: false,
+                              contentPadding:
+                              EdgeInsets.only(left: 24.0, right: 0),
+                              hintStyle: TextStyle(
+                                  fontSize: 12,
+                                  color:
+                                  Color(0xFF000000).withOpacity(0.25)),
+                              errorBorder: OutlineInputBorder(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(30)),
+                                  borderSide:
+                                  BorderSide(color: Colors.red)),
+                              focusedErrorBorder: OutlineInputBorder(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(30)),
+                                  borderSide: BorderSide(
+                                      color: Colors.red, width: 1)
+                              ),
+                              errorStyle: TextStyle(fontSize: 10)
+                          ),
+                          hint: Text(
+                            "divisi",
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Color(0xFF000000).withOpacity(.25)),
+                          ),
+                          value: valueDivisi,
+                          onChanged: (newValue) {
+                            setState(() {
+                              valueDivisi = newValue;
+                            });
+                          },
+                          validator: (value) {
+                            if (valueDivisi == null) {
+                              return "Divisi harus dipilih!";
+                            }
+                            return null;
+                          },
+                          items: divisi.map((valueItem) {
+                            return DropdownMenuItem(
+                              value: valueItem,
+                              child: Text(
+                                valueItem,
+                                style: TextStyle(
+                                    fontSize: 12, color: Color(0xFF000000)),
+                              ),
+                            );
+                          }).toList(),
                         ),
 
                         SizedBox(height: 16),
@@ -487,14 +522,16 @@ class _mainMenuUserState extends State<mainMenuUser> {
   void saveBarang() {
     String namaAlat = _namaAlatController.text;
     String lokasi = _lokasiController.text;
-    String divisi = _divisiController.text;
+    String divisi = valueDivisi;
     String status = 'Normal';
+    String laporan = '';
 
     Map<String, String> barang = {
       'nama': namaAlat,
       'letak': lokasi,
       'divisi': divisi,
       'status': status,
+      'laporan': laporan,
     };
 
     _ref.push().set(barang).then((value) {
