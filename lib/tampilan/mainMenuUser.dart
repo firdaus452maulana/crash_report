@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:expandable_group/expandable_group_widget.dart';
 
 class mainMenuUser extends StatefulWidget {
   @override
@@ -320,8 +319,9 @@ class _mainMenuUserState extends State<mainMenuUser> {
         });
   }
 
-  Widget _buildListBarang({Map barang}) {
+  Widget _buildListBarang({Map barang, final theme}) {
     Color statusColor = getStatusColor(barang['status']);
+
     return Container(
       //height: 150,
       color: Colors.white,
@@ -339,77 +339,83 @@ class _mainMenuUserState extends State<mainMenuUser> {
           ],
           borderRadius: BorderRadius.circular(17.5),
         ),
-        child: Padding(
-          padding: const EdgeInsets.only(
-              top: 12.0, bottom: 12.0, left: 24.0, right: 24.0),
-          child: Stack(
-            children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                //posisi
-                mainAxisSize: MainAxisSize.min,
-                // untuk mengatur agar widget column mengikuti widget
+        child: Theme(
+          data: theme,
+          child: ExpansionTile(
+            trailing: Text(''),
+            title: Padding(
+              padding: const EdgeInsets.only(
+                  top: 12.0, bottom: 12.0, left: 0.0, right: 0.0),
+              child: Stack(
                 children: <Widget>[
-                  Text(
-                    barang['nama'],
-                    style: GoogleFonts.openSans(
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16,
-                    ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    //posisi
+                    mainAxisSize: MainAxisSize.min,
+                    // untuk mengatur agar widget column mengikuti widget
+                    children: <Widget>[
+                      Text(
+                        barang['nama'],
+                        style: GoogleFonts.openSans(
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Text(
+                        barang['letak'],
+                        style: GoogleFonts.openSans(
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 12,
+                            color: Colors.black.withOpacity(0.25)),
+                      ),
+                      Text(
+                        barang['divisi'],
+                        style: GoogleFonts.openSans(
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w300,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    barang['letak'],
-                    style: GoogleFonts.openSans(
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 12,
-                        color: Colors.black.withOpacity(0.25)),
-                  ),
-                  Text(
-                    barang['divisi'],
-                    style: GoogleFonts.openSans(
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.w300,
-                      fontSize: 12,
-                    ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    //posisi
+                    mainAxisSize: MainAxisSize.min,
+                    // untuk mengatur agar widget column mengikuti widget
+                    children: <Widget>[
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          "Status",
+                          style: GoogleFonts.openSans(
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          barang['status'],
+                          style: GoogleFonts.openSans(
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                            color: statusColor,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                //posisi
-                mainAxisSize: MainAxisSize.min,
-                // untuk mengatur agar widget column mengikuti widget
-                children: <Widget>[
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      "Status",
-                      style: GoogleFonts.openSans(
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      barang['status'],
-                      style: GoogleFonts.openSans(
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                        color: statusColor,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+            ),
           ),
-        ),
+        )
       ),
     );
   }
@@ -442,6 +448,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).copyWith(dividerColor: Colors.transparent);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -490,7 +497,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
               itemBuilder: (BuildContext context, DataSnapshot snapshot,
                   Animation<double> animation, int index) {
                 Map barang = snapshot.value;
-                return _buildListBarang(barang: barang);
+                return _buildListBarang(barang: barang, theme: theme);
               },
             ),
           ),
