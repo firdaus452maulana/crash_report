@@ -1,3 +1,4 @@
+import 'package:crash_report/tampilan/sideBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
@@ -386,7 +387,7 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi> {
     setState(() {
       uid = preferences.getString('uid');
       name = preferences.getString('name');
-      //role = preferences.getString('role');
+      role = preferences.getString('role');
     });
   }
 
@@ -410,6 +411,7 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      drawer: sideBar(),
       body: Stack(
         children: <Widget>[
           Container(
@@ -438,7 +440,7 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi> {
                       fontSize: 20),
                 ),
                 Text(
-                  "Teknisi",
+                  role,
                   style: TextStyle(
                       color: Color(0xFFADABAB),
                       fontWeight: FontWeight.w600,
@@ -461,7 +463,7 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi> {
             ),
           ),
 
-          Container(
+          /*Container(
             alignment: Alignment.bottomCenter,
             child: RaisedButton(
               child: Text("Log Out"),
@@ -472,9 +474,10 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi> {
                 _signOut(context);
               },
             ),
-          ),
+          ),*/
         ],
       ),
+
       /*floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         backgroundColor: Color(0xFF031F4B),
