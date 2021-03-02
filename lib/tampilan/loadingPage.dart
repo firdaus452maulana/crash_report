@@ -1,6 +1,7 @@
+import 'package:crash_report/listbarangPage_teknisi.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'homePage.dart';
+
 import 'mainMenuUser.dart';
 
 class loadingPage extends StatefulWidget {
@@ -9,7 +10,6 @@ class loadingPage extends StatefulWidget {
 }
 
 class _loadingPageState extends State<loadingPage> {
-
   String bagian;
 
   // NAVIGASI KE HALAMAN HOME PEGAWAI DAN TEKNISI
@@ -18,15 +18,15 @@ class _loadingPageState extends State<loadingPage> {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => mainMenuUser()),
-            (route) => false,
+        (route) => false,
       );
     }
 
     if (bagian == "teknisi") {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => homePage()),
-            (route) => false,
+        MaterialPageRoute(builder: (context) => listbarangPage_teknisi()),
+        (route) => false,
       );
     }
   }
@@ -43,9 +43,9 @@ class _loadingPageState extends State<loadingPage> {
   // BUAT NGERUN FUNGSI PAS APP START
   @override
   void initState() {
-    try{
+    try {
       _ambilPreference();
-    }catch(e){
+    } catch (e) {
       print(e);
     }
   }

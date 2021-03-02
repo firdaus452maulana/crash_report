@@ -2,6 +2,7 @@ import 'package:crash_report/tampilan/forgotPasswordPage.dart';
 import 'package:crash_report/tampilan/homePage.dart';
 import 'package:crash_report/tampilan/mainMenuUser.dart';
 import 'package:crash_report/tampilan/pilihBagianPage.dart';
+import 'package:crash_report/listbarangPage_teknisi.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +45,7 @@ class _loginPageState extends State<loginPage> {
     if (bagian == "teknisi") {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => homePage()),
+        MaterialPageRoute(builder: (context) => listbarangPage_teknisi()),
         (route) => false,
       );
     }
