@@ -1,11 +1,9 @@
-import 'package:crash_report/tampilan/loginPage.dart';
 import 'package:crash_report/tampilan/sideBar.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class mainMenuUser extends StatefulWidget {
   @override
@@ -14,7 +12,6 @@ class mainMenuUser extends StatefulWidget {
 
 class _mainMenuUserState extends State<mainMenuUser> {
   var scaffoldKey = GlobalKey<ScaffoldState>();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   TextEditingController _namaAlatController,
       _lokasiController,
       _divisiController;
@@ -24,7 +21,9 @@ class _mainMenuUserState extends State<mainMenuUser> {
 
   Query _query;
   DatabaseReference _ref;
-  String uid, name, role;
+  String uid = '';
+  String name = '';
+  String role = '';
 
   @override
   void initState() {
@@ -411,6 +410,58 @@ class _mainMenuUserState extends State<mainMenuUser> {
                 ],
               ),
             ),
+            children: <Widget>[
+              Container(
+                child: TextFormField(
+                  cursorColor: Colors.black,
+                  style: TextStyle(fontSize: 12),
+                  keyboardType: TextInputType.text,
+                  controller: _namaAlatController,
+                  decoration: new InputDecoration(
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius:
+                        BorderRadius.all(Radius.circular(30)),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(30)),
+                          borderSide: BorderSide(
+                              color: Color(0xFF000000)
+                                  .withOpacity(0.15))),
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(30)),
+                          borderSide:
+                          BorderSide(color: Color(0xFF031F4B))),
+                      filled: false,
+                      contentPadding:
+                      EdgeInsets.only(left: 24.0, right: 24.0),
+                      hintStyle: TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFF000000).withOpacity(0.15)),
+                      hintText: "Nama Alat",
+                      errorBorder: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(30)),
+                          borderSide: BorderSide(color: Colors.red)),
+                      focusedErrorBorder: OutlineInputBorder(
+                          borderRadius:
+                          BorderRadius.all(Radius.circular(30)),
+                          borderSide: BorderSide(
+                              color: Colors.red, width: 1)),
+                      errorStyle: TextStyle(fontSize: 10)),
+                  obscureText: false,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return "Field is required";
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {},
+                ),
+              ),
+            ],
           ),
         )
       ),
@@ -424,22 +475,6 @@ class _mainMenuUserState extends State<mainMenuUser> {
       uid = preferences.getString('uid');
       name = preferences.getString('name');
       role = preferences.getString('role');
-    });
-  }
-
-  // NAVIGASI KE HALAMAN LOGIN
-  _navLogOutSuccess() {
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => loginPage()),
-      (route) => false,
-    );
-  }
-
-  // FUNGSI SIGN OUT
-  Future<void> _signOut(BuildContext context) async {
-    await _auth.signOut().then((value) {
-      _navLogOutSuccess();
     });
   }
 
