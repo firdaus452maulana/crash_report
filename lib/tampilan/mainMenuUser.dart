@@ -14,7 +14,8 @@ class _mainMenuUserState extends State<mainMenuUser> {
   var scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController _namaAlatController,
       _lokasiController,
-      _divisiController;
+      _divisiController,
+      _laporanController;
   String valueDivisi;
 
   List divisi = ["Divisi 1", "Divisi 2", "Divisi 3"];
@@ -440,7 +441,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
                       hintStyle: TextStyle(
                           fontSize: 12,
                           color: Color(0xFF000000).withOpacity(0.15)),
-                      hintText: "Nama Alat",
+                      hintText: "Tulis Laporan",
                       errorBorder: OutlineInputBorder(
                           borderRadius:
                           BorderRadius.all(Radius.circular(30)),
@@ -459,6 +460,30 @@ class _mainMenuUserState extends State<mainMenuUser> {
                     return null;
                   },
                   onSaved: (value) {},
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: RaisedButton(
+                  color: Color(0xFF031F4B),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)),
+                  textColor: Colors.white,
+                  child: Container(
+                    height: 42.5,
+                    width: 85,
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Lapor",
+                      style: GoogleFonts.openSans(
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                    updateReport();
+                  },
                 ),
               ),
             ],
@@ -593,6 +618,29 @@ class _mainMenuUserState extends State<mainMenuUser> {
     });
   }
 
+  void updateReport(){
+    String namaAlat = _namaAlatController.text;
+    String lokasi = _lokasiController.text;
+    String divisi = valueDivisi;
+    String status = 'Normal';
+    String laporan = _laporanController.text;
+
+    Map<String, String> report = {
+      'nama': namaAlat,
+      'letak': lokasi,
+      'divisi': divisi,
+      'status': status,
+      'laporan': laporan,
+    };
+
+    _ref.push().set(report).then((value) {
+      Navigator.pop(context);
+      _namaAlatController.clear();
+      _lokasiController.clear();
+      _divisiController.clear();
+      _laporanController.clear();
+    });
+  }
   Color getStatusColor(String status) {
     Color color = Theme.of(context).accentColor;
 
