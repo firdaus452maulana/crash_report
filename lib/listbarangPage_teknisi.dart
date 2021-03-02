@@ -386,7 +386,7 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi> {
     setState(() {
       uid = preferences.getString('uid');
       name = preferences.getString('name');
-      role = preferences.getString('role');
+      //role = preferences.getString('role');
     });
   }
 
@@ -395,7 +395,7 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi> {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => loginPage()),
-          (route) => false,
+      (route) => false,
     );
   }
 
@@ -438,7 +438,7 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi> {
                       fontSize: 20),
                 ),
                 Text(
-                  role,
+                  "Teknisi",
                   style: TextStyle(
                       color: Color(0xFFADABAB),
                       fontWeight: FontWeight.w600,
@@ -467,7 +467,7 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi> {
               child: Text("Log Out"),
               onPressed: () async {
                 SharedPreferences preference =
-                await SharedPreferences.getInstance();
+                    await SharedPreferences.getInstance();
                 preference.clear();
                 _signOut(context);
               },
