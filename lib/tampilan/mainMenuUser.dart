@@ -441,7 +441,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
                       hintStyle: TextStyle(
                           fontSize: 12,
                           color: Color(0xFF000000).withOpacity(0.15)),
-                      hintText: "Tulis Laporan",
+                      hintText: "Tulis Laporan Kondisi Barang",
                       errorBorder: OutlineInputBorder(
                           borderRadius:
                           BorderRadius.all(Radius.circular(30)),
@@ -622,7 +622,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
     String namaAlat = _namaAlatController.text;
     String lokasi = _lokasiController.text;
     String divisi = valueDivisi;
-    String status = 'Normal';
+    String status = 'Diperiksa';
     String laporan = _laporanController.text;
 
     Map<String, String> report = {
@@ -641,6 +641,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
       _laporanController.clear();
     });
   }
+
   Color getStatusColor(String status) {
     Color color = Theme.of(context).accentColor;
 
@@ -649,6 +650,9 @@ class _mainMenuUserState extends State<mainMenuUser> {
     }
     if (status == 'Rusak') {
       color = Color(0xFFFF6A6A);
+    }
+    if (status == 'Diperiksa') {
+      color = Color(0xFFFFD54F);
     }
     return color;
   }
