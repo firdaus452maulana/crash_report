@@ -261,6 +261,36 @@ class _mainMenuUserState extends State<mainMenuUser> {
 
                         SizedBox(height: 16),
 
+                        FlatButton(
+                          color: Colors.grey,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),),
+                          textColor: Colors.white,
+                          child: Container(
+                            height: 42.5,
+                            alignment: Alignment.center,
+                            child: Row(
+                              children: <Widget>[
+                                Icon(Icons.add_a_photo),
+                                SizedBox(width: 10),
+                                Text(
+                                  "Gambar/Foto",
+                                  style: GoogleFonts.openSans(
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.bold,
+                                    fontSize: 12.0
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          onPressed: (){
+
+                          },
+                        ),
+
+                        SizedBox(height: 16),
+
                         //Button
                         Align(
                           alignment: Alignment.centerRight,
