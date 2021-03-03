@@ -1,9 +1,13 @@
+import 'dart:io';
+import 'package:path/path.dart' as Path;
 import 'package:crash_report/tampilan/sideBar.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class mainMenuUser extends StatefulWidget {
   @override
@@ -22,9 +26,11 @@ class _mainMenuUserState extends State<mainMenuUser> {
 
   Query _query;
   DatabaseReference _ref;
+  Reference _storef;
   String uid = '';
   String name = '';
   String role = '';
+  File image;
 
   @override
   void initState() {
@@ -285,7 +291,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
                             ),
                           ),
                           onPressed: (){
-
+                            getImage();
                           },
                         ),
 
@@ -348,7 +354,6 @@ class _mainMenuUserState extends State<mainMenuUser> {
 
   Widget _buildListBarang({Map barang, final theme}) {
     Color statusColor = getStatusColor(barang['status']);
-
     return Container(
       //height: 150,
       color: Colors.white,
@@ -523,6 +528,12 @@ class _mainMenuUserState extends State<mainMenuUser> {
     );
   }
 
+  // TAMBAH GAMBAR DOANG DARI GALLERY
+  Future<void> getImage() async {
+    await ImagePicker.pickImage(source: ImageSource.gallery).then((img){
+      image = img;
+    });
+  }
   // AMBIL SHARED PREFERENCES
   Future<void> _ambilPreference() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -626,6 +637,29 @@ class _mainMenuUserState extends State<mainMenuUser> {
   }
 
   void saveBarang() {
+    //SEND IMAGE KE STORAGE
+      String _uploadedFileURL;
+    _storef = FirebaseStorage.instance.ref().child('fotoBarang/${Path.basename(image.path)}');
+    UploadTask uploadTask = _storef.putFile(image);
+    uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
+      print('Snapshot state: ${snapshot.state}'); // paused, running, complete
+      print('Progress: ${snapshot.totalBytes / snapshot.bytesTransferred}');
+    }, onError: (Object e) {
+      print(e); // FirebaseException
+    });
+
+    uploadTask
+        .then((TaskSnapshot snapshot) {
+      print('Upload complete!');
+    })
+        .catchError((Object e) {
+      print(e); // FirebaseException
+    });
+
+    _storef.getDownloadURL().then((fileURL){
+      _uploadedFileURL = fileURL;
+    });
+
     String namaAlat = _namaAlatController.text;
     String lokasi = _lokasiController.text;
     String divisi = valueDivisi;
@@ -638,6 +672,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
       'divisi': divisi,
       'status': status,
       'laporan': laporan,
+      'imageURL':_uploadedFileURL
     };
 
     _ref.push().set(barang).then((value) {
@@ -646,6 +681,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
       _lokasiController.clear();
       _divisiController.clear();
     });
+
   }
 
   void updateReport(){
