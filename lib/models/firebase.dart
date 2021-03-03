@@ -15,6 +15,6 @@ class DatabaseManager {
     return await DatabaseManager()
         .userListRealtime
         .child(uid)
-        .set({'name': name, 'email': email, 'bagian': "teknisi"});
+        .set({'name': name, 'email': email, 'role': "Teknisi", 'bagian': "teknisi"});
   }
 }
