@@ -2,19 +2,20 @@ import 'package:crash_report/tampilan/sideBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'tampilan/loginPage.dart';
 
 class listbarangPage_teknisi extends StatefulWidget {
   @override
   _listbarangPage_teknisiState createState() => _listbarangPage_teknisiState();
 }
 
-class _listbarangPage_teknisiState extends State<listbarangPage_teknisi> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+class _listbarangPage_teknisiState extends State<listbarangPage_teknisi>
+    with SingleTickerProviderStateMixin {
+
+  TabController _tabController;
   TextEditingController _namaAlatController,
       _lokasiController,
       _divisiController;
@@ -26,6 +27,7 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi> {
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(vsync: this, length: 2);
     _namaAlatController = TextEditingController();
     _lokasiController = TextEditingController();
     _divisiController = TextEditingController();
@@ -37,260 +39,9 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi> {
     _ambilPreference();
   }
 
-  // DIALOG ADD BARANG
-  /*void _showDialogPenambahan() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return Dialog(
-            shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            child: Container(
-              padding: EdgeInsets.all(24),
-              child: Stack(
-                children: <Widget>[
-                  Container(
-                    padding:
-                    EdgeInsets.only(top: 16, bottom: 16, left: 8, right: 8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      //posisi
-                      mainAxisSize: MainAxisSize.min,
-                      // untuk mengatur agar widget column mengikuti widget
-                      children: <Widget>[
-                        Container(
-                            child: Text(
-                              "Tambah Barang",
-                              style: GoogleFonts.openSans(
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            )),
-
-                        SizedBox(height: 16),
-
-                        // NAMA ALAT
-                        Container(
-                          child: TextFormField(
-                            cursorColor: Colors.black,
-                            style: TextStyle(fontSize: 12),
-                            keyboardType: TextInputType.text,
-                            controller: _namaAlatController,
-                            decoration: new InputDecoration(
-                                fillColor: Colors.white,
-                                border: OutlineInputBorder(
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(30)),
-                                    borderSide: BorderSide(
-                                        color: Color(0xFF000000)
-                                            .withOpacity(0.15))),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(30)),
-                                    borderSide:
-                                    BorderSide(color: Color(0xFF031F4B))),
-                                filled: false,
-                                contentPadding:
-                                EdgeInsets.only(left: 24.0, right: 24.0),
-                                hintStyle: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF000000).withOpacity(0.15)),
-                                hintText: "Nama Alat",
-                                errorBorder: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(30)),
-                                    borderSide: BorderSide(color: Colors.red)),
-                                focusedErrorBorder: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(30)),
-                                    borderSide: BorderSide(
-                                        color: Colors.red, width: 1)),
-                                errorStyle: TextStyle(fontSize: 10)),
-                            obscureText: false,
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return "Field is required";
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {},
-                          ),
-                        ),
-
-                        SizedBox(height: 16),
-
-                        // LOKASI
-                        Container(
-                          child: TextFormField(
-                            cursorColor: Colors.black,
-                            style: TextStyle(fontSize: 12),
-                            keyboardType: TextInputType.text,
-                            controller: _lokasiController,
-                            decoration: new InputDecoration(
-                                fillColor: Colors.white,
-                                border: OutlineInputBorder(
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(30)),
-                                    borderSide: BorderSide(
-                                        color: Color(0xFF000000)
-                                            .withOpacity(0.15))),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(30)),
-                                    borderSide:
-                                    BorderSide(color: Color(0xFF031F4B))),
-                                filled: false,
-                                contentPadding:
-                                EdgeInsets.only(left: 24.0, right: 24.0),
-                                hintStyle: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF000000).withOpacity(0.15)),
-                                hintText: "Lokasi",
-                                errorBorder: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(30)),
-                                    borderSide: BorderSide(color: Colors.red)),
-                                focusedErrorBorder: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(30)),
-                                    borderSide: BorderSide(
-                                        color: Colors.red, width: 1)),
-                                errorStyle: TextStyle(fontSize: 10)),
-                            obscureText: false,
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return "Field is required";
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {},
-                          ),
-                        ),
-
-                        SizedBox(height: 16),
-
-                        // DIVISI
-                        Container(
-                          child: TextFormField(
-                            cursorColor: Colors.black,
-                            style: TextStyle(fontSize: 12),
-                            keyboardType: TextInputType.text,
-                            controller: _divisiController,
-                            decoration: new InputDecoration(
-                                fillColor: Colors.white,
-                                border: OutlineInputBorder(
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(30)),
-                                    borderSide: BorderSide(
-                                        color: Color(0xFF000000)
-                                            .withOpacity(0.15))),
-                                focusedBorder: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(30)),
-                                    borderSide:
-                                    BorderSide(color: Color(0xFF031F4B))),
-                                filled: false,
-                                contentPadding:
-                                EdgeInsets.only(left: 24.0, right: 24.0),
-                                hintStyle: TextStyle(
-                                    fontSize: 12,
-                                    color: Color(0xFF000000).withOpacity(0.15)),
-                                hintText: "Divisi",
-                                errorBorder: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(30)),
-                                    borderSide: BorderSide(color: Colors.red)),
-                                focusedErrorBorder: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(30)),
-                                    borderSide: BorderSide(
-                                        color: Colors.red, width: 1)),
-                                errorStyle: TextStyle(fontSize: 10)),
-                            obscureText: false,
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return "Field is required";
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {},
-                          ),
-                        ),
-
-                        SizedBox(height: 16),
-
-                        //Button
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: RaisedButton(
-                            color: Color(0xFF031F4B),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30)),
-                            textColor: Colors.white,
-                            child: Container(
-                              height: 42.5,
-                              width: 85,
-                              alignment: Alignment.center,
-                              child: Text(
-                                "Save",
-                                style: GoogleFonts.openSans(
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            onPressed: () {
-                              saveBarang();
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  //Icon Close
-                  Positioned(
-                    right: 0.0,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Align(
-                        alignment: Alignment.topRight,
-                        child: CircleAvatar(
-                          radius: 14,
-                          backgroundColor: Color(0xFF031F4B),
-                          child: Icon(
-                            Icons.close,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
-  }
-*/
   Widget _buildListBarang({Map barang}) {
     Color statusColor = getStatusColor(barang['status']);
     return Container(
-      //height: 150,
       color: Colors.white,
       child: Container(
         margin: EdgeInsets.only(bottom: 8, left: 16, right: 16),
@@ -391,22 +142,6 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi> {
     });
   }
 
-  // NAVIGASI KE HALAMAN LOGIN
-  _navLogOutSuccess() {
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => loginPage()),
-      (route) => false,
-    );
-  }
-
-  // FUNGSI SIGN OUT
-  Future<void> _signOut(BuildContext context) async {
-    await _auth.signOut().then((value) {
-      _navLogOutSuccess();
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -450,8 +185,71 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi> {
             ),
           ),
 
+          Padding(
+            padding: EdgeInsets.only(top: 164, bottom: 24, left: 24, right: 24),
+            child: Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20),
+                      topLeft: Radius.circular(20),
+                    ),
+                  ),
+                  child: TabBar(
+                    controller: _tabController,
+                    isScrollable: false,
+                    labelPadding: EdgeInsets.all(0),
+                    unselectedLabelColor: Colors.black.withOpacity(0.25),
+                    labelColor: Colors.black,
+                    indicator: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(20),
+                        topLeft: Radius.circular(20),
+                      ),
+                    ),
+                    tabs: <Widget>[
+                      Tab(
+                        text: "List Barang",
+                      ),
+                      Tab(
+                        text: "Laporan",
+                      ),
+                    ],
+                  ),
+                ),
+
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    padding: EdgeInsets.only(top: 24, bottom: 24),
+                    child: new TabBarView(controller: _tabController, children: [
+                      // LIST BARANG
+                      FirebaseAnimatedList(
+                        query: _query,
+                        itemBuilder: (BuildContext context,
+                            DataSnapshot snapshot,
+                            Animation<double> animation,
+                            int index) {
+                          Map barang = snapshot.value;
+                          return _buildListBarang(barang: barang);
+                        },
+                      ),
+                      Center(child: Text("wow\nlol")),
+                    ]),
+                  ),
+                )
+              ],
+            ),
+          ),
+
           // LIST BARANG
-          Container(
+          /*Container(
             margin: EdgeInsets.only(left: 24, right: 24, bottom: 24, top: 180),
             child: FirebaseAnimatedList(
               query: _query,
@@ -461,30 +259,9 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi> {
                 return _buildListBarang(barang: barang);
               },
             ),
-          ),
-
-          /*Container(
-            alignment: Alignment.bottomCenter,
-            child: RaisedButton(
-              child: Text("Log Out"),
-              onPressed: () async {
-                SharedPreferences preference =
-                    await SharedPreferences.getInstance();
-                preference.clear();
-                _signOut(context);
-              },
-            ),
           ),*/
         ],
       ),
-
-      /*floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        backgroundColor: Color(0xFF031F4B),
-        onPressed: () {
-          _showDialogPenambahan();
-        },
-      ),*/
     );
   }
 
