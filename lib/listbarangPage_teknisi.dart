@@ -18,6 +18,8 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi>
       _lokasiController,
       _divisiController;
 
+  var scaffoldKey = GlobalKey<ScaffoldState>();
+
   Query _query;
   DatabaseReference _ref;
   String uid, name, role;
@@ -143,13 +145,14 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       backgroundColor: Colors.white,
       drawer: sideBar(),
       body: Stack(
         children: <Widget>[
           Container(
             alignment: Alignment.centerLeft,
-            padding: EdgeInsets.only(top: 64, left: 32, right: 32),
+            padding: EdgeInsets.only(top: 16, left: 8, right: 8, bottom: 0),
             height: 256,
             width: double.infinity,
             color: Color(0xFF031F4B),
@@ -158,31 +161,47 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  "Selamat Datang,",
-                  style: TextStyle(
-                      color: Color(0xFF949090),
-                      fontWeight: FontWeight.w300,
-                      fontSize: 16),
+                IconButton(
+                  icon: Icon(
+                    Icons.menu,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    scaffoldKey.currentState.openDrawer();
+                  },
                 ),
-                Text(
-                  name,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20),
-                ),
-                Text(
-                  role,
-                  style: TextStyle(
-                      color: Color(0xFFADABAB),
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14),
+                Container(
+                  margin: EdgeInsets.only(left: 24, right: 24, top: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Selamat Datang,",
+                        style: TextStyle(
+                            color: Color(0xFF949090),
+                            fontWeight: FontWeight.w300,
+                            fontSize: 16),
+                      ),
+                      Text(
+                        name,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20),
+                      ),
+                      Text(
+                        role,
+                        style: TextStyle(
+                            color: Color(0xFFADABAB),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
-
           Container(
             padding: EdgeInsets.all(0),
             margin: EdgeInsets.only(top: 164, bottom: 24, left: 24, right: 24),
@@ -214,8 +233,10 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi>
                       isScrollable: false,
                       labelPadding: EdgeInsets.all(0),
                       labelColor: Colors.black,
-                      labelStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
-                      unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w400, fontSize: 12),
+                      labelStyle:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                      unselectedLabelStyle:
+                          TextStyle(fontWeight: FontWeight.w400, fontSize: 12),
                       unselectedLabelColor: Colors.black.withOpacity(0.5),
                       indicator: BoxDecoration(
                         color: Colors.white,
@@ -244,8 +265,7 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi>
                           bottomRight: Radius.circular(20),
                         ),
                       ),
-                      child: new TabBarView(
-                          controller: _tabController,
+                      child: new TabBarView(controller: _tabController,
                           //physics: NeverScrollableScrollPhysics(),
                           children: [
                             // TAB VIEW LIST BARANG
