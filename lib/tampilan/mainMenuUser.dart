@@ -18,15 +18,14 @@ class _mainMenuUserState extends State<mainMenuUser> {
   var scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController _namaAlatController,
       _lokasiController,
-      _divisiController,
-      _laporanController;
+      _divisiController;
   String valueDivisi;
+  String uploadedFileURL;
 
   List divisi = ["Divisi 1", "Divisi 2", "Divisi 3"];
 
   Query _query;
   DatabaseReference _ref;
-  Reference _storef;
   String uid = '';
   String name = '';
   String role = '';
@@ -534,6 +533,13 @@ class _mainMenuUserState extends State<mainMenuUser> {
       image = img;
     });
   }
+  // UPLOAD GAMBAR KE DATABASE
+  Future<void> sendImage() async {
+    Reference _storef = FirebaseStorage.instance.ref().child('fotoBarang/${Path.basename(image.path)}');
+    await _storef.putFile(image);
+
+    uploadedFileURL = await _storef.getDownloadURL();
+  }
   // AMBIL SHARED PREFERENCES
   Future<void> _ambilPreference() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -637,42 +643,22 @@ class _mainMenuUserState extends State<mainMenuUser> {
   }
 
   void saveBarang() {
-    //SEND IMAGE KE STORAGE
-      String _uploadedFileURL;
-    _storef = FirebaseStorage.instance.ref().child('fotoBarang/${Path.basename(image.path)}');
-    UploadTask uploadTask = _storef.putFile(image);
-    uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
-      print('Snapshot state: ${snapshot.state}'); // paused, running, complete
-      print('Progress: ${snapshot.totalBytes / snapshot.bytesTransferred}');
-    }, onError: (Object e) {
-      print(e); // FirebaseException
-    });
 
-    uploadTask
-        .then((TaskSnapshot snapshot) {
-      print('Upload complete!');
-    })
-        .catchError((Object e) {
-      print(e); // FirebaseException
-    });
-
-    _storef.getDownloadURL().then((fileURL){
-      _uploadedFileURL = fileURL;
-    });
+    //SEND IMAGE KE DATABASE
+    sendImage();
 
     String namaAlat = _namaAlatController.text;
     String lokasi = _lokasiController.text;
     String divisi = valueDivisi;
     String status = 'Normal';
-    String laporan = '';
+    String URL = uploadedFileURL;
 
     Map<String, String> barang = {
       'nama': namaAlat,
       'letak': lokasi,
       'divisi': divisi,
       'status': status,
-      'laporan': laporan,
-      'imageURL':_uploadedFileURL
+      'imageURL': URL,
     };
 
     _ref.push().set(barang).then((value) {
@@ -689,14 +675,12 @@ class _mainMenuUserState extends State<mainMenuUser> {
     String lokasi = _lokasiController.text;
     String divisi = valueDivisi;
     String status = 'Diperiksa';
-    String laporan = _laporanController.text;
 
     Map<String, String> report = {
       'nama': namaAlat,
       'letak': lokasi,
       'divisi': divisi,
       'status': status,
-      'laporan': laporan,
     };
 
     _ref.push().set(report).then((value) {
@@ -704,7 +688,6 @@ class _mainMenuUserState extends State<mainMenuUser> {
       _namaAlatController.clear();
       _lokasiController.clear();
       _divisiController.clear();
-      _laporanController.clear();
     });
   }
 
