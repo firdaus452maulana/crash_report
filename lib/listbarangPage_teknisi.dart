@@ -1,5 +1,4 @@
 import 'package:crash_report/tampilan/sideBar.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,7 +13,6 @@ class listbarangPage_teknisi extends StatefulWidget {
 
 class _listbarangPage_teknisiState extends State<listbarangPage_teknisi>
     with SingleTickerProviderStateMixin {
-
   TabController _tabController;
   TextEditingController _namaAlatController,
       _lokasiController,
@@ -185,81 +183,92 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi>
             ),
           ),
 
-          Padding(
-            padding: EdgeInsets.only(top: 164, bottom: 24, left: 24, right: 24),
-            child: Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(20),
-                      topLeft: Radius.circular(20),
-                    ),
-                  ),
-                  child: TabBar(
-                    controller: _tabController,
-                    isScrollable: false,
-                    labelPadding: EdgeInsets.all(0),
-                    unselectedLabelColor: Colors.black.withOpacity(0.25),
-                    labelColor: Colors.black,
-                    indicator: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(20),
-                        topLeft: Radius.circular(20),
-                      ),
-                    ),
-                    tabs: <Widget>[
-                      Tab(
-                        text: "List Barang",
-                      ),
-                      Tab(
-                        text: "Laporan",
-                      ),
-                    ],
-                  ),
-                ),
-
-                Expanded(
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: 16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                    ),
-                    padding: EdgeInsets.only(top: 24, bottom: 24),
-                    child: new TabBarView(controller: _tabController, children: [
-                      // LIST BARANG
-                      FirebaseAnimatedList(
-                        query: _query,
-                        itemBuilder: (BuildContext context,
-                            DataSnapshot snapshot,
-                            Animation<double> animation,
-                            int index) {
-                          Map barang = snapshot.value;
-                          return _buildListBarang(barang: barang);
-                        },
-                      ),
-                      Center(child: Text("wow\nlol")),
-                    ]),
-                  ),
+          Container(
+            padding: EdgeInsets.all(0),
+            margin: EdgeInsets.only(top: 164, bottom: 24, left: 24, right: 24),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.5),
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(20),
+                topLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+                bottomLeft: Radius.circular(20),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.25),
+                  spreadRadius: 0,
+                  blurRadius: 20,
+                  offset: Offset(0, 0),
                 )
               ],
             ),
-          ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Column(
+                children: [
+                  Container(
+                    height: 36,
+                    child: TabBar(
+                      controller: _tabController,
+                      isScrollable: false,
+                      labelPadding: EdgeInsets.all(0),
+                      labelColor: Colors.black,
+                      labelStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                      unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w400, fontSize: 12),
+                      unselectedLabelColor: Colors.black.withOpacity(0.5),
+                      indicator: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(20),
+                          topLeft: Radius.circular(20),
+                        ),
+                      ),
+                      tabs: <Widget>[
+                        Tab(
+                          text: "List Barang",
+                        ),
+                        Tab(
+                          text: "Laporan",
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(0),
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
+                      ),
+                      child: new TabBarView(
+                          controller: _tabController,
+                          //physics: NeverScrollableScrollPhysics(),
+                          children: [
+                            // TAB VIEW LIST BARANG
+                            FirebaseAnimatedList(
+                              query: _query,
+                              itemBuilder: (BuildContext context,
+                                  DataSnapshot snapshot,
+                                  Animation<double> animation,
+                                  int index) {
+                                Map barang = snapshot.value;
+                                return _buildListBarang(barang: barang);
+                              },
+                            ),
 
-          // LIST BARANG
-          /*Container(
-            margin: EdgeInsets.only(left: 24, right: 24, bottom: 24, top: 180),
-            child: FirebaseAnimatedList(
-              query: _query,
-              itemBuilder: (BuildContext context, DataSnapshot snapshot,
-                  Animation<double> animation, int index) {
-                Map barang = snapshot.value;
-                return _buildListBarang(barang: barang);
-              },
+                            // TAB VIEW LAPORAN
+                            Center(child: Text("wow\nlol")),
+                          ]),
+                    ),
+                  )
+                ],
+              ),
             ),
-          ),*/
+          ),
         ],
       ),
     );
