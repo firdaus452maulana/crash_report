@@ -446,78 +446,56 @@ class _mainMenuUserState extends State<mainMenuUser> {
               ),
             ),
             children: <Widget>[
-              Container(
-                child: TextFormField(
-                  cursorColor: Colors.black,
-                  style: TextStyle(fontSize: 12),
-                  keyboardType: TextInputType.text,
-                  controller: _namaAlatController,
-                  decoration: new InputDecoration(
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius:
-                        BorderRadius.all(Radius.circular(30)),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(30)),
-                          borderSide: BorderSide(
-                              color: Color(0xFF000000)
-                                  .withOpacity(0.15))),
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(30)),
-                          borderSide:
-                          BorderSide(color: Color(0xFF031F4B))),
-                      filled: false,
-                      contentPadding:
-                      EdgeInsets.only(left: 24.0, right: 24.0),
-                      hintStyle: TextStyle(
-                          fontSize: 12,
-                          color: Color(0xFF000000).withOpacity(0.15)),
-                      hintText: "Tulis Laporan Kondisi Barang",
-                      errorBorder: OutlineInputBorder(
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(30)),
-                          borderSide: BorderSide(color: Colors.red)),
-                      focusedErrorBorder: OutlineInputBorder(
-                          borderRadius:
-                          BorderRadius.all(Radius.circular(30)),
-                          borderSide: BorderSide(
-                              color: Colors.red, width: 1)),
-                      errorStyle: TextStyle(fontSize: 10)),
-                  obscureText: false,
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return "Field is required";
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {},
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: RaisedButton(
-                  color: Color(0xFF031F4B),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30)),
-                  textColor: Colors.white,
-                  child: Container(
-                    height: 42.5,
-                    width: 85,
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Lapor",
-                      style: GoogleFonts.openSans(
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.bold,
-                      ),
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      //color: Colors.grey[200],
+                      margin: EdgeInsets.only(bottom: 12.0),
+                      child: new Image.network(barang['imageURL']),
                     ),
-                  ),
-                  onPressed: () {
-                    updateReport();
-                  },
+                    Stack(
+                      children: <Widget>[
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Icon(
+                                Icons.delete,
+                                color: Colors.grey[400],
+                                size: 42.5,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: RaisedButton(
+                            color: Color(0xFF031F4B),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30)),
+                            textColor: Colors.white,
+                            child: Container(
+                              height: 42.5,
+                              width: 85,
+                              alignment: Alignment.center,
+                              child: Text(
+                                "Lapor",
+                                style: GoogleFonts.openSans(
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            onPressed: () {},
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ],
