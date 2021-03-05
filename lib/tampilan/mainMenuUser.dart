@@ -188,20 +188,15 @@ class _mainMenuUserState extends State<mainMenuUser> {
 
                         // DIVISI
                         DropdownButtonFormField(
-                          icon: Icon(
-                            Icons.keyboard_arrow_down,
-                            color: Color(0xFF000000).withOpacity(0.25),
-                            size: 20,
+                          icon: Padding(
+                            padding: const EdgeInsets.only(right: 16.0),
+                            child: Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Color(0xFF000000).withOpacity(0.25),
+                              size: 20,
+                            ),
                           ),
                           decoration: InputDecoration(
-                              prefixIcon: Padding(
-                                padding: EdgeInsets.only(left: 8),
-                                child: Icon(
-                                  Icons.assignment_ind,
-                                  color: Color(0xFF000000).withOpacity(0.25),
-                                  size: 16,
-                                ),
-                              ),
                               fillColor: Colors.white,
                               border: OutlineInputBorder(
                                 borderRadius:
@@ -639,12 +634,17 @@ class _mainMenuUserState extends State<mainMenuUser> {
       'imageURL': URL,
     };
 
-    _ref.push().set(barang).then((value) {
-      Navigator.pop(context);
-      _namaAlatController.clear();
-      _lokasiController.clear();
-      _divisiController.clear();
-    });
+    if (URL != null){
+      _ref.push().set(barang).then((value) {
+        Navigator.pop(context);
+        _namaAlatController.clear();
+        _lokasiController.clear();
+        _divisiController.clear();
+        valueDivisi = null;
+        uploadedFileURL = null;
+        image = null;
+      });
+    };
 
   }
 
