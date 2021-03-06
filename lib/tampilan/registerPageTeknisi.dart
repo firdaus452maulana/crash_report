@@ -1,4 +1,3 @@
-import 'package:crash_report/models/firebase.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../models/authentication.dart';
@@ -16,13 +15,9 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   bool _secureText = true;
-  String valueDivisi;
-
-  List divisi = ["Divisi 1", "Divisi 2", "Divisi 3"];
 
   final auth = FirebaseAuth.instance;
   final AuthenticationService _auth = AuthenticationService();
-  final DatabaseManager _dbManager = DatabaseManager();
 
   TextEditingController _emailContoller = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -412,6 +407,9 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       loginPage()));
+                                          _nameController.clear();
+                                          _emailContoller.clear();
+                                          _passwordController.clear();
                                         },
                                       ),
                                     ),

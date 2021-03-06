@@ -300,7 +300,7 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi>
                             ),
 
                             // TAB VIEW LAPORAN
-                            Center(child: Text("wow\nlol")),
+                            Center(child: Text("Ini nanti ubah ke list laporan")),
                           ]),
                     ),
                   )

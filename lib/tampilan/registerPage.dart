@@ -498,6 +498,10 @@ class _registerPageState extends State<registerPage> {
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       loginPage()));
+                                          _nameController.clear();
+                                          _emailContoller.clear();
+                                          _passwordController.clear();
+                                          valueDivisi = null;
                                         },
                                       ),
                                     ),

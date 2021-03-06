@@ -1,5 +1,4 @@
 import 'package:crash_report/tampilan/forgotPasswordPage.dart';
-import 'package:crash_report/tampilan/homePage.dart';
 import 'package:crash_report/tampilan/mainMenuUser.dart';
 import 'package:crash_report/tampilan/pilihBagianPage.dart';
 import 'package:crash_report/listbarangPage_teknisi.dart';
@@ -384,6 +383,8 @@ class _loginPageState extends State<loginPage> {
                                                   MaterialPageRoute(
                                                       builder: (context) =>
                                                           forgotPasswordPage()));
+                                              _emailContoller.clear();
+                                              _passwordController.clear();
                                             },
                                             child: Text(
                                               "Forgot Password?",
@@ -445,6 +446,8 @@ class _loginPageState extends State<loginPage> {
                                                       MaterialPageRoute(
                                                           builder: (context) =>
                                                               pilihBagianPage()));
+                                                  _emailContoller.clear();
+                                                  _passwordController.clear();
                                                 },
                                               ),
                                             ),
