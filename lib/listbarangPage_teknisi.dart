@@ -193,21 +193,21 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi>
                     children: [
                       Text(
                         "Selamat Datang,",
-                        style: TextStyle(
+                        style: GoogleFonts.openSans(
                             color: Color(0xFF949090),
                             fontWeight: FontWeight.w300,
                             fontSize: 16),
                       ),
                       Text(
                         name,
-                        style: TextStyle(
+                        style: GoogleFonts.openSans(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 20),
                       ),
                       Text(
                         role,
-                        style: TextStyle(
+                        style: GoogleFonts.openSans(
                             color: Color(0xFFADABAB),
                             fontWeight: FontWeight.w600,
                             fontSize: 14),
@@ -250,9 +250,9 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi>
                       labelPadding: EdgeInsets.all(0),
                       labelColor: Colors.black,
                       labelStyle:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                          GoogleFonts.openSans(fontWeight: FontWeight.bold, fontSize: 12),
                       unselectedLabelStyle:
-                          TextStyle(fontWeight: FontWeight.w400, fontSize: 12),
+                          GoogleFonts.openSans(fontWeight: FontWeight.w400, fontSize: 12),
                       unselectedLabelColor: Colors.black.withOpacity(0.5),
                       indicator: BoxDecoration(
                         color: Colors.white,
