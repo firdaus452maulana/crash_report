@@ -86,7 +86,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
                         Container(
                           child: TextFormField(
                             cursorColor: Colors.black,
-                            style: TextStyle(fontSize: 12),
+                            style: GoogleFonts.openSans(fontSize: 12),
                             keyboardType: TextInputType.text,
                             controller: _namaAlatController,
                             decoration: new InputDecoration(
@@ -109,7 +109,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
                                 filled: false,
                                 contentPadding:
                                     EdgeInsets.only(left: 24.0, right: 24.0),
-                                hintStyle: TextStyle(
+                                hintStyle: GoogleFonts.openSans(
                                     fontSize: 12,
                                     color: Color(0xFF000000).withOpacity(0.15)),
                                 hintText: "Nama Alat",
@@ -122,7 +122,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
                                         BorderRadius.all(Radius.circular(30)),
                                     borderSide: BorderSide(
                                         color: Colors.red, width: 1)),
-                                errorStyle: TextStyle(fontSize: 10)),
+                                errorStyle: GoogleFonts.openSans(fontSize: 10)),
                             obscureText: false,
                             validator: (value) {
                               if (value.isEmpty) {
@@ -140,7 +140,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
                         Container(
                           child: TextFormField(
                             cursorColor: Colors.black,
-                            style: TextStyle(fontSize: 12),
+                            style: GoogleFonts.openSans(fontSize: 12),
                             keyboardType: TextInputType.text,
                             controller: _lokasiController,
                             decoration: new InputDecoration(
@@ -163,7 +163,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
                                 filled: false,
                                 contentPadding:
                                     EdgeInsets.only(left: 24.0, right: 24.0),
-                                hintStyle: TextStyle(
+                                hintStyle: GoogleFonts.openSans(
                                     fontSize: 12,
                                     color: Color(0xFF000000).withOpacity(0.15)),
                                 hintText: "Lokasi",
@@ -176,7 +176,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
                                         BorderRadius.all(Radius.circular(30)),
                                     borderSide: BorderSide(
                                         color: Colors.red, width: 1)),
-                                errorStyle: TextStyle(fontSize: 10)),
+                                errorStyle: GoogleFonts.openSans(fontSize: 10)),
                             obscureText: false,
                             validator: (value) {
                               if (value.isEmpty) {
@@ -220,7 +220,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
                               filled: false,
                               contentPadding:
                                   EdgeInsets.only(left: 24.0, right: 0),
-                              hintStyle: TextStyle(
+                              hintStyle: GoogleFonts.openSans(
                                   fontSize: 12,
                                   color: Color(0xFF000000).withOpacity(0.25)),
                               errorBorder: OutlineInputBorder(
@@ -232,10 +232,10 @@ class _mainMenuUserState extends State<mainMenuUser> {
                                       BorderRadius.all(Radius.circular(30)),
                                   borderSide:
                                       BorderSide(color: Colors.red, width: 1)),
-                              errorStyle: TextStyle(fontSize: 10)),
+                              errorStyle: GoogleFonts.openSans(fontSize: 10)),
                           hint: Text(
                             "divisi",
-                            style: TextStyle(
+                            style: GoogleFonts.openSans(
                                 fontSize: 12,
                                 color: Color(0xFF000000).withOpacity(.25)),
                           ),
@@ -256,7 +256,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
                               value: valueItem,
                               child: Text(
                                 valueItem,
-                                style: TextStyle(
+                                style: GoogleFonts.openSans(
                                     fontSize: 12, color: Color(0xFF000000)),
                               ),
                             );
@@ -800,21 +800,21 @@ class _mainMenuUserState extends State<mainMenuUser> {
                     children: [
                       Text(
                         "Selamat Datang,",
-                        style: TextStyle(
+                        style: GoogleFonts.openSans(
                             color: Color(0xFF949090),
                             fontWeight: FontWeight.w300,
                             fontSize: 16),
                       ),
                       Text(
                         name,
-                        style: TextStyle(
+                        style: GoogleFonts.openSans(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 20),
                       ),
                       Text(
                         role,
-                        style: TextStyle(
+                        style: GoogleFonts.openSans(
                             color: Color(0xFFADABAB),
                             fontWeight: FontWeight.w600,
                             fontSize: 14),

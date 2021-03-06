@@ -93,7 +93,7 @@ class _sideBarState extends State<sideBar> {
                   ),
                   FlatButton.icon(
                     icon: Icon(
-                      Icons.bug_report,
+                      Icons.perm_contact_calendar,
                       color: Colors.white,
                       size: 16,
                     ),

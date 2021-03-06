@@ -35,10 +35,10 @@ class _registerPageState extends State<registerPage> {
                   borderRadius: BorderRadius.circular(10)),
               title: Text(
                 "Something went wrong.",
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: GoogleFonts.openSans(fontWeight: FontWeight.bold),
               ),
               content: Text("Terjadi kesalahan, mohon isi kembali.",
-                  style: TextStyle(fontSize: 12)),
+                  style: GoogleFonts.openSans(fontSize: 12)),
             ));
   }
 
@@ -126,7 +126,7 @@ class _registerPageState extends State<registerPage> {
                             TextFormField(
                               controller: _nameController,
                               cursorColor: Colors.black,
-                              style: TextStyle(fontSize: 12),
+                              style: GoogleFonts.openSans(fontSize: 12),
                               keyboardType: TextInputType.text,
                               decoration: new InputDecoration(
                                   prefixIcon: Padding(
@@ -157,7 +157,7 @@ class _registerPageState extends State<registerPage> {
                                   filled: false,
                                   contentPadding:
                                       EdgeInsets.only(left: 24.0, right: 24.0),
-                                  hintStyle: TextStyle(
+                                  hintStyle: GoogleFonts.openSans(
                                       fontSize: 12,
                                       color:
                                           Color(0xFF000000).withOpacity(0.25)),
@@ -172,7 +172,7 @@ class _registerPageState extends State<registerPage> {
                                           BorderRadius.all(Radius.circular(30)),
                                       borderSide: BorderSide(
                                           color: Colors.red, width: 1)),
-                                  errorStyle: TextStyle(fontSize: 10)),
+                                  errorStyle: GoogleFonts.openSans(fontSize: 10)),
                               obscureText: false,
                               validator: (value) {
                                 if (value.isEmpty) {
@@ -190,7 +190,7 @@ class _registerPageState extends State<registerPage> {
                             TextFormField(
                               controller: _emailContoller,
                               cursorColor: Colors.black,
-                              style: TextStyle(fontSize: 12),
+                              style: GoogleFonts.openSans(fontSize: 12),
                               keyboardType: TextInputType.emailAddress,
                               decoration: new InputDecoration(
                                   prefixIcon: Padding(
@@ -221,7 +221,7 @@ class _registerPageState extends State<registerPage> {
                                   filled: false,
                                   contentPadding:
                                       EdgeInsets.only(left: 24.0, right: 24.0),
-                                  hintStyle: TextStyle(
+                                  hintStyle: GoogleFonts.openSans(
                                       fontSize: 12,
                                       color:
                                           Color(0xFF000000).withOpacity(0.25)),
@@ -236,7 +236,7 @@ class _registerPageState extends State<registerPage> {
                                           BorderRadius.all(Radius.circular(30)),
                                       borderSide: BorderSide(
                                           color: Colors.red, width: 1)),
-                                  errorStyle: TextStyle(fontSize: 10)),
+                                  errorStyle: GoogleFonts.openSans(fontSize: 10)),
                               obscureText: false,
                               validator: (value) {
                                 if (value.isEmpty) {
@@ -255,7 +255,7 @@ class _registerPageState extends State<registerPage> {
                             TextFormField(
                               controller: _passwordController,
                               cursorColor: Colors.black,
-                              style: TextStyle(fontSize: 12),
+                              style: GoogleFonts.openSans(fontSize: 12),
                               decoration: new InputDecoration(
                                 prefixIcon: Padding(
                                   padding: EdgeInsets.only(left: 8),
@@ -303,7 +303,7 @@ class _registerPageState extends State<registerPage> {
                                 filled: true,
                                 contentPadding:
                                     EdgeInsets.only(left: 24.0, right: 24.0),
-                                hintStyle: TextStyle(
+                                hintStyle: GoogleFonts.openSans(
                                     fontSize: 12,
                                     color: Color(0xFF000000).withOpacity(0.25)),
                                 hintText: "password",
@@ -316,7 +316,7 @@ class _registerPageState extends State<registerPage> {
                                         BorderRadius.all(Radius.circular(30)),
                                     borderSide: BorderSide(
                                         color: Colors.red, width: 1)),
-                                errorStyle: TextStyle(
+                                errorStyle: GoogleFonts.openSans(
                                   fontSize: 10,
                                 ),
                               ),
@@ -369,7 +369,7 @@ class _registerPageState extends State<registerPage> {
                                   filled: false,
                                   contentPadding:
                                       EdgeInsets.only(left: 24.0, right: 0),
-                                  hintStyle: TextStyle(
+                                  hintStyle: GoogleFonts.openSans(
                                       fontSize: 12,
                                       color:
                                           Color(0xFF000000).withOpacity(0.25)),
@@ -384,11 +384,11 @@ class _registerPageState extends State<registerPage> {
                                       borderSide: BorderSide(
                                           color: Colors.red, width: 1)
                                   ),
-                                  errorStyle: TextStyle(fontSize: 10)
+                                  errorStyle: GoogleFonts.openSans(fontSize: 10)
                               ),
                               hint: Text(
                                 "divisi",
-                                style: TextStyle(
+                                style: GoogleFonts.openSans(
                                     fontSize: 12,
                                     color: Color(0xFF000000).withOpacity(.25)),
                               ),
@@ -409,7 +409,7 @@ class _registerPageState extends State<registerPage> {
                                   value: valueItem,
                                   child: Text(
                                     valueItem,
-                                    style: TextStyle(
+                                    style: GoogleFonts.openSans(
                                         fontSize: 12, color: Color(0xFF000000)),
                                   ),
                                 );
@@ -438,7 +438,7 @@ class _registerPageState extends State<registerPage> {
                                   color: Colors.white,
                                   child: Text(
                                     "or",
-                                    style: TextStyle(fontSize: 12, color: Color(0xFF000000).withOpacity(0.25)),
+                                    style: GoogleFonts.openSans(fontSize: 12, color: Color(0xFF000000).withOpacity(0.25)),
                                   ),
                                 ),
                               ],
@@ -477,7 +477,7 @@ class _registerPageState extends State<registerPage> {
                                   children: [
                                     Text(
                                       "Already have an account?",
-                                      style: TextStyle(
+                                      style: GoogleFonts.openSans(
                                           fontSize: 12,
                                           color: Color(0xFF000000)
                                               .withOpacity(.25)),
