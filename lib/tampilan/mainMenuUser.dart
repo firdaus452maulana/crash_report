@@ -18,14 +18,15 @@ class _mainMenuUserState extends State<mainMenuUser> {
   var scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController _namaAlatController,
       _lokasiController,
-      _divisiController;
+      _divisiController,
+      _uploadedFileURL,
+      _laporanController;
   String valueDivisi;
-  String uploadedFileURL;
 
   List divisi = ["Divisi 1", "Divisi 2", "Divisi 3"];
 
   Query _query;
-  DatabaseReference _ref;
+  DatabaseReference _ref, _repref;
   String uid = '';
   String name = '';
   String role = '';
@@ -37,7 +38,10 @@ class _mainMenuUserState extends State<mainMenuUser> {
     _namaAlatController = TextEditingController();
     _lokasiController = TextEditingController();
     _divisiController = TextEditingController();
+    _laporanController = TextEditingController();
+    _uploadedFileURL = TextEditingController();
     _ref = FirebaseDatabase.instance.reference().child('listBarang');
+    _repref = FirebaseDatabase.instance.reference().child('listLaporan');
     _query = FirebaseDatabase.instance
         .reference()
         .child('listBarang')
@@ -46,7 +50,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
   }
 
   // DIALOG ADD BARANG
-  void _showDialogPenambahan() {
+  Widget _showDialogPenambahan() {
     showDialog(
         context: context,
         builder: (context) {
@@ -346,6 +350,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
         });
   }
 
+  //LIST BARANG
   Widget _buildListBarang({Map barang, final theme}) {
     Color statusColor = getStatusColor(barang['status']);
     return Container(
@@ -485,7 +490,9 @@ class _mainMenuUserState extends State<mainMenuUser> {
                                 ),
                               ),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              _showDialogLaporan(barang['key']);
+                            },
                           ),
                         ),
                       ],
@@ -500,8 +507,238 @@ class _mainMenuUserState extends State<mainMenuUser> {
     );
   }
 
+  //DIALOG ADD LAPORAN
+  Widget _showDialogLaporan(String barangKey) {
+    getBarangDetail(barangKey: barangKey);
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            child: Container(
+              padding: EdgeInsets.all(24),
+              child: SingleChildScrollView(
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      padding:
+                      EdgeInsets.only(top: 16, bottom: 16, left: 8, right: 8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        //posisi
+                        mainAxisSize: MainAxisSize.min,
+                        // untuk mengatur agar widget column mengikuti widget
+                        children: <Widget>[
+                          Container(
+                              child: Text(
+                                "Laporkan Kerusakan",
+                                style: GoogleFonts.openSans(
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              )),
+
+                          SizedBox(height: 16),
+
+                          Center(
+                            child:
+                            Text(
+                              "--- Deskripsi Alat ---",
+                              style: GoogleFonts.openSans(
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                                color: Colors.black.withOpacity(0.25),
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(height: 4),
+
+                          Container(
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                //posisi
+                                mainAxisSize: MainAxisSize.min,
+                                // untuk mengatur agar widget column mengikuti widget
+                                children: <Widget>[
+                                  Text(
+                                    _namaAlatController.text,
+                                    style: GoogleFonts.openSans(
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  Text(
+                                    _lokasiController.text,
+                                    style: GoogleFonts.openSans(
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 12,
+                                        color: Colors.black.withOpacity(0.25)),
+                                  ),
+                                  Text(
+                                    _divisiController.text,
+                                    style: GoogleFonts.openSans(
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w300,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ]
+                            ),
+                          ),
+
+                          SizedBox(height: 16),
+
+                          Center(
+                            child:
+                            Text(
+                              "--- Identitas Diri ---",
+                              style: GoogleFonts.openSans(
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                                color: Colors.black.withOpacity(0.25),
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(height: 4),
+
+                          Container(
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                //posisi
+                                mainAxisSize: MainAxisSize.min,
+                                // untuk mengatur agar widget column mengikuti widget
+                                children: <Widget>[
+                                  Text(
+                                    name,
+                                    style: GoogleFonts.openSans(
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.bold ,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  Text(
+                                    role,
+                                    style: GoogleFonts.openSans(
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 12,
+                                        color: Colors.black.withOpacity(0.5)),
+                                  ),
+                                ]
+                            ),
+                          ),
+
+                          SizedBox(height: 16),
+
+                          Center(
+                            child:
+                            Text(
+                              "--- Laporan ---",
+                              style: GoogleFonts.openSans(
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                                color: Colors.black.withOpacity(0.25),
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(height: 4),
+
+                          Container(
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                //posisi
+                                mainAxisSize: MainAxisSize.min,
+                                // untuk mengatur agar widget column mengikuti widget
+                                children: <Widget>[
+                                  Text(
+                                    "Laporan Kerusakan",
+                                    style: GoogleFonts.openSans(
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.bold ,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  Text(
+                                    "Ini nanti dikasih gambar",
+                                    style: GoogleFonts.openSans(
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 12,
+                                    ),
+                                  ),
+                                ]
+                            ),
+                          ),
+
+                          SizedBox(height: 16),
+
+                          //Button
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: RaisedButton(
+                              color: Color(0xFF031F4B),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30)),
+                              textColor: Colors.white,
+                              child: Container(
+                                height: 42.5,
+                                width: 85,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Lapor",
+                                  style: GoogleFonts.openSans(
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              onPressed: () {},
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    //Icon Close
+                    Positioned(
+                      right: 0.0,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: CircleAvatar(
+                            radius: 14,
+                            backgroundColor: Color(0xFF031F4B),
+                            child: Icon(
+                              Icons.close,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
   // TAMBAH GAMBAR DOANG DARI GALLERY
   Future<void> getImage() async {
+    image.create();
     await ImagePicker.pickImage(source: ImageSource.gallery).then((img){
       image = img;
     });
@@ -511,7 +748,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
     Reference _storef = FirebaseStorage.instance.ref().child('fotoBarang/${Path.basename(image.path)}');
     await _storef.putFile(image);
 
-    uploadedFileURL = await _storef.getDownloadURL();
+    _uploadedFileURL.text = await _storef.getDownloadURL();
   }
   // AMBIL SHARED PREFERENCES
   Future<void> _ambilPreference() async {
@@ -599,6 +836,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
               itemBuilder: (BuildContext context, DataSnapshot snapshot,
                   Animation<double> animation, int index) {
                 Map barang = snapshot.value;
+                barang['key'] = snapshot.key;
                 return _buildListBarang(barang: barang, theme: theme);
               },
             ),
@@ -615,6 +853,17 @@ class _mainMenuUserState extends State<mainMenuUser> {
     );
   }
 
+  getBarangDetail({String barangKey}) async {
+    DataSnapshot snapshot = await _ref.child(barangKey).once();
+
+    Map barang = snapshot.value;
+
+    _namaAlatController.text = barang['nama'];
+    _lokasiController.text = barang['letak'];
+    _divisiController.text = barang['divisi'];
+    _uploadedFileURL.text = barang['imageURL'];
+  }
+
   void saveBarang() {
 
     //SEND IMAGE KE DATABASE
@@ -624,7 +873,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
     String lokasi = _lokasiController.text;
     String divisi = valueDivisi;
     String status = 'Normal';
-    String URL = uploadedFileURL;
+    String URL = _uploadedFileURL.text;
 
     Map<String, String> barang = {
       'nama': namaAlat,
@@ -641,31 +890,40 @@ class _mainMenuUserState extends State<mainMenuUser> {
         _lokasiController.clear();
         _divisiController.clear();
         valueDivisi = null;
-        uploadedFileURL = null;
-        image = null;
+        _uploadedFileURL.clear();
+        image.delete();
       });
-    };
+    }
 
   }
 
-  void updateReport(){
-    String namaAlat = _namaAlatController.text;
-    String lokasi = _lokasiController.text;
-    String divisi = valueDivisi;
-    String status = 'Diperiksa';
+  updateReport({String barangKey}){
+    String namaPelapor = name;
+    String Key = barangKey;
+    String laporan = _laporanController.text;
+    String status = 'Rusak';
 
     Map<String, String> report = {
-      'nama': namaAlat,
-      'letak': lokasi,
-      'divisi': divisi,
+      'nama': namaPelapor,
+      'barangKey': Key,
+      'laporan': laporan,
+    };
+
+    Map<String, String> barang = {
       'status': status,
     };
 
-    _ref.push().set(report).then((value) {
-      Navigator.pop(context);
+    _repref.push().set(report).then((value) {
       _namaAlatController.clear();
       _lokasiController.clear();
       _divisiController.clear();
+      valueDivisi = null;
+      _uploadedFileURL.clear();
+    });
+
+    _ref.child(barangKey).update(barang).then((value) {
+      Navigator.pop(context);
+      _laporanController.clear();
     });
   }
 
