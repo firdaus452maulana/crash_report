@@ -106,6 +106,7 @@ class _sideBarState extends State<sideBar> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => reportBugPage()));
+
                     },
                   ),
                 ],

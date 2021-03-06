@@ -22,29 +22,32 @@ class _pilihBagianPageState extends State<pilihBagianPage> {
                     fit: BoxFit.fill)),
           ),
           Center(
-            child: Container(
-              padding: EdgeInsets.only(top: 64, bottom: 64),
+            child: SingleChildScrollView(
               child: Container(
                 alignment: Alignment.center,
-                padding: EdgeInsets.all(24),
                 margin: EdgeInsets.all(32),
                 width: double.infinity,
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(17.5)),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(
+                          top: 24, left: 32, right: 32, bottom: 32),
+                      child: Text(
                         "Pilih Bagian",
-                        style: GoogleFonts.openSans(fontSize: 24, fontWeight: FontWeight.bold),
+                        style: GoogleFonts.openSans(
+                            fontSize: 24, fontWeight: FontWeight.bold),
                       ),
+                    ),
 
-                      SizedBox(height: 24,),
-
-                      // PILIH PEGAWAI
-                      RaisedButton(
+                    // PILIH PEGAWAI
+                    Container(
+                      margin: EdgeInsets.only(
+                          top: 0, left: 32, right: 32, bottom: 32),
+                      child: RaisedButton(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(17.5)),
                         color: Colors.white,
@@ -54,27 +57,34 @@ class _pilihBagianPageState extends State<pilihBagianPage> {
                           width: double.infinity,
                           height: 144,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(17.5),
+                              borderRadius: BorderRadius.circular(17.5),
                               image: DecorationImage(
                                   image: AssetImage('assets/pegawai.jpg'),
-                                  colorFilter: new ColorFilter.mode(Colors.white.withOpacity(0.2), BlendMode.dstATop),
+                                  colorFilter: new ColorFilter.mode(
+                                      Colors.white.withOpacity(0.2),
+                                      BlendMode.dstATop),
                                   fit: BoxFit.fill)),
-                          child: Text("Pegawai", style: GoogleFonts.openSans(
-                              fontSize: 12, fontWeight: FontWeight.bold),),
+                          child: Text(
+                            "Pegawai",
+                            style: GoogleFonts.openSans(
+                                fontSize: 12, fontWeight: FontWeight.bold),
+                          ),
                         ),
                         onPressed: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      registerPage()));
+                                  builder: (context) => registerPage()));
                         },
                       ),
+                    ),
 
-                      SizedBox(height: 16,),
 
-                      // PILIH TEKNISI
-                      RaisedButton(
+                    // PILIH TEKNISI
+                    Container(
+                      margin: EdgeInsets.only(
+                          top: 0, left: 32, right: 32, bottom: 32),
+                      child: RaisedButton(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(17.5)),
                         color: Colors.white,
@@ -87,10 +97,15 @@ class _pilihBagianPageState extends State<pilihBagianPage> {
                               borderRadius: BorderRadius.circular(17.5),
                               image: DecorationImage(
                                   image: AssetImage('assets/teknisi.jpeg'),
-                                  colorFilter: new ColorFilter.mode(Colors.white.withOpacity(0.2), BlendMode.dstATop),
+                                  colorFilter: new ColorFilter.mode(
+                                      Colors.white.withOpacity(0.2),
+                                      BlendMode.dstATop),
                                   fit: BoxFit.fill)),
-                          child: Text("Teknisi", style: GoogleFonts.openSans(
-                              fontSize: 12, fontWeight: FontWeight.bold),),
+                          child: Text(
+                            "Teknisi",
+                            style: GoogleFonts.openSans(
+                                fontSize: 12, fontWeight: FontWeight.bold),
+                          ),
                         ),
                         onPressed: () {
                           Navigator.push(
@@ -100,8 +115,8 @@ class _pilihBagianPageState extends State<pilihBagianPage> {
                                       registerPageTeknisi()));
                         },
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
