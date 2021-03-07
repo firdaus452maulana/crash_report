@@ -20,7 +20,8 @@ class _mainMenuUserState extends State<mainMenuUser> {
       _lokasiController,
       _divisiController,
       _uploadedFileURL,
-      _laporanController;
+      _laporanController,
+      _dateTimeController;
   String valueDivisi;
 
   List divisi = ["Divisi 1", "Divisi 2", "Divisi 3"];
@@ -40,6 +41,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
     _divisiController = TextEditingController();
     _laporanController = TextEditingController();
     _uploadedFileURL = TextEditingController();
+    _dateTimeController = TextEditingController();
     _ref = FirebaseDatabase.instance.reference().child('listBarang');
     _repref = FirebaseDatabase.instance.reference().child('listLaporan');
     _query = FirebaseDatabase.instance
@@ -510,6 +512,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
   //DIALOG ADD LAPORAN
   Widget _showDialogLaporan(String barangKey) {
     getBarangDetail(barangKey: barangKey);
+    DateTime now = DateTime.now();
     showDialog(
         context: context,
         builder: (context) {
@@ -661,11 +664,62 @@ class _mainMenuUserState extends State<mainMenuUser> {
                                 // untuk mengatur agar widget column mengikuti widget
                                 children: <Widget>[
                                   Text(
-                                    "Laporan Kerusakan",
+                                    _dateTimeController.text = "${now.year.toString()}-${now.month.toString().padLeft(2,'0')}-${now.day.toString().padLeft(2,'0')} ${now.hour.toString()}:${now.minute.toString().padLeft(2,'0')}:${now.second.toString().padLeft(2,'0')}",
                                     style: GoogleFonts.openSans(
                                       fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.bold ,
-                                      fontSize: 16,
+                                      fontWeight: FontWeight.normal ,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  //LAPORAN KERUSAKAN
+                                  Container(
+                                    child: TextFormField(
+                                      cursorColor: Colors.black,
+                                      style: GoogleFonts.openSans(fontSize: 12),
+                                      keyboardType: TextInputType.text,
+                                      controller: _laporanController,
+                                      decoration: new InputDecoration(
+                                          fillColor: Colors.white,
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                            BorderRadius.all(Radius.circular(8)),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                              borderRadius:
+                                              BorderRadius.all(Radius.circular(8)),
+                                              borderSide: BorderSide(
+                                                  color: Color(0xFF000000)
+                                                      .withOpacity(0.15))),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderRadius:
+                                              BorderRadius.all(Radius.circular(8)),
+                                              borderSide:
+                                              BorderSide(color: Color(0xFF031F4B))),
+                                          filled: false,
+                                          contentPadding:
+                                          EdgeInsets.only(left: 24.0, right: 24.0),
+                                          hintStyle: GoogleFonts.openSans(
+                                              fontSize: 12,
+                                              color: Color(0xFF000000).withOpacity(0.15)),
+                                          hintText: "Laporan Kerusakan",
+                                          errorBorder: OutlineInputBorder(
+                                              borderRadius:
+                                              BorderRadius.all(Radius.circular(8)),
+                                              borderSide: BorderSide(color: Colors.red)),
+                                          focusedErrorBorder: OutlineInputBorder(
+                                              borderRadius:
+                                              BorderRadius.all(Radius.circular(8)),
+                                              borderSide: BorderSide(
+                                                  color: Colors.red, width: 1)),
+                                          errorStyle: GoogleFonts.openSans(fontSize: 10)),
+                                      obscureText: false,
+                                      validator: (value) {
+                                        if (value.isEmpty) {
+                                          return "Field is required";
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {},
                                     ),
                                   ),
                                   Text(
@@ -702,7 +756,9 @@ class _mainMenuUserState extends State<mainMenuUser> {
                                   ),
                                 ),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                updateReport(barangKey: barangKey);
+                              },
                             ),
                           ),
                         ],
@@ -902,11 +958,13 @@ class _mainMenuUserState extends State<mainMenuUser> {
     String Key = barangKey;
     String laporan = _laporanController.text;
     String status = 'Rusak';
+    String dateTime = _dateTimeController.text;
 
     Map<String, String> report = {
       'nama': namaPelapor,
       'barangKey': Key,
       'laporan': laporan,
+      'time' : dateTime,
     };
 
     Map<String, String> barang = {
@@ -924,6 +982,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
     _ref.child(barangKey).update(barang).then((value) {
       Navigator.pop(context);
       _laporanController.clear();
+      _dateTimeController.clear();
     });
   }
 
