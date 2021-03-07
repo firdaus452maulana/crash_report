@@ -33,117 +33,124 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi>
     _ambilPreference();
   }
 
+  // LIST BARANG
   Widget _buildListBarang({Map barang, final theme}) {
     Color statusColor = getStatusColor(barang['status']);
     return Container(
-      //height: 150,
-      color: Colors.white,
       child: Container(
-          margin: EdgeInsets.only(bottom: 8, left: 16, right: 16),
+          margin: EdgeInsets.only(left: 16, right: 16, top: 16),
           decoration: BoxDecoration(
             color: Colors.white,
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.05),
-                spreadRadius: 10,
-                blurRadius: 10,
+                color: Colors.black.withOpacity(0.05),
+                spreadRadius: 2,
+                blurRadius: 6,
                 offset: Offset(0, 0),
               )
             ],
             borderRadius: BorderRadius.circular(17.5),
           ),
-          child: Theme(
-            data: theme,
-            child: ExpansionTile(
-              trailing: Text(''),
-              title: Padding(
-                padding: const EdgeInsets.only(
-                    top: 12.0, bottom: 12.0, left: 0.0, right: 0.0),
-                child: Stack(
+          child: Stack(
+            children: [
+
+              Container(
+                alignment: Alignment.centerRight,
+                padding: EdgeInsets.only(right: 24, left: 24, top: 24),
+                //color: Colors.cyan,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  //posisi
+                  mainAxisSize: MainAxisSize.min,
+                  // untuk mengatur agar widget column mengikuti widget
                   children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      //posisi
-                      mainAxisSize: MainAxisSize.min,
-                      // untuk mengatur agar widget column mengikuti widget
-                      children: <Widget>[
-                        Text(
-                          barang['nama'],
-                          style: GoogleFonts.openSans(
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16,
-                          ),
-                        ),
-                        Text(
-                          barang['letak'],
-                          style: GoogleFonts.openSans(
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 12,
-                              color: Colors.black.withOpacity(0.25)),
-                        ),
-                        Text(
-                          barang['divisi'],
-                          style: GoogleFonts.openSans(
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.w300,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
+                    Text(
+                      "Status",
+                      style: GoogleFonts.openSans(
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 12,
+                      ),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      //posisi
-                      mainAxisSize: MainAxisSize.min,
-                      // untuk mengatur agar widget column mengikuti widget
-                      children: <Widget>[
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Text(
-                            "Status",
-                            style: GoogleFonts.openSans(
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Text(
-                            barang['status'],
-                            style: GoogleFonts.openSans(
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                              color: statusColor,
-                            ),
-                          ),
-                        ),
-                      ],
+                    Text(
+                      barang['status'],
+                      style: GoogleFonts.openSans(
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                        color: statusColor,
+                      ),
                     ),
                   ],
                 ),
               ),
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Column(
+
+
+              Theme(
+                data: theme,
+                child: ExpansionTile(
+                  tilePadding: EdgeInsets.all(0),
+                  childrenPadding: EdgeInsets.all(0),
+                  trailing: Text(''),
+                  title: Stack(
                     children: <Widget>[
                       Container(
-                        //color: Colors.grey[200],
-                        margin: EdgeInsets.only(bottom: 12.0),
-                        child: new Image.network(barang['imageURL']),
+                        width: double.infinity,
+                        //color: Colors.green,
+                        margin: EdgeInsets.only(left: 24, top: 16, bottom: 16, right: 24),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          //posisi
+                          mainAxisSize: MainAxisSize.min,
+                          // untuk mengatur agar widget column mengikuti widget
+                          children: <Widget>[
+                            Text(
+                              barang['nama'],
+                              style: GoogleFonts.openSans(
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 16,
+                              ),
+                            ),
+                            Text(
+                              barang['letak'],
+                              style: GoogleFonts.openSans(
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 12,
+                                  color: Colors.black.withOpacity(0.25)),
+                            ),
+                            Text(
+                              barang['divisi'],
+                              style: GoogleFonts.openSans(
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w300,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(left: 24, right: 24),
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            //color: Colors.grey[200],
+                            margin: EdgeInsets.only(bottom: 24.0),
+                            child: new Image.network(barang['imageURL']),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          )
-      ),
+              ),
+            ],
+          )),
     );
   }
 
@@ -249,10 +256,10 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi>
                       isScrollable: false,
                       labelPadding: EdgeInsets.all(0),
                       labelColor: Colors.black,
-                      labelStyle:
-                          GoogleFonts.openSans(fontWeight: FontWeight.bold, fontSize: 12),
-                      unselectedLabelStyle:
-                          GoogleFonts.openSans(fontWeight: FontWeight.w400, fontSize: 12),
+                      labelStyle: GoogleFonts.openSans(
+                          fontWeight: FontWeight.bold, fontSize: 12),
+                      unselectedLabelStyle: GoogleFonts.openSans(
+                          fontWeight: FontWeight.w400, fontSize: 12),
                       unselectedLabelColor: Colors.black.withOpacity(0.5),
                       indicator: BoxDecoration(
                         color: Colors.white,
@@ -294,13 +301,15 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi>
                                     Animation<double> animation,
                                     int index) {
                                   Map barang = snapshot.value;
-                                  return _buildListBarang(barang: barang, theme: theme);
+                                  return _buildListBarang(
+                                      barang: barang, theme: theme);
                                 },
                               ),
                             ),
 
                             // TAB VIEW LAPORAN
-                            Center(child: Text("Ini nanti ubah ke list laporan")),
+                            Center(
+                                child: Text("Ini nanti ubah ke list laporan")),
                           ]),
                     ),
                   )

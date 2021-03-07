@@ -93,7 +93,7 @@ class _reportBugPageState extends State<reportBugPage> {
                     Container(
                       width: double.infinity,
                       child: Text(
-                        "Jangan ragu untuk memberi kritik dan saran\nagar tim developerdapat menjadi lebih baik.",
+                        "Jangan ragu untuk memberi kritik dan saran\nagar tim developer dapat menjadi lebih baik.",
                         style: GoogleFonts.openSans(color: Colors.black.withOpacity(0.25), fontSize: 12),
                         textAlign: TextAlign.center,
                       ),
@@ -111,14 +111,14 @@ class _reportBugPageState extends State<reportBugPage> {
                         decoration: new InputDecoration(
                             fillColor: Colors.white,
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(17.5)),
+                              borderRadius: BorderRadius.all(Radius.circular(12)),
                             ),
                             enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(17.5)),
+                                borderRadius: BorderRadius.all(Radius.circular(12)),
                                 borderSide: BorderSide(
                                     color: Color(0xFF000000).withOpacity(0.15))),
                             focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(17.5)),
+                                borderRadius: BorderRadius.all(Radius.circular(12)),
                                 borderSide: BorderSide(color: Color(0xFF031F4B))),
                             filled: false,
                             contentPadding:
@@ -128,10 +128,10 @@ class _reportBugPageState extends State<reportBugPage> {
                                 color: Color(0xFF000000).withOpacity(0.25)),
                             hintText: "Tuliskan pesan anda di sini...",
                             errorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(17.5)),
+                                borderRadius: BorderRadius.all(Radius.circular(12)),
                                 borderSide: BorderSide(color: Colors.red)),
                             focusedErrorBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.all(Radius.circular(17.5)),
+                                borderRadius: BorderRadius.all(Radius.circular(12)),
                                 borderSide: BorderSide(color: Colors.red, width: 1)),
                             errorStyle: TextStyle(fontSize: 10)),
                       ),
