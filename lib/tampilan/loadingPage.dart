@@ -1,4 +1,4 @@
-import 'package:crash_report/listbarangPage_teknisi.dart';
+import 'file:///D:/flutter/crash_report/lib/tampilan/listbarangPage_teknisi.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
