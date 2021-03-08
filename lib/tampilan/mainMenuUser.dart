@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as Path;
 import 'package:crash_report/tampilan/sideBar.dart';
@@ -58,7 +59,12 @@ class _mainMenuUserState extends State<mainMenuUser>
         .child('listBarang')
         .orderByChild('divisi');
     _ambilPreference();
+    _indogs();
   }
+
+  Future<void> _indogs() async {
+  await initializeDateFormatting('id_ID', null);
+}
 
   // DIALOG ADD BARANG
   Widget _showDialogPenambahan() {
@@ -542,7 +548,7 @@ class _mainMenuUserState extends State<mainMenuUser>
     getBarangDetail(barangKey: barangKey);
 
     DateTime now = DateTime.now();
-    DateFormat format = new DateFormat("EEEE, dd MMMM yyyy", "id_ID");
+    DateFormat format = new DateFormat("EEEE, d LLLL yyyy", "id_ID");
     String formattedDate = format.format(now);
 
     showDialog(
