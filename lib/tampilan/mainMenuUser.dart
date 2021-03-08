@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart' as Path;
 import 'package:crash_report/tampilan/sideBar.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -14,14 +15,18 @@ class mainMenuUser extends StatefulWidget {
   _mainMenuUserState createState() => _mainMenuUserState();
 }
 
-class _mainMenuUserState extends State<mainMenuUser> {
+class _mainMenuUserState extends State<mainMenuUser>
+    with SingleTickerProviderStateMixin {
   var scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController _namaAlatController,
       _lokasiController,
       _divisiController,
       _uploadedFileURL,
       _laporanController,
-      _dateTimeController;
+      _dateController,
+      _timeController;
+  TabController _tabController;
+  ScrollController _scrollController;
   String valueDivisi;
 
   List divisi = ["Divisi 1", "Divisi 2", "Divisi 3"];
@@ -36,12 +41,15 @@ class _mainMenuUserState extends State<mainMenuUser> {
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(vsync: this, length: 2);
+    _scrollController = ScrollController();
     _namaAlatController = TextEditingController();
     _lokasiController = TextEditingController();
     _divisiController = TextEditingController();
     _laporanController = TextEditingController();
     _uploadedFileURL = TextEditingController();
-    _dateTimeController = TextEditingController();
+    _dateController = TextEditingController();
+    _timeController = TextEditingController();
     _ref = FirebaseDatabase.instance.reference().child('listBarang');
     _repref = FirebaseDatabase.instance.reference().child('listLaporan');
     _query = FirebaseDatabase.instance
@@ -270,7 +278,8 @@ class _mainMenuUserState extends State<mainMenuUser> {
                         FlatButton(
                           color: Colors.grey,
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                           textColor: Colors.white,
                           child: Container(
                             height: 42.5,
@@ -284,13 +293,12 @@ class _mainMenuUserState extends State<mainMenuUser> {
                                   style: GoogleFonts.openSans(
                                       fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.bold,
-                                    fontSize: 12.0
-                                  ),
+                                      fontSize: 12.0),
                                 ),
                               ],
                             ),
                           ),
-                          onPressed: (){
+                          onPressed: () {
                             getImage();
                           },
                         ),
@@ -356,156 +364,174 @@ class _mainMenuUserState extends State<mainMenuUser> {
   Widget _buildListBarang({Map barang, final theme}) {
     Color statusColor = getStatusColor(barang['status']);
     return Container(
-      //height: 150,
-      color: Colors.white,
       child: Container(
-        margin: EdgeInsets.only(bottom: 8, left: 16, right: 16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.05),
-              spreadRadius: 10,
-              blurRadius: 10,
-              offset: Offset(0, 0),
-            )
-          ],
-          borderRadius: BorderRadius.circular(17.5),
-        ),
-        child: Theme(
-          data: theme,
-          child: ExpansionTile(
-            trailing: Text(''),
-            title: Padding(
-              padding: const EdgeInsets.only(
-                  top: 12.0, bottom: 12.0, left: 0.0, right: 0.0),
-              child: Stack(
-                children: <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    //posisi
-                    mainAxisSize: MainAxisSize.min,
-                    // untuk mengatur agar widget column mengikuti widget
-                    children: <Widget>[
-                      Text(
-                        barang['nama'],
-                        style: GoogleFonts.openSans(
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Text(
-                        barang['letak'],
-                        style: GoogleFonts.openSans(
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 12,
-                            color: Colors.black.withOpacity(0.25)),
-                      ),
-                      Text(
-                        barang['divisi'],
-                        style: GoogleFonts.openSans(
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w300,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    //posisi
-                    mainAxisSize: MainAxisSize.min,
-                    // untuk mengatur agar widget column mengikuti widget
-                    children: <Widget>[
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Text(
-                          "Status",
-                          style: GoogleFonts.openSans(
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Text(
-                          barang['status'],
-                          style: GoogleFonts.openSans(
-                            fontStyle: FontStyle.normal,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                            color: statusColor,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(12.0),
+          margin: EdgeInsets.only(left: 16, right: 16, top: 16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                spreadRadius: 2,
+                blurRadius: 6,
+                offset: Offset(0, 0),
+              )
+            ],
+            borderRadius: BorderRadius.circular(17.5),
+          ),
+          child: Stack(
+            children: [
+
+              Container(
+                alignment: Alignment.centerRight,
+                margin: EdgeInsets.only(right: 24, left: 24, top: 24),
+                //color: Colors.cyan,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  //posisi
+                  mainAxisSize: MainAxisSize.min,
+                  // untuk mengatur agar widget column mengikuti widget
                   children: <Widget>[
-                    Container(
-                      //color: Colors.grey[200],
-                      margin: EdgeInsets.only(bottom: 12.0),
-                      child: new Image.network(barang['imageURL']),
+                    Text(
+                      "Status",
+                      style: GoogleFonts.openSans(
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 12,
+                      ),
                     ),
-                    Stack(
-                      children: <Widget>[
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: GestureDetector(
-                            onTap: () {},
-                            child: Align(
-                              alignment: Alignment.bottomLeft,
-                              child: Icon(
-                                Icons.delete,
-                                color: Colors.grey[400],
-                                size: 42.5,
+                    Text(
+                      barang['status'],
+                      style: GoogleFonts.openSans(
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                        color: statusColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              Theme(
+                data: theme,
+                child: ExpansionTile(
+                  tilePadding: EdgeInsets.all(0),
+                  childrenPadding: EdgeInsets.all(0),
+                  trailing: Text(''),
+                  title: Stack(
+                    children: <Widget>[
+                      Container(
+                        width: double.infinity,
+                        //color: Colors.green,
+                        margin: EdgeInsets.only(left: 24, top: 16, bottom: 16, right: 24),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          //posisi
+                          mainAxisSize: MainAxisSize.min,
+                          // untuk mengatur agar widget column mengikuti widget
+                          children: <Widget>[
+                            Text(
+                              barang['nama'],
+                              style: GoogleFonts.openSans(
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 16,
+                                color: Colors.black,
                               ),
                             ),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: RaisedButton(
-                            color: Color(0xFF031F4B),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30)),
-                            textColor: Colors.white,
-                            child: Container(
-                              height: 42.5,
-                              width: 85,
-                              alignment: Alignment.center,
-                              child: Text(
-                                "Lapor",
-                                style: GoogleFonts.openSans(
+                            Text(
+                              barang['letak'],
+                              style: GoogleFonts.openSans(
                                   fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 12,
+                                  color: Colors.black.withOpacity(0.25)),
+                            ),
+                            Text(
+                              barang['divisi'],
+                              style: GoogleFonts.openSans(
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w300,
+                                fontSize: 12,
+                                color: Colors.black,
                               ),
                             ),
-                            onPressed: () {
-                              _showDialogLaporan(barang['key']);
-                            },
-                          ),
+                          ],
                         ),
-                      ],
+                      ),
+                    ],
+                  ),
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(left: 24, right: 24),
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            //color: Colors.grey[200],
+                            margin: EdgeInsets.only(bottom: 24.0),
+                            child: new Image.network(barang['imageURL']),
+                          ),
+
+                          Container(
+                            width: double.infinity,
+                            //color: Colors.green,
+                            padding: EdgeInsets.all(0),
+                            margin: EdgeInsets.only(bottom: 24),
+                            alignment: Alignment.center,
+                            child: Row(
+                              children: <Widget>[
+                                Container(
+                                  //color: Colors.pink,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      _showDialogDelete(barang['key']);
+                                    },
+                                    child: Icon(
+                                      Icons.delete,
+                                      color: Colors.grey[400],
+                                      size: 32,
+                                    ),
+                                  ),
+                                ),
+
+                                Expanded(
+                                  child: Container(
+                                    //color: Colors.red,
+                                    alignment: Alignment.centerRight,
+                                    child: RaisedButton(
+                                      color: Color(0xFF031F4B),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(30)),
+                                      textColor: Colors.white,
+                                      child: Container(
+                                        width: 85,
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          "Lapor",
+                                          style: GoogleFonts.openSans(
+                                            fontSize: 12,
+                                            fontStyle: FontStyle.normal,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        _showDialogLaporan(barang['key']);
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
             ],
-          ),
-        )
-      ),
+          )),
     );
   }
 
@@ -518,15 +544,15 @@ class _mainMenuUserState extends State<mainMenuUser> {
         builder: (context) {
           return Dialog(
             shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             child: Container(
               padding: EdgeInsets.all(24),
               child: SingleChildScrollView(
                 child: Stack(
                   children: <Widget>[
                     Container(
-                      padding:
-                      EdgeInsets.only(top: 16, bottom: 16, left: 8, right: 8),
+                      padding: EdgeInsets.only(
+                          top: 16, bottom: 16, left: 8, right: 8),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         //posisi
@@ -535,19 +561,18 @@ class _mainMenuUserState extends State<mainMenuUser> {
                         children: <Widget>[
                           Container(
                               child: Text(
-                                "Laporkan Kerusakan",
-                                style: GoogleFonts.openSans(
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                ),
-                              )),
+                            "Laporkan Kerusakan",
+                            style: GoogleFonts.openSans(
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          )),
 
                           SizedBox(height: 16),
 
                           Center(
-                            child:
-                            Text(
+                            child: Text(
                               "--- Deskripsi Alat ---",
                               style: GoogleFonts.openSans(
                                 fontStyle: FontStyle.normal,
@@ -591,15 +616,13 @@ class _mainMenuUserState extends State<mainMenuUser> {
                                       fontSize: 12,
                                     ),
                                   ),
-                                ]
-                            ),
+                                ]),
                           ),
 
                           SizedBox(height: 16),
 
                           Center(
-                            child:
-                            Text(
+                            child: Text(
                               "--- Identitas Diri ---",
                               style: GoogleFonts.openSans(
                                 fontStyle: FontStyle.normal,
@@ -623,7 +646,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
                                     name,
                                     style: GoogleFonts.openSans(
                                       fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.bold ,
+                                      fontWeight: FontWeight.bold,
                                       fontSize: 16,
                                     ),
                                   ),
@@ -635,15 +658,13 @@ class _mainMenuUserState extends State<mainMenuUser> {
                                         fontSize: 12,
                                         color: Colors.black.withOpacity(0.5)),
                                   ),
-                                ]
-                            ),
+                                ]),
                           ),
 
                           SizedBox(height: 16),
 
                           Center(
-                            child:
-                            Text(
+                            child: Text(
                               "--- Laporan ---",
                               style: GoogleFonts.openSans(
                                 fontStyle: FontStyle.normal,
@@ -664,13 +685,19 @@ class _mainMenuUserState extends State<mainMenuUser> {
                                 // untuk mengatur agar widget column mengikuti widget
                                 children: <Widget>[
                                   Text(
-                                    _dateTimeController.text = "${now.year.toString()}-${now.month.toString().padLeft(2,'0')}-${now.day.toString().padLeft(2,'0')} ${now.hour.toString()}:${now.minute.toString().padLeft(2,'0')}:${now.second.toString().padLeft(2,'0')}",
+                                    _dateController.text =
+                                        "${now.year.toString()}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}",
                                     style: GoogleFonts.openSans(
                                       fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.normal ,
+                                      fontWeight: FontWeight.normal,
                                       fontSize: 12,
                                     ),
                                   ),
+
+                                  Text(_timeController.text =
+                                  "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}"
+                                  ),
+                                  
                                   //LAPORAN KERUSAKAN
                                   Container(
                                     child: TextFormField(
@@ -681,36 +708,33 @@ class _mainMenuUserState extends State<mainMenuUser> {
                                       decoration: new InputDecoration(
                                           fillColor: Colors.white,
                                           border: OutlineInputBorder(
-                                            borderRadius:
-                                            BorderRadius.all(Radius.circular(8)),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(8)),
                                           ),
                                           enabledBorder: OutlineInputBorder(
-                                              borderRadius:
-                                              BorderRadius.all(Radius.circular(8)),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(8)),
                                               borderSide: BorderSide(
                                                   color: Color(0xFF000000)
                                                       .withOpacity(0.15))),
                                           focusedBorder: OutlineInputBorder(
-                                              borderRadius:
-                                              BorderRadius.all(Radius.circular(8)),
-                                              borderSide:
-                                              BorderSide(color: Color(0xFF031F4B))),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(8)),
+                                              borderSide: BorderSide(
+                                                  color: Color(0xFF031F4B))),
                                           filled: false,
-                                          contentPadding:
-                                          EdgeInsets.only(left: 24.0, right: 24.0),
+                                          contentPadding: EdgeInsets.only(
+                                              left: 24.0, right: 24.0),
                                           hintStyle: GoogleFonts.openSans(
                                               fontSize: 12,
-                                              color: Color(0xFF000000).withOpacity(0.15)),
+                                              color: Color(0xFF000000)
+                                                  .withOpacity(0.15)),
                                           hintText: "Laporan Kerusakan",
                                           errorBorder: OutlineInputBorder(
                                               borderRadius:
-                                              BorderRadius.all(Radius.circular(8)),
+                                                  BorderRadius.all(Radius.circular(8)),
                                               borderSide: BorderSide(color: Colors.red)),
-                                          focusedErrorBorder: OutlineInputBorder(
-                                              borderRadius:
-                                              BorderRadius.all(Radius.circular(8)),
-                                              borderSide: BorderSide(
-                                                  color: Colors.red, width: 1)),
+                                          focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(8)), borderSide: BorderSide(color: Colors.red, width: 1)),
                                           errorStyle: GoogleFonts.openSans(fontSize: 10)),
                                       obscureText: false,
                                       validator: (value) {
@@ -725,13 +749,12 @@ class _mainMenuUserState extends State<mainMenuUser> {
                                   Text(
                                     "Ini nanti dikasih gambar",
                                     style: GoogleFonts.openSans(
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 12,
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 12,
                                     ),
                                   ),
-                                ]
-                            ),
+                                ]),
                           ),
 
                           SizedBox(height: 16),
@@ -792,20 +815,116 @@ class _mainMenuUserState extends State<mainMenuUser> {
         });
   }
 
+  //DIALOG HAPUS BARANG
+  Widget _showDialogDelete(String barangKey) {
+    getBarangDetail(barangKey: barangKey);
+    DateTime now = DateTime.now();
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            backgroundColor: Colors.black.withOpacity(0.5),
+            shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+            child: Container(
+              padding: EdgeInsets.all(24),
+              child: SingleChildScrollView(
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      padding:
+                      EdgeInsets.only(top: 16, bottom: 16, left: 8, right: 8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        //posisi
+                        mainAxisSize: MainAxisSize.min,
+                        // untuk mengatur agar widget column mengikuti widget
+                        children: <Widget>[
+                          Center(
+                              child: Text(
+                                "Barang ini akan dihapus secara permanen",
+                                style: GoogleFonts.openSans(
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 12,
+                                  color: Colors.white,
+                                ),
+                              )),
+
+                          SizedBox(height: 16),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              FlatButton(
+                                color: Colors.grey[400],
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30)),
+                                textColor: Colors.white,
+                                child: Container(
+                                  height: 42.5,
+                                  width: 75,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Tidak",
+                                    style: GoogleFonts.openSans(
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                onPressed: () {},
+                              ),
+                              FlatButton(
+                                color: Color(0xFF031F4B),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30)),
+                                textColor: Colors.white,
+                                child: Container(
+                                  height: 42.5,
+                                  width: 75,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Ya",
+                                    style: GoogleFonts.openSans(
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                onPressed: () {},
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
   // TAMBAH GAMBAR DOANG DARI GALLERY
   Future<void> getImage() async {
     image.create();
-    await ImagePicker.pickImage(source: ImageSource.gallery).then((img){
+    await ImagePicker.pickImage(source: ImageSource.gallery).then((img) {
       image = img;
     });
   }
+
   // UPLOAD GAMBAR KE DATABASE
   Future<void> sendImage() async {
-    Reference _storef = FirebaseStorage.instance.ref().child('fotoBarang/${Path.basename(image.path)}');
+    Reference _storef = FirebaseStorage.instance
+        .ref()
+        .child('fotoBarang/${Path.basename(image.path)}');
     await _storef.putFile(image);
 
     _uploadedFileURL.text = await _storef.getDownloadURL();
   }
+
   // AMBIL SHARED PREFERENCES
   Future<void> _ambilPreference() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -826,7 +945,6 @@ class _mainMenuUserState extends State<mainMenuUser> {
       drawer: sideBar(),
       body: Stack(
         children: <Widget>[
-
           Container(
             alignment: Alignment.centerLeft,
             padding: EdgeInsets.only(top: 16, left: 8, right: 8, bottom: 0),
@@ -838,17 +956,15 @@ class _mainMenuUserState extends State<mainMenuUser> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-
                 IconButton(
                   icon: Icon(
                     Icons.menu,
                     color: Colors.white,
                   ),
-                  onPressed: (){
+                  onPressed: () {
                     scaffoldKey.currentState.openDrawer();
                   },
                 ),
-
                 Container(
                   margin: EdgeInsets.only(left: 24, right: 24, top: 8),
                   child: Column(
@@ -877,24 +993,101 @@ class _mainMenuUserState extends State<mainMenuUser> {
                       ),
                     ],
                   ),
-
                 ),
-
               ],
             ),
           ),
-
-          // LIST BARANG
           Container(
-            margin: EdgeInsets.only(left: 24, right: 24, bottom: 24, top: 180),
-            child: FirebaseAnimatedList(
-              query: _query,
-              itemBuilder: (BuildContext context, DataSnapshot snapshot,
-                  Animation<double> animation, int index) {
-                Map barang = snapshot.value;
-                barang['key'] = snapshot.key;
-                return _buildListBarang(barang: barang, theme: theme);
-              },
+            padding: EdgeInsets.all(0),
+            margin: EdgeInsets.only(top: 164, bottom: 24, left: 24, right: 24),
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.5),
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(20),
+                topLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
+                bottomLeft: Radius.circular(20),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.25),
+                  spreadRadius: 0,
+                  blurRadius: 20,
+                  offset: Offset(0, 0),
+                )
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Column(
+                children: [
+                  Container(
+                    height: 36,
+                    child: TabBar(
+                      controller: _tabController,
+                      isScrollable: false,
+                      labelPadding: EdgeInsets.all(0),
+                      labelColor: Colors.black,
+                      labelStyle: GoogleFonts.openSans(
+                          fontWeight: FontWeight.bold, fontSize: 12),
+                      unselectedLabelStyle: GoogleFonts.openSans(
+                          fontWeight: FontWeight.w400, fontSize: 12),
+                      unselectedLabelColor: Colors.black.withOpacity(0.5),
+                      indicator: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(20),
+                          topLeft: Radius.circular(20),
+                        ),
+                      ),
+                      tabs: <Widget>[
+                        Tab(
+                          text: "List Barang",
+                        ),
+                        Tab(
+                          text: "Laporan",
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(0),
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
+                      ),
+                      child: new TabBarView(controller: _tabController,
+                          //physics: NeverScrollableScrollPhysics(),
+                          children: [
+                            // TAB VIEW LIST BARANG
+                            CupertinoScrollbar(
+                              controller: _scrollController,
+                              child: FirebaseAnimatedList(
+                                query: _query,
+                                itemBuilder: (BuildContext context,
+                                    DataSnapshot snapshot,
+                                    Animation<double> animation,
+                                    int index) {
+                                  Map barang = snapshot.value;
+                                  barang['key'] = snapshot.key;
+                                  return _buildListBarang(
+                                      barang: barang, theme: theme);
+                                },
+                              ),
+                            ),
+
+                            // TAB VIEW LAPORAN
+                            Center(
+                                child: Text("Ini nanti ubah ke list laporan")),
+                          ]),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ],
@@ -921,7 +1114,6 @@ class _mainMenuUserState extends State<mainMenuUser> {
   }
 
   void saveBarang() {
-
     //SEND IMAGE KE DATABASE
     sendImage();
 
@@ -939,7 +1131,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
       'imageURL': URL,
     };
 
-    if (URL != null){
+    if (URL != null) {
       _ref.push().set(barang).then((value) {
         Navigator.pop(context);
         _namaAlatController.clear();
@@ -950,28 +1142,27 @@ class _mainMenuUserState extends State<mainMenuUser> {
         image.delete();
       });
     }
-
   }
 
-  updateReport({String barangKey}){
+  updateReport({String barangKey}) {
     String namaPelapor = name;
-    String Key = barangKey;
     String laporan = _laporanController.text;
     String status = 'Rusak';
-    String dateTime = _dateTimeController.text;
+    String date = _dateController.text;
+    String time = _timeController.text;
 
     Map<String, String> report = {
       'nama': namaPelapor,
-      'barangKey': Key,
       'laporan': laporan,
-      'time' : dateTime,
+      'date': date,
+      'time': time,
     };
 
     Map<String, String> barang = {
       'status': status,
     };
 
-    _repref.push().set(report).then((value) {
+    _repref.child(barangKey).set(report).then((value) {
       _namaAlatController.clear();
       _lokasiController.clear();
       _divisiController.clear();
@@ -982,7 +1173,7 @@ class _mainMenuUserState extends State<mainMenuUser> {
     _ref.child(barangKey).update(barang).then((value) {
       Navigator.pop(context);
       _laporanController.clear();
-      _dateTimeController.clear();
+      _dateController.clear();
     });
   }
 
