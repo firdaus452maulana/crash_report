@@ -1,7 +1,7 @@
 import 'package:crash_report/tampilan/forgotPasswordPage.dart';
 import 'package:crash_report/tampilan/mainMenuUser.dart';
 import 'package:crash_report/tampilan/pilihBagianPage.dart';
-import 'file:///D:/flutter/crash_report/lib/tampilan/listbarangPage_teknisi.dart';
+import 'package:crash_report/tampilan/listbarangPage_teknisi.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
