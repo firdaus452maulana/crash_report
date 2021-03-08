@@ -1,7 +1,7 @@
 import 'package:crash_report/tampilan/loadingPage.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_file.dart';
 import 'tampilan/loginPage.dart';
-import 'tampilan/listLaporan.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await initializeDateFormatting('id_ID', null);
 
   SharedPreferences preferences = await SharedPreferences.getInstance();
   var bagian = preferences.getString('bagian');
@@ -17,7 +18,8 @@ Future<void> main() async {
   runApp(MaterialApp(
     title: 'PERANG',
     theme: ThemeData(fontFamily: 'OpenSans'),
-    home: listLaporan()
+    home: bagian != null ? loadingPage() : loginPage(),
+    debugShowCheckedModeBanner: false,
     //home: loginPage(),
   ));
 
