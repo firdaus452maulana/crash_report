@@ -480,9 +480,7 @@ class _mainMenuUserState extends State<mainMenuUser>
                                 Container(
                                   //color: Colors.pink,
                                   child: GestureDetector(
-                                    onTap: () {
-                                      _showDialogDelete(barang['key']);
-                                    },
+                                    onTap: () {},
                                     child: Icon(
                                       Icons.delete,
                                       color: Colors.grey[400],
@@ -815,9 +813,8 @@ class _mainMenuUserState extends State<mainMenuUser>
         context: context,
         builder: (context) {
           return Dialog(
-            backgroundColor: Colors.black.withOpacity(0.25),
             shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             child: Container(
               padding: EdgeInsets.all(24),
               child: SingleChildScrollView(
@@ -832,62 +829,233 @@ class _mainMenuUserState extends State<mainMenuUser>
                         mainAxisSize: MainAxisSize.min,
                         // untuk mengatur agar widget column mengikuti widget
                         children: <Widget>[
-                          Center(
+                          Container(
                               child: Text(
-                                "Barang ini akan dihapus secara permanen",
+                                "Laporkan Kerusakan",
                                 style: GoogleFonts.openSans(
                                   fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 12,
-                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
                                 ),
                               )),
 
-                          SizedBox(height: 12),
+                          SizedBox(height: 16),
 
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              FlatButton(
-                                color: Color(0xFF031F4B),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30)),
-                                textColor: Colors.white,
-                                child: Container(
-                                  height: 42.5,
-                                  width: 75,
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "Ya",
+                          Center(
+                            child:
+                            Text(
+                              "--- Deskripsi Alat ---",
+                              style: GoogleFonts.openSans(
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                                color: Colors.black.withOpacity(0.25),
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(height: 4),
+
+                          Container(
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                //posisi
+                                mainAxisSize: MainAxisSize.min,
+                                // untuk mengatur agar widget column mengikuti widget
+                                children: <Widget>[
+                                  Text(
+                                    _namaAlatController.text,
                                     style: GoogleFonts.openSans(
                                       fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.bold,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 16,
                                     ),
                                   ),
-                                ),
-                                onPressed: () {},
-                              ),
-
-                              FlatButton(
-                                color: Colors.grey[400],
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30)),
-                                textColor: Colors.white,
-                                child: Container(
-                                  height: 42.5,
-                                  width: 75,
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "Tidak",
+                                  Text(
+                                    _lokasiController.text,
+                                    style: GoogleFonts.openSans(
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 12,
+                                        color: Colors.black.withOpacity(0.25)),
+                                  ),
+                                  Text(
+                                    _divisiController.text,
                                     style: GoogleFonts.openSans(
                                       fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.bold,
+                                      fontWeight: FontWeight.w300,
+                                      fontSize: 12,
                                     ),
                                   ),
-                                ),
-                                onPressed: () {},
+                                ]
+                            ),
+                          ),
+
+                          SizedBox(height: 16),
+
+                          Center(
+                            child:
+                            Text(
+                              "--- Identitas Diri ---",
+                              style: GoogleFonts.openSans(
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                                color: Colors.black.withOpacity(0.25),
                               ),
-                            ],
+                            ),
+                          ),
+
+                          SizedBox(height: 4),
+
+                          Container(
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                //posisi
+                                mainAxisSize: MainAxisSize.min,
+                                // untuk mengatur agar widget column mengikuti widget
+                                children: <Widget>[
+                                  Text(
+                                    name,
+                                    style: GoogleFonts.openSans(
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.bold ,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  Text(
+                                    role,
+                                    style: GoogleFonts.openSans(
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 12,
+                                        color: Colors.black.withOpacity(0.5)),
+                                  ),
+                                ]
+                            ),
+                          ),
+
+                          SizedBox(height: 16),
+
+                          Center(
+                            child:
+                            Text(
+                              "--- Laporan ---",
+                              style: GoogleFonts.openSans(
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                                color: Colors.black.withOpacity(0.25),
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(height: 4),
+
+                          Container(
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                //posisi
+                                mainAxisSize: MainAxisSize.min,
+                                // untuk mengatur agar widget column mengikuti widget
+                                children: <Widget>[
+                                  Text(
+                                    _dateTimeController.text = "${now.year.toString()}-${now.month.toString().padLeft(2,'0')}-${now.day.toString().padLeft(2,'0')} ${now.hour.toString()}:${now.minute.toString().padLeft(2,'0')}:${now.second.toString().padLeft(2,'0')}",
+                                    style: GoogleFonts.openSans(
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.normal ,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  //LAPORAN KERUSAKAN
+                                  Container(
+                                    child: TextFormField(
+                                      cursorColor: Colors.black,
+                                      style: GoogleFonts.openSans(fontSize: 12),
+                                      keyboardType: TextInputType.text,
+                                      controller: _laporanController,
+                                      decoration: new InputDecoration(
+                                          fillColor: Colors.white,
+                                          border: OutlineInputBorder(
+                                            borderRadius:
+                                            BorderRadius.all(Radius.circular(8)),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                              borderRadius:
+                                              BorderRadius.all(Radius.circular(8)),
+                                              borderSide: BorderSide(
+                                                  color: Color(0xFF000000)
+                                                      .withOpacity(0.15))),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderRadius:
+                                              BorderRadius.all(Radius.circular(8)),
+                                              borderSide:
+                                              BorderSide(color: Color(0xFF031F4B))),
+                                          filled: false,
+                                          contentPadding:
+                                          EdgeInsets.only(left: 24.0, right: 24.0),
+                                          hintStyle: GoogleFonts.openSans(
+                                              fontSize: 12,
+                                              color: Color(0xFF000000).withOpacity(0.15)),
+                                          hintText: "Laporan Kerusakan",
+                                          errorBorder: OutlineInputBorder(
+                                              borderRadius:
+                                              BorderRadius.all(Radius.circular(8)),
+                                              borderSide: BorderSide(color: Colors.red)),
+                                          focusedErrorBorder: OutlineInputBorder(
+                                              borderRadius:
+                                              BorderRadius.all(Radius.circular(8)),
+                                              borderSide: BorderSide(
+                                                  color: Colors.red, width: 1)),
+                                          errorStyle: GoogleFonts.openSans(fontSize: 10)),
+                                      obscureText: false,
+                                      validator: (value) {
+                                        if (value.isEmpty) {
+                                          return "Field is required";
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {},
+                                    ),
+                                  ),
+                                  Text(
+                                    "Ini nanti dikasih gambar",
+                                    style: GoogleFonts.openSans(
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ]
+                            ),
+                          ),
+
+                          SizedBox(height: 16),
+
+                          //Button
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: RaisedButton(
+                              color: Color(0xFF031F4B),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30)),
+                              textColor: Colors.white,
+                              child: Container(
+                                height: 42.5,
+                                width: 85,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Lapor",
+                                  style: GoogleFonts.openSans(
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              onPressed: () {
+                                updateReport(barangKey: barangKey);
+                              },
+                            ),
                           ),
                         ],
                       ),
