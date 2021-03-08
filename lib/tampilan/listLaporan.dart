@@ -1,23 +1,45 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart' as Path;
 import 'package:crash_report/tampilan/sideBar.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class listLaporan extends StatefulWidget {
   @override
   _listLaporanState createState() => _listLaporanState();
 }
 
-class _listLaporanState extends State<listLaporan> {
+class _listLaporanState extends State<listLaporan> 
+    with SingleTickerProviderStateMixin {
   var scaffoldKey = GlobalKey<ScaffoldState>();
   Query _query;
+  TextEditingController _namaAlatController,
+      _laporanController,
+      _dateTimeController;
+  TabController _tabController;
+  ScrollController _scrollController;
+  DatabaseReference _ref, _repref;
+  
+  @override
+  void iniState(){
+    super.initState();
+    _tabController = TabController(vsync: this, length: 2);
+    _scrollController = ScrollController();
+    _namaAlatController = TextEditingController();
+    _laporanController = TextEditingController();
+    _dateTimeController = TextEditingController();
+    _query = FirebaseDatabase.instance.reference().child('listLaporan').orderByChild('nama');
+  }
 
   //Tampilan List barang
-  Widget _buildListBarang({Map barang, final theme}){
-    Color statuColor = getStatusColor(barang['status']);
+  Widget _buildListBarang({Map laporan, final theme}){
+    Color statuColor = getStatusColor(laporan['status']);
     return Container(
       color: Colors.white,
       child: Container(
@@ -48,7 +70,7 @@ class _listLaporanState extends State<listLaporan> {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           Text(
-                            barang['nama'],
+                            laporan['nama'],
                             style: GoogleFonts.openSans(
                               fontStyle: FontStyle.normal,
                               fontWeight: FontWeight.w700,
@@ -56,7 +78,7 @@ class _listLaporanState extends State<listLaporan> {
                             ),
                           ),
                           Text(
-                            barang['letak'],
+                            laporan['date'],
                             style: GoogleFonts.openSans(
                                 fontStyle: FontStyle.normal,
                                 fontWeight: FontWeight.normal,
@@ -65,7 +87,7 @@ class _listLaporanState extends State<listLaporan> {
                             ),
                           ),
                           Text(
-                            barang['divisi'],
+                            laporan['time'],
                             style: GoogleFonts.openSans(
                               fontStyle: FontStyle.normal,
                               fontWeight: FontWeight.w300,
@@ -97,8 +119,8 @@ class _listLaporanState extends State<listLaporan> {
                     query: _query,
                     itemBuilder: (BuildContext context, DataSnapshot snapshot,
                         Animation<double> animation, int index) {
-                      Map barang = snapshot.value;
-                      return _buildListBarang(barang: barang, theme: theme);
+                      Map laporan = snapshot.value;
+                      return _buildListBarang(laporan: laporan, theme: theme);
                     },
                 ),
             ),
