@@ -436,6 +436,7 @@ class _mainMenuUserState extends State<mainMenuUser>
                                 fontStyle: FontStyle.normal,
                                 fontWeight: FontWeight.w700,
                                 fontSize: 16,
+                                color: Colors.black,
                               ),
                             ),
                             Text(
@@ -452,12 +453,12 @@ class _mainMenuUserState extends State<mainMenuUser>
                                 fontStyle: FontStyle.normal,
                                 fontWeight: FontWeight.w300,
                                 fontSize: 12,
+                                color: Colors.black,
                               ),
                             ),
                           ],
                         ),
                       ),
-
                     ],
                   ),
                   children: <Widget>[
