@@ -33,6 +33,7 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi>
     _ambilPreference();
   }
 
+
   Widget _buildListBarang({Map barang, final theme}) {
     Color statusColor = getStatusColor(barang['status']);
     return Container(

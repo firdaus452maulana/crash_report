@@ -17,6 +17,7 @@ Future<void> main() async {
     title: 'PERANG',
     theme: ThemeData(fontFamily: 'OpenSans'),
     home: bagian != null ? loadingPage() : loginPage(),
+    debugShowCheckedModeBanner: false,
     //home: loginPage(),
   ));
 
