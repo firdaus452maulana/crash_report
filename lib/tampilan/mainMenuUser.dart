@@ -1161,9 +1161,11 @@ class _mainMenuUserState extends State<mainMenuUser>
     String status = 'Rusak';
     String date = _dateController.text;
     String time = _timeController.text;
+    String namaAlat = _namaAlatController.text;
 
     Map<String, String> report = {
-      'nama': namaPelapor,
+      'namaPelapor': namaPelapor,
+      'nama': namaAlat,
       'laporan': laporan,
       'date': date,
       'time': time,

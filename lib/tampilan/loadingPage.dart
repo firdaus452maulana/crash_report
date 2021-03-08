@@ -1,3 +1,4 @@
+import 'package:crash_report/tampilan/listLaporan.dart';
 import 'package:crash_report/tampilan/listbarangPage_teknisi.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,7 +26,7 @@ class _loadingPageState extends State<loadingPage> {
     if (bagian == "teknisi") {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => listbarangPage_teknisi()),
+        MaterialPageRoute(builder: (context) => listLaporan()),
         (route) => false,
       );
     }
