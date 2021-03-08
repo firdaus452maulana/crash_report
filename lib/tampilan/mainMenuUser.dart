@@ -967,12 +967,17 @@ class _mainMenuUserState extends State<mainMenuUser>
                                 // untuk mengatur agar widget column mengikuti widget
                                 children: <Widget>[
                                   Text(
-                                    _dateTimeController.text = "${now.year.toString()}-${now.month.toString().padLeft(2,'0')}-${now.day.toString().padLeft(2,'0')} ${now.hour.toString()}:${now.minute.toString().padLeft(2,'0')}:${now.second.toString().padLeft(2,'0')}",
+                                    _dateController.text =
+                                    "${now.year.toString()}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}",
                                     style: GoogleFonts.openSans(
                                       fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.normal ,
+                                      fontWeight: FontWeight.normal,
                                       fontSize: 12,
                                     ),
+                                  ),
+
+                                  Text(_timeController.text =
+                                  "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}"
                                   ),
                                   //LAPORAN KERUSAKAN
                                   Container(
