@@ -1,8 +1,7 @@
 import 'package:crash_report/tampilan/forgotPasswordPage.dart';
-import 'package:crash_report/tampilan/homePage.dart';
 import 'package:crash_report/tampilan/mainMenuUser.dart';
 import 'package:crash_report/tampilan/pilihBagianPage.dart';
-import 'package:crash_report/listbarangPage_teknisi.dart';
+import 'package:crash_report/tampilan/listbarangPage_teknisi.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -163,46 +162,45 @@ class _loginPageState extends State<loginPage> {
                       image: AssetImage('assets/background.png'),
                       fit: BoxFit.fill)),
             ),
-            Container(
-              alignment: Alignment.center,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    'assets/logo_perang.png',
-                    scale: 16,
-                  ),
-                  SizedBox(
-                    height: 28,
-                  ),
-                  Container(
-                    child: Container(
-                      margin: EdgeInsets.only(left: 32, right: 32),
-                      height: 380,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.05),
-                            spreadRadius: 10,
-                            blurRadius: 10,
-                            offset: Offset(0, 0),
-                          )
-                        ],
-                        borderRadius: BorderRadius.circular(17.5),
+            Center(
+              child: SingleChildScrollView(
+                child: Container(
+                  alignment: Alignment.center,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/logo_perang.png',
+                        scale: 16,
                       ),
-                      child: Stack(
-                        children: <Widget>[
-                          Container(
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.only(
-                                left: 24, right: 8, top: 24, bottom: 24),
-                            child: Form(
-                              key: _formKey,
-                              child: CupertinoScrollbar(
-                                child: Container(
-                                  padding: EdgeInsets.only(right: 16),
-                                  child: SingleChildScrollView(
+                      SizedBox(
+                        height: 28,
+                      ),
+                      Container(
+                        child: Container(
+                          margin: EdgeInsets.only(left: 32, right: 32, bottom: 32),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.05),
+                                spreadRadius: 10,
+                                blurRadius: 10,
+                                offset: Offset(0, 0),
+                              )
+                            ],
+                            borderRadius: BorderRadius.circular(17.5),
+                          ),
+                          child: Stack(
+                            children: <Widget>[
+                              Container(
+                                alignment: Alignment.center,
+                                padding: EdgeInsets.only(
+                                    left: 24, right: 8, top: 24, bottom: 24),
+                                child: Form(
+                                  key: _formKey,
+                                  child: Container(
+                                    padding: EdgeInsets.only(right: 16),
                                     child: Column(
                                       children: [
                                         Text(
@@ -384,6 +382,8 @@ class _loginPageState extends State<loginPage> {
                                                   MaterialPageRoute(
                                                       builder: (context) =>
                                                           forgotPasswordPage()));
+                                              _emailContoller.clear();
+                                              _passwordController.clear();
                                             },
                                             child: Text(
                                               "Forgot Password?",
@@ -445,6 +445,8 @@ class _loginPageState extends State<loginPage> {
                                                       MaterialPageRoute(
                                                           builder: (context) =>
                                                               pilihBagianPage()));
+                                                  _emailContoller.clear();
+                                                  _passwordController.clear();
                                                 },
                                               ),
                                             ),
@@ -455,13 +457,13 @@ class _loginPageState extends State<loginPage> {
                                   ),
                                 ),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
             ),
           ],
