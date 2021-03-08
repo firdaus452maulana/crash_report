@@ -846,6 +846,7 @@ class _mainMenuUserState extends State<mainMenuUser>
                                   fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.normal,
                                   fontSize: 12,
+                                  color: Colors.white,
                                 ),
                               )),
 
@@ -895,26 +896,6 @@ class _mainMenuUserState extends State<mainMenuUser>
                             ],
                           ),
                         ],
-                      ),
-                    ),
-                    //Icon Close
-                    Positioned(
-                      right: 0.0,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Align(
-                          alignment: Alignment.topRight,
-                          child: CircleAvatar(
-                            radius: 14,
-                            backgroundColor: Color(0xFF031F4B),
-                            child: Icon(
-                              Icons.close,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
                       ),
                     ),
                   ],
