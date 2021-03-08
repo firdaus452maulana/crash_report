@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart' as Path;
 import 'package:crash_report/tampilan/sideBar.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -55,7 +56,7 @@ class _mainMenuUserState extends State<mainMenuUser>
     _query = FirebaseDatabase.instance
         .reference()
         .child('listBarang')
-        .orderByChild('nama');
+        .orderByChild('divisi');
     _ambilPreference();
   }
 
@@ -539,7 +540,11 @@ class _mainMenuUserState extends State<mainMenuUser>
   //DIALOG ADD LAPORAN
   Widget _showDialogLaporan(String barangKey) {
     getBarangDetail(barangKey: barangKey);
+
     DateTime now = DateTime.now();
+    DateFormat format = new DateFormat("EEEE, dd MMMM yyyy", "id_ID");
+    String formattedDate = format.format(now);
+
     showDialog(
         context: context,
         builder: (context) {
@@ -687,7 +692,7 @@ class _mainMenuUserState extends State<mainMenuUser>
                                 children: <Widget>[
                                   Text(
                                     _dateController.text =
-                                        "${now.year.toString()}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}",
+                                        formattedDate,
                                     style: GoogleFonts.openSans(
                                       fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.normal,
@@ -819,7 +824,6 @@ class _mainMenuUserState extends State<mainMenuUser>
   //DIALOG HAPUS BARANG
   Widget _showDialogDelete(String barangKey) {
     getBarangDetail(barangKey: barangKey);
-    DateTime now = DateTime.now();
     showDialog(
         context: context,
         builder: (context) {
@@ -1114,7 +1118,7 @@ class _mainMenuUserState extends State<mainMenuUser>
     _uploadedFileURL.text = barang['imageURL'];
   }
 
-  void saveBarang() {
+  saveBarang() {
     //SEND IMAGE KE DATABASE
     sendImage();
 
