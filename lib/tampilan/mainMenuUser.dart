@@ -23,7 +23,8 @@ class _mainMenuUserState extends State<mainMenuUser>
       _divisiController,
       _uploadedFileURL,
       _laporanController,
-      _dateTimeController;
+      _dateController,
+      _timeController;
   TabController _tabController;
   ScrollController _scrollController;
   String valueDivisi;
@@ -47,7 +48,8 @@ class _mainMenuUserState extends State<mainMenuUser>
     _divisiController = TextEditingController();
     _laporanController = TextEditingController();
     _uploadedFileURL = TextEditingController();
-    _dateTimeController = TextEditingController();
+    _dateController = TextEditingController();
+    _timeController = TextEditingController();
     _ref = FirebaseDatabase.instance.reference().child('listBarang');
     _repref = FirebaseDatabase.instance.reference().child('listLaporan');
     _query = FirebaseDatabase.instance
@@ -680,14 +682,19 @@ class _mainMenuUserState extends State<mainMenuUser>
                                 // untuk mengatur agar widget column mengikuti widget
                                 children: <Widget>[
                                   Text(
-                                    _dateTimeController.text =
-                                        "${now.year.toString()}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')} ${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}:${now.second.toString().padLeft(2, '0')}",
+                                    _dateController.text =
+                                        "${now.year.toString()}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}",
                                     style: GoogleFonts.openSans(
                                       fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.normal,
                                       fontSize: 12,
                                     ),
                                   ),
+
+                                  Text(_timeController.text =
+                                  "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}"
+                                  ),
+                                  
                                   //LAPORAN KERUSAKAN
                                   Container(
                                     child: TextFormField(
@@ -1044,23 +1051,23 @@ class _mainMenuUserState extends State<mainMenuUser>
 
   updateReport({String barangKey}) {
     String namaPelapor = name;
-    String Key = barangKey;
     String laporan = _laporanController.text;
     String status = 'Rusak';
-    String dateTime = _dateTimeController.text;
+    String date = _dateController.text;
+    String time = _timeController.text;
 
     Map<String, String> report = {
       'nama': namaPelapor,
-      'barangKey': Key,
       'laporan': laporan,
-      'time': dateTime,
+      'date': date,
+      'time': time,
     };
 
     Map<String, String> barang = {
       'status': status,
     };
 
-    _repref.push().set(report).then((value) {
+    _repref.child(barangKey).set(report).then((value) {
       _namaAlatController.clear();
       _lokasiController.clear();
       _divisiController.clear();
@@ -1071,7 +1078,7 @@ class _mainMenuUserState extends State<mainMenuUser>
     _ref.child(barangKey).update(barang).then((value) {
       Navigator.pop(context);
       _laporanController.clear();
-      _dateTimeController.clear();
+      _dateController.clear();
     });
   }
 

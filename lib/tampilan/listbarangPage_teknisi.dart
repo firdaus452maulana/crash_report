@@ -301,8 +301,16 @@ class _listbarangPage_teknisiState extends State<listbarangPage_teknisi>
                                     Animation<double> animation,
                                     int index) {
                                   Map barang = snapshot.value;
-                                  return _buildListBarang(
-                                      barang: barang, theme: theme);
+                                  if (barang ==null){
+                                    return Container(
+                                      height: 100,
+                                      color: Colors.red,
+                                    );
+                                  } else {
+                                    return _buildListBarang(
+                                        barang: barang, theme: theme);
+                                  }
+
                                 },
                               ),
                             ),
