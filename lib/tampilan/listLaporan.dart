@@ -134,7 +134,51 @@ class _listLaporanState extends State<listLaporan>
                   ),
 
                   children: <Widget>[
-
+                     Text(
+                      'Pelapor',
+                      style: GoogleFonts.openSans(
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w300,
+                        fontSize: 12,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      barang['namaPelapor'],
+                      style: GoogleFonts.openSans(
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w300,
+                          fontSize: 12,
+                          color: Colors.black.withOpacity(0.25)
+                      ),
+                    ),
+                    Text(
+                      'Catatan Kerusakan',
+                      style: GoogleFonts.openSans(
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w300,
+                        fontSize: 12,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      barang['laporan'],
+                      style: GoogleFonts.openSans(
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w300,
+                          fontSize: 12,
+                          color: Colors.black.withOpacity(0.25)
+                      ),
+                    ),
+                    Text(
+                      'Status Pelaporan',
+                      style: GoogleFonts.openSans(
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w300,
+                        fontSize: 12,
+                        color: Colors.black,
+                      ),
+                    ),
                   ],
                 ),
               ),
