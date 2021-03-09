@@ -10,7 +10,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await initializeDateFormatting('id_ID', null);
 
   SharedPreferences preferences = await SharedPreferences.getInstance();
   var bagian = preferences.getString('bagian');
