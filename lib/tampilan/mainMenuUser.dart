@@ -345,7 +345,7 @@ class _mainMenuUserState extends State<mainMenuUser>
                       right: 0.0,
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.pop(context);
+                          resetAndClose();
                         },
                         child: Align(
                           alignment: Alignment.topRight,
@@ -804,7 +804,7 @@ class _mainMenuUserState extends State<mainMenuUser>
                       right: 0.0,
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.pop(context);
+                          resetAndClose();
                         },
                         child: Align(
                           alignment: Alignment.topRight,
@@ -853,7 +853,17 @@ class _mainMenuUserState extends State<mainMenuUser>
                         children: <Widget>[
                           Center(
                               child: Text(
-                                "Barang ini akan dihapus secara permanen",
+                                "$_namaAlatController akan dihapus secara permanen",
+                                style: GoogleFonts.openSans(
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                  color: Colors.white,
+                                ),
+                              )),
+                          Center(
+                              child: Text(
+                                "Apakah Kau Yakin ?",
                                 style: GoogleFonts.openSans(
                                   fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.normal,
@@ -884,7 +894,9 @@ class _mainMenuUserState extends State<mainMenuUser>
                                     ),
                                   ),
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  resetAndClose();
+                                },
                               ),
                               FlatButton(
                                 color: Color(0xFF031F4B),
@@ -903,7 +915,9 @@ class _mainMenuUserState extends State<mainMenuUser>
                                     ),
                                   ),
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  hapusBarangLaporan(barangKey: barangKey);
+                                },
                               ),
                             ],
                           ),
@@ -1188,6 +1202,24 @@ class _mainMenuUserState extends State<mainMenuUser>
       _laporanController.clear();
       _dateController.clear();
     });
+  }
+
+  resetAndClose(){
+    _namaAlatController.clear();
+    _lokasiController.clear();
+    _divisiController.clear();
+    valueDivisi = null;
+    _uploadedFileURL.clear();
+    image.delete();
+    _laporanController.clear();
+    _dateController.clear();
+    Navigator.pop(context);
+  }
+
+  hapusBarangLaporan({String barangKey}){
+    if (_repref.child(barangKey) != null)
+      _repref.child(barangKey).remove();
+    _ref.child(barangKey).remove().whenComplete(() => resetAndClose());
   }
 
   Color getStatusColor(String status) {
