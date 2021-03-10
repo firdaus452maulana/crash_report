@@ -20,9 +20,9 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
   ScrollController _scrollController;
   String valueStatus;
 
-  List divisi = ["Sedang dalam perbaikan", "Rusak", "Normal"];
+  List divisi = ["Dalam Perbaikan", "Rusak", "Normal"];
 
-  Query _query;
+  Query _queryLaporan, _queryBarang;
   DatabaseReference _listLaporanRef, _listBarangRef;
   String uid = '';
   String name = '';
@@ -38,9 +38,13 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
         FirebaseDatabase.instance.reference().child('listLaporan');
     _listBarangRef =
         FirebaseDatabase.instance.reference().child('listBarang');
-    _query = FirebaseDatabase.instance
+    _queryLaporan = FirebaseDatabase.instance
         .reference()
         .child('listLaporan')
+        .orderByChild('nama');
+    _queryBarang = FirebaseDatabase.instance
+        .reference()
+        .child('listBarang')
         .orderByChild('nama');
     _ambilPreference();
     _indogs();
@@ -50,7 +54,128 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
     await initializeDateFormatting('id_ID', null);
   }
 
-  //LIST BARANG
+  // LIST BARANG
+  Widget _buildListBarang({Map barang, final theme}) {
+    Color statusColor = getStatusColor(barang['status']);
+    return Container(
+      child: Container(
+          margin: EdgeInsets.only(left: 16, right: 16, top: 16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                spreadRadius: 2,
+                blurRadius: 6,
+                offset: Offset(0, 0),
+              )
+            ],
+            borderRadius: BorderRadius.circular(17.5),
+          ),
+          child: Stack(
+            children: [
+
+              Container(
+                alignment: Alignment.centerRight,
+                padding: EdgeInsets.only(right: 24, left: 24, top: 24),
+                //color: Colors.cyan,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  //posisi
+                  mainAxisSize: MainAxisSize.min,
+                  // untuk mengatur agar widget column mengikuti widget
+                  children: <Widget>[
+                    Text(
+                      "Status",
+                      style: GoogleFonts.openSans(
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 12,
+                      ),
+                    ),
+                    Text(
+                      barang['status'],
+                      style: GoogleFonts.openSans(
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                        color: statusColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+
+              Theme(
+                data: theme,
+                child: ExpansionTile(
+                  tilePadding: EdgeInsets.all(0),
+                  childrenPadding: EdgeInsets.all(0),
+                  trailing: Text(''),
+                  title: Stack(
+                    children: <Widget>[
+                      Container(
+                        width: double.infinity,
+                        //color: Colors.green,
+                        margin: EdgeInsets.only(left: 24, top: 16, bottom: 16, right: 24),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          //posisi
+                          mainAxisSize: MainAxisSize.min,
+                          // untuk mengatur agar widget column mengikuti widget
+                          children: <Widget>[
+                            Text(
+                              barang['nama'],
+                              style: GoogleFonts.openSans(
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 16,
+                              ),
+                            ),
+                            Text(
+                              barang['letak'],
+                              style: GoogleFonts.openSans(
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 12,
+                                  color: Colors.black.withOpacity(0.25)),
+                            ),
+                            Text(
+                              barang['divisi'],
+                              style: GoogleFonts.openSans(
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w300,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(left: 24, right: 24),
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            //color: Colors.grey[200],
+                            margin: EdgeInsets.only(bottom: 24.0),
+                            child: new Image.network(barang['imageURL']),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )),
+    );
+  }
+
+  //LIST LAPORAN
   Widget _buildListLaporan({Map laporan, final theme}) {
     return Container(
       child: Container(
@@ -263,6 +388,22 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
     );
   }
 
+  // WARNA STATUS
+  Color getStatusColor(String status) {
+    Color color = Theme.of(context).accentColor;
+
+    if (status == 'Normal') {
+      color = Color(0xFF628C57);
+    }
+    if (status == 'Rusak') {
+      color = Color(0xFFFF6A6A);
+    }
+    if (status == 'Dalam Perbaikan') {
+      color = Color(0xFFFFD54F);
+    }
+    return color;
+  }
+
   // AMBIL SHARED PREFERENCES
   Future<void> _ambilPreference() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -411,14 +552,36 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                       child: new TabBarView(controller: _tabController,
                           //physics: NeverScrollableScrollPhysics(),
                           children: [
-                            // TAB VIEW LAPORAN
-                            Center(child: Text("LIST BARANG")),
 
                             // TAB VIEW LIST BARANG
                             CupertinoScrollbar(
                               controller: _scrollController,
                               child: FirebaseAnimatedList(
-                                query: _query,
+                                query: _queryBarang,
+                                itemBuilder: (BuildContext context,
+                                    DataSnapshot snapshot,
+                                    Animation<double> animation,
+                                    int index) {
+                                  Map barang = snapshot.value;
+                                  if (barang ==null){
+                                    return Container(
+                                      height: 100,
+                                      color: Colors.red,
+                                    );
+                                  } else {
+                                    return _buildListBarang(
+                                        barang: barang, theme: theme);
+                                  }
+
+                                },
+                              ),
+                            ),
+
+                            // TAB VIEW LIST LAPORAN
+                            CupertinoScrollbar(
+                              controller: _scrollController,
+                              child: FirebaseAnimatedList(
+                                query: _queryLaporan,
                                 itemBuilder: (BuildContext context,
                                     DataSnapshot snapshot,
                                     Animation<double> animation,
