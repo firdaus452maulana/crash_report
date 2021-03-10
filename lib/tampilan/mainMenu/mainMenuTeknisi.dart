@@ -18,11 +18,12 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
   var scaffoldKey = GlobalKey<ScaffoldState>();
   TabController _tabController;
   ScrollController _scrollController;
-  String valueDivisi;
+  String valueStatus;
 
   List divisi = ["Sedang dalam perbaikan", "Rusak", "Normal"];
 
   Query _query;
+  DatabaseReference _listLaporanRef, _listBarangRef;
   String uid = '';
   String name = '';
   String role = '';
@@ -33,6 +34,10 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
     super.initState();
     _tabController = TabController(vsync: this, length: 2);
     _scrollController = ScrollController();
+    _listLaporanRef =
+        FirebaseDatabase.instance.reference().child('listLaporan');
+    _listBarangRef =
+        FirebaseDatabase.instance.reference().child('listBarang');
     _query = FirebaseDatabase.instance
         .reference()
         .child('listLaporan')
@@ -46,7 +51,7 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
   }
 
   //LIST BARANG
-  Widget _buildListBarang({Map barang, final theme}) {
+  Widget _buildListLaporan({Map laporan, final theme}) {
     return Container(
       child: Container(
           margin: EdgeInsets.only(left: 16, right: 16, top: 16),
@@ -84,7 +89,7 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                           // untuk mengatur agar widget column mengikuti widget
                           children: <Widget>[
                             Text(
-                              barang['nama'],
+                              laporan['nama'],
                               style: GoogleFonts.openSans(
                                 fontStyle: FontStyle.normal,
                                 fontWeight: FontWeight.w700,
@@ -93,7 +98,7 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                               ),
                             ),
                             Text(
-                              barang['date'],
+                              laporan['date'],
                               style: GoogleFonts.openSans(
                                   fontStyle: FontStyle.normal,
                                   fontWeight: FontWeight.normal,
@@ -101,7 +106,7 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                                   color: Colors.black.withOpacity(0.25)),
                             ),
                             Text(
-                              barang['time'],
+                              laporan['time'],
                               style: GoogleFonts.openSans(
                                 fontStyle: FontStyle.normal,
                                 fontWeight: FontWeight.w300,
@@ -132,7 +137,7 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                             ),
                           ),
                           Text(
-                            barang['namaPelapor'],
+                            laporan['namaPelapor'],
                             style: GoogleFonts.openSans(
                                 fontWeight: FontWeight.w300,
                                 fontSize: 12,
@@ -148,15 +153,13 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                             ),
                           ),
                           Text(
-                            barang['laporan'],
+                            laporan['laporan'],
                             style: GoogleFonts.openSans(
                                 fontWeight: FontWeight.w300,
                                 fontSize: 12,
                                 color: Colors.black.withOpacity(0.25)),
                           ),
-
                           SizedBox(height: 8),
-
                           Text(
                             'Status Pelaporan',
                             style: GoogleFonts.openSans(
@@ -169,7 +172,7 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                             height: 6,
                           ),
                           Text(
-                            barang['status'],
+                            laporan['key'],
                             style: GoogleFonts.openSans(
                                 fontWeight: FontWeight.w300,
                                 fontSize: 12,
@@ -193,7 +196,8 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                               icon: Icon(Icons.expand_more),
                               iconSize: 16,
                               decoration: InputDecoration(
-                                  labelStyle: TextStyle(fontSize: 12,
+                                  labelStyle: TextStyle(
+                                      fontSize: 12,
                                       color: Colors.black.withOpacity(0.25)),
                                   fillColor: Colors.white,
                                   border: OutlineInputBorder(
@@ -229,23 +233,12 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                                           color: Colors.transparent)),
                                   errorStyle:
                                       GoogleFonts.openSans(fontSize: 10)),
-                              hint: Text(
-                                "status",
-                                style: GoogleFonts.openSans(
-                                    fontSize: 12,
-                                    color: Color(0xFF000000).withOpacity(.25)),
-                              ),
-                              value: valueDivisi,
+                              value: valueStatus = laporan['status'],
                               onChanged: (newValue) {
                                 setState(() {
-                                  valueDivisi = newValue;
+                                  valueStatus = newValue;
+                                  _updateStatus(barangKey: laporan['key']);
                                 });
-                              },
-                              validator: (value) {
-                                if (valueDivisi == null) {
-                                  return "Divisi harus dipilih!";
-                                }
-                                return null;
                               },
                               items: divisi.map((valueItem) {
                                 return DropdownMenuItem(
@@ -277,6 +270,16 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
       uid = preferences.getString('uid');
       name = preferences.getString('name');
       role = preferences.getString('role');
+    });
+  }
+
+  // UPDATE STATUS BARANG (LAPORAN)
+  _updateStatus({String barangKey}) {
+    _listLaporanRef.child(barangKey).update({
+      'status': valueStatus,
+    });
+    _listBarangRef.child(barangKey).update({
+      'status': valueStatus,
     });
   }
 
@@ -420,9 +423,10 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                                     DataSnapshot snapshot,
                                     Animation<double> animation,
                                     int index) {
-                                  Map barang = snapshot.value;
-                                  return _buildListBarang(
-                                      barang: barang, theme: theme);
+                                  Map laporan = snapshot.value;
+                                  laporan['key'] = snapshot.key;
+                                  return _buildListLaporan(
+                                      laporan: laporan, theme: theme);
                                 },
                               ),
                             ),
