@@ -1,4 +1,4 @@
-import 'file:///D:/flutter/crash_report/lib/tampilan/register/registerPageAdmin.dart';
+import 'package:crash_report/tampilan/register/registerPageAdmin.dart';
 import 'package:crash_report/tampilan/register/registerPagePegawai.dart';
 import 'package:flutter/cupertino.dart';
 import 'registerPageTeknisi.dart';

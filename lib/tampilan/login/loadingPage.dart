@@ -1,5 +1,5 @@
-import 'file:///D:/flutter/crash_report/lib/tampilan/mainMenu/mainMenuTeknisi.dart';
-import 'file:///D:/flutter/crash_report/lib/tampilan/mainMenu/mainMenuPegawai.dart';
+import 'package:crash_report/tampilan/mainMenu/mainMenuTeknisi.dart';
+import 'package:crash_report/tampilan/mainMenu/mainMenuPegawai.dart';
 import 'package:crash_report/tampilan/mainMenu/mainMenuAdmin.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';

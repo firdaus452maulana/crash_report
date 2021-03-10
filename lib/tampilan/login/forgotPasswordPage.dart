@@ -1,5 +1,5 @@
 import 'package:crash_report/models/authentication.dart';
-import 'file:///D:/flutter/crash_report/lib/tampilan/login/loginPage.dart';
+import 'package:crash_report/tampilan/login/loginPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
