@@ -1,16 +1,12 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
-import 'package:path/path.dart' as Path;
 import 'package:crash_report/tampilan/sideBar.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 class mainMenuTeknisi extends StatefulWidget {
   @override
@@ -20,21 +16,13 @@ class mainMenuTeknisi extends StatefulWidget {
 class _mainMenuTeknisiState extends State<mainMenuTeknisi>
     with SingleTickerProviderStateMixin {
   var scaffoldKey = GlobalKey<ScaffoldState>();
-  TextEditingController _namaAlatController,
-      _lokasiController,
-      _divisiController,
-      _uploadedFileURL,
-      _laporanController,
-      _dateController,
-      _timeController;
   TabController _tabController;
   ScrollController _scrollController;
   String valueDivisi;
 
-  List divisi = ["Divisi 1", "Divisi 2", "Divisi 3"];
+  List divisi = ["Sedang dalam perbaikan", "Rusak", "Normal"];
 
   Query _query;
-  DatabaseReference _ref, _repref;
   String uid = '';
   String name = '';
   String role = '';
@@ -45,13 +33,6 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
     super.initState();
     _tabController = TabController(vsync: this, length: 2);
     _scrollController = ScrollController();
-    _namaAlatController = TextEditingController();
-    _lokasiController = TextEditingController();
-    _divisiController = TextEditingController();
-    _laporanController = TextEditingController();
-    _uploadedFileURL = TextEditingController();
-    _dateController = TextEditingController();
-    _timeController = TextEditingController();
     _query = FirebaseDatabase.instance
         .reference()
         .child('listLaporan')
@@ -94,7 +75,8 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                       Container(
                         width: double.infinity,
                         //color: Colors.green,
-                        margin: EdgeInsets.only(left: 24, top: 16, bottom: 16, right: 24),
+                        margin: EdgeInsets.only(
+                            left: 24, top: 16, bottom: 16, right: 24),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           //posisi
@@ -132,53 +114,154 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                       ),
                     ],
                   ),
-
                   children: <Widget>[
-                     Text(
-                      'Pelapor',
-                      style: GoogleFonts.openSans(
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w300,
-                        fontSize: 12,
-                        color: Colors.black,
+                    Container(
+                      width: double.infinity,
+                      //color: Colors.cyan,
+                      margin: EdgeInsets.only(left: 24, bottom: 32, right: 24),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            'Pelapor',
+                            style: GoogleFonts.openSans(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            barang['namaPelapor'],
+                            style: GoogleFonts.openSans(
+                                fontWeight: FontWeight.w300,
+                                fontSize: 12,
+                                color: Colors.black.withOpacity(0.25)),
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            'Catatan Kerusakan',
+                            style: GoogleFonts.openSans(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            barang['laporan'],
+                            style: GoogleFonts.openSans(
+                                fontWeight: FontWeight.w300,
+                                fontSize: 12,
+                                color: Colors.black.withOpacity(0.25)),
+                          ),
+
+                          SizedBox(height: 8),
+
+                          Text(
+                            'Status Pelaporan',
+                            style: GoogleFonts.openSans(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12,
+                              color: Colors.black,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 6,
+                          ),
+                          Text(
+                            barang['status'],
+                            style: GoogleFonts.openSans(
+                                fontWeight: FontWeight.w300,
+                                fontSize: 12,
+                                color: Colors.black.withOpacity(0.25)),
+                          ),
+                          Container(
+                            height: 24,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(30)),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.15),
+                                    spreadRadius: 0,
+                                    blurRadius: 2,
+                                    offset: Offset(0, 0),
+                                  )
+                                ]),
+                            child: DropdownButtonFormField(
+                              icon: Icon(Icons.expand_more),
+                              iconSize: 16,
+                              decoration: InputDecoration(
+                                  labelStyle: TextStyle(fontSize: 12,
+                                      color: Colors.black.withOpacity(0.25)),
+                                  fillColor: Colors.white,
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(30)),
+                                      borderSide: BorderSide(
+                                          color: Colors.transparent)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(30)),
+                                      borderSide: BorderSide(
+                                          color: Colors.transparent)),
+                                  filled: false,
+                                  contentPadding:
+                                      EdgeInsets.only(left: 16.0, right: 16.0),
+                                  hintStyle: GoogleFonts.openSans(
+                                      fontSize: 12,
+                                      color:
+                                          Color(0xFF000000).withOpacity(0.25)),
+                                  errorBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(30)),
+                                      borderSide:
+                                          BorderSide(color: Colors.red)),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(30)),
+                                      borderSide: BorderSide(
+                                          color: Colors.transparent)),
+                                  errorStyle:
+                                      GoogleFonts.openSans(fontSize: 10)),
+                              hint: Text(
+                                "status",
+                                style: GoogleFonts.openSans(
+                                    fontSize: 12,
+                                    color: Color(0xFF000000).withOpacity(.25)),
+                              ),
+                              value: valueDivisi,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  valueDivisi = newValue;
+                                });
+                              },
+                              validator: (value) {
+                                if (valueDivisi == null) {
+                                  return "Divisi harus dipilih!";
+                                }
+                                return null;
+                              },
+                              items: divisi.map((valueItem) {
+                                return DropdownMenuItem(
+                                  value: valueItem,
+                                  child: Text(
+                                    valueItem,
+                                    style: GoogleFonts.openSans(
+                                        fontSize: 12, color: Color(0xFF000000)),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    Text(
-                      barang['namaPelapor'],
-                      style: GoogleFonts.openSans(
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w300,
-                          fontSize: 12,
-                          color: Colors.black.withOpacity(0.25)
-                      ),
-                    ),
-                    Text(
-                      'Catatan Kerusakan',
-                      style: GoogleFonts.openSans(
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w300,
-                        fontSize: 12,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      barang['laporan'],
-                      style: GoogleFonts.openSans(
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w300,
-                          fontSize: 12,
-                          color: Colors.black.withOpacity(0.25)
-                      ),
-                    ),
-                    Text(
-                      'Status Pelaporan',
-                      style: GoogleFonts.openSans(
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w300,
-                        fontSize: 12,
-                        color: Colors.black,
-                      ),
-                    ),
+                    )
                   ],
                 ),
               ),
@@ -326,8 +409,7 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                           //physics: NeverScrollableScrollPhysics(),
                           children: [
                             // TAB VIEW LAPORAN
-                            Center(
-                                child: Text("LIST BARANG")),
+                            Center(child: Text("LIST BARANG")),
 
                             // TAB VIEW LIST BARANG
                             CupertinoScrollbar(

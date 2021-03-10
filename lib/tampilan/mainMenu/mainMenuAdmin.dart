@@ -1188,6 +1188,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
       'laporan': laporan,
       'date': date,
       'time': time,
+      'status': status,
     };
 
     Map<String, String> barang = {
