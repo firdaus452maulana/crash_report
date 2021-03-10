@@ -36,8 +36,7 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
     _scrollController = ScrollController();
     _listLaporanRef =
         FirebaseDatabase.instance.reference().child('listLaporan');
-    _listBarangRef =
-        FirebaseDatabase.instance.reference().child('listBarang');
+    _listBarangRef = FirebaseDatabase.instance.reference().child('listBarang');
     _queryLaporan = FirebaseDatabase.instance
         .reference()
         .child('listLaporan')
@@ -59,7 +58,7 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
     Color statusColor = getStatusColor(barang['status']);
     return Container(
       child: Container(
-          margin: EdgeInsets.only(left: 16, right: 16, top: 16),
+          margin: EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
           decoration: BoxDecoration(
             color: Colors.white,
             boxShadow: [
@@ -74,7 +73,6 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
           ),
           child: Stack(
             children: [
-
               Container(
                 alignment: Alignment.centerRight,
                 padding: EdgeInsets.only(right: 24, left: 24, top: 24),
@@ -105,8 +103,6 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                   ],
                 ),
               ),
-
-
               Theme(
                 data: theme,
                 child: ExpansionTile(
@@ -118,7 +114,8 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                       Container(
                         width: double.infinity,
                         //color: Colors.green,
-                        margin: EdgeInsets.only(left: 24, top: 16, bottom: 16, right: 24),
+                        margin: EdgeInsets.only(
+                            left: 24, top: 16, bottom: 16, right: 24),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           //posisi
@@ -131,6 +128,7 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                                 fontStyle: FontStyle.normal,
                                 fontWeight: FontWeight.w700,
                                 fontSize: 16,
+                                color: Colors.black,
                               ),
                             ),
                             Text(
@@ -147,6 +145,7 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                                 fontStyle: FontStyle.normal,
                                 fontWeight: FontWeight.w300,
                                 fontSize: 12,
+                                color: Colors.black,
                               ),
                             ),
                           ],
@@ -179,7 +178,7 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
   Widget _buildListLaporan({Map laporan, final theme}) {
     return Container(
       child: Container(
-          margin: EdgeInsets.only(left: 16, right: 16, top: 16),
+          margin: EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
           decoration: BoxDecoration(
             color: Colors.white,
             boxShadow: [
@@ -296,13 +295,13 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                           SizedBox(
                             height: 6,
                           ),
-                          Text(
+                          /*Text(
                             laporan['key'],
                             style: GoogleFonts.openSans(
                                 fontWeight: FontWeight.w300,
                                 fontSize: 12,
                                 color: Colors.black.withOpacity(0.25)),
-                          ),
+                          ),*/
                           Container(
                             height: 24,
                             decoration: BoxDecoration(
@@ -488,7 +487,7 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
           ),
           Container(
             padding: EdgeInsets.all(0),
-            margin: EdgeInsets.only(top: 164, bottom: 24, left: 24, right: 24),
+            margin: EdgeInsets.only(top: 164, bottom: 28, left: 16, right: 16),
             decoration: BoxDecoration(
               color: Colors.white.withOpacity(0.5),
               borderRadius: BorderRadius.only(
@@ -552,45 +551,52 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                       child: new TabBarView(controller: _tabController,
                           //physics: NeverScrollableScrollPhysics(),
                           children: [
-
                             // TAB VIEW LIST BARANG
-                            CupertinoScrollbar(
-                              controller: _scrollController,
-                              child: FirebaseAnimatedList(
-                                query: _queryBarang,
-                                itemBuilder: (BuildContext context,
-                                    DataSnapshot snapshot,
-                                    Animation<double> animation,
-                                    int index) {
-                                  Map barang = snapshot.value;
-                                  if (barang ==null){
-                                    return Container(
-                                      height: 100,
-                                      color: Colors.red,
-                                    );
-                                  } else {
-                                    return _buildListBarang(
-                                        barang: barang, theme: theme);
-                                  }
-
-                                },
+                            MediaQuery.removePadding(
+                              context: context,
+                              removeTop: true,
+                              child: CupertinoScrollbar(
+                                controller: _scrollController,
+                                child: FirebaseAnimatedList(
+                                  padding: EdgeInsets.all(0),
+                                  query: _queryBarang,
+                                  itemBuilder: (BuildContext context,
+                                      DataSnapshot snapshot,
+                                      Animation<double> animation,
+                                      int index) {
+                                    Map barang = snapshot.value;
+                                    if (barang == null) {
+                                      return Container(
+                                        height: 100,
+                                        color: Colors.red,
+                                      );
+                                    } else {
+                                      return _buildListBarang(
+                                          barang: barang, theme: theme);
+                                    }
+                                  },
+                                ),
                               ),
                             ),
 
                             // TAB VIEW LIST LAPORAN
-                            CupertinoScrollbar(
-                              controller: _scrollController,
-                              child: FirebaseAnimatedList(
-                                query: _queryLaporan,
-                                itemBuilder: (BuildContext context,
-                                    DataSnapshot snapshot,
-                                    Animation<double> animation,
-                                    int index) {
-                                  Map laporan = snapshot.value;
-                                  laporan['key'] = snapshot.key;
-                                  return _buildListLaporan(
-                                      laporan: laporan, theme: theme);
-                                },
+                            MediaQuery.removePadding(
+                              context: context,
+                              removeTop: true,
+                              child: CupertinoScrollbar(
+                                controller: _scrollController,
+                                child: FirebaseAnimatedList(
+                                  query: _queryLaporan,
+                                  itemBuilder: (BuildContext context,
+                                      DataSnapshot snapshot,
+                                      Animation<double> animation,
+                                      int index) {
+                                    Map laporan = snapshot.value;
+                                    laporan['key'] = snapshot.key;
+                                    return _buildListLaporan(
+                                        laporan: laporan, theme: theme);
+                                  },
+                                ),
                               ),
                             ),
                           ]),

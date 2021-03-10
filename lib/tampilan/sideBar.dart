@@ -68,8 +68,8 @@ class _sideBarState extends State<sideBar> {
                     padding:
                         EdgeInsets.only(left: 8, right: 8, top: 24, bottom: 16),
                     child: Text(
-                      "PERANG APP",
-                      style: GoogleFonts.openSans(color: Colors.white),
+                      "SiAPP",
+                      style: GoogleFonts.openSans(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 30),
                     ),
                   ),
                   Container(

@@ -45,7 +45,7 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
         fontSize: 12,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
-        backgroundColor: Color(0xFF000000).withOpacity(0.05),
+        backgroundColor: Color(0xFFF5F7FA),
         textColor: Colors.black);
   }
 
