@@ -715,7 +715,7 @@ class _mainMenuUserState extends State<mainMenuUser>
                                     child: TextFormField(
                                       cursorColor: Colors.black,
                                       style: GoogleFonts.openSans(fontSize: 12),
-                                      keyboardType: TextInputType.text,
+                                      maxLines: null,
                                       controller: _laporanController,
                                       decoration: new InputDecoration(
                                           fillColor: Colors.white,
@@ -834,7 +834,7 @@ class _mainMenuUserState extends State<mainMenuUser>
         context: context,
         builder: (context) {
           return Dialog(
-            backgroundColor: Colors.black.withOpacity(0.5),
+            backgroundColor: Colors.black.withOpacity(0.75),
             shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
             child: Container(
@@ -844,23 +844,28 @@ class _mainMenuUserState extends State<mainMenuUser>
                   children: <Widget>[
                     Container(
                       padding:
-                      EdgeInsets.only(top: 16, bottom: 16, left: 8, right: 8),
+                      EdgeInsets.only(top: 16, bottom: 8, left: 8, right: 8),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         //posisi
                         mainAxisSize: MainAxisSize.min,
                         // untuk mengatur agar widget column mengikuti widget
                         children: <Widget>[
-                          Center(
-                              child: Text(
-                                "$_namaAlatController akan dihapus secara permanen",
-                                style: GoogleFonts.openSans(
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12,
-                                  color: Colors.white,
-                                ),
-                              )),
+                          Text(
+                            "${_namaAlatController.text} akan dihapus secara permanen",
+                            style: GoogleFonts.openSans(
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+
+                          SizedBox(height: 16),
+
                           Center(
                               child: Text(
                                 "Apakah Kau Yakin ?",
@@ -1210,7 +1215,6 @@ class _mainMenuUserState extends State<mainMenuUser>
     _divisiController.clear();
     valueDivisi = null;
     _uploadedFileURL.clear();
-    image.delete();
     _laporanController.clear();
     _dateController.clear();
     Navigator.pop(context);
