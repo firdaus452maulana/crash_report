@@ -12,12 +12,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
-class listLaporan extends StatefulWidget {
+class mainMenuTeknisi extends StatefulWidget {
   @override
-  _listLaporanState createState() => _listLaporanState();
+  _mainMenuTeknisiState createState() => _mainMenuTeknisiState();
 }
 
-class _listLaporanState extends State<listLaporan>
+class _mainMenuTeknisiState extends State<mainMenuTeknisi>
     with SingleTickerProviderStateMixin {
   var scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController _namaAlatController,

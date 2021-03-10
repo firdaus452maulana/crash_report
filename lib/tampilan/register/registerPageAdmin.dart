@@ -1,17 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../models/authentication.dart';
-import 'package:crash_report/tampilan/loginPage.dart';
+import '../../models/authentication.dart';
+import 'file:///D:/flutter/crash_report/lib/tampilan/login/loginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class registerPageTeknisi extends StatefulWidget {
+class registerPageAdmin extends StatefulWidget {
   @override
-  _registerPageTeknisiState createState() => _registerPageTeknisiState();
+  _registerPageAdminState createState() => _registerPageAdminState();
 }
 
-class _registerPageTeknisiState extends State<registerPageTeknisi> {
+class _registerPageAdminState extends State<registerPageAdmin> {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   bool _secureText = true;
@@ -55,7 +55,7 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
       return;
     }
     _formKey.currentState.save();
-    dynamic result = await _auth.createTeknisi(
+    dynamic result = await _auth.createAdmin(
         _nameController.text, _emailContoller.text, _passwordController.text);
     if (result == null) {
       print("Something went wrong");

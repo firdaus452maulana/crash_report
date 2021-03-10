@@ -11,6 +11,13 @@ class DatabaseManager {
         .set({'name': name, 'email': email, 'role': role, 'bagian': "pegawai"});
   }
 
+  Future<void> setAdminRealtime(String name, String email, String uid) async {
+    return await DatabaseManager()
+        .userListRealtime
+        .child(uid)
+        .set({'name': name, 'email': email, 'role': "Admin", 'bagian': "admin"});
+  }
+
   Future<void> setTeknisiRealtime(String name, String email, String uid) async {
     return await DatabaseManager()
         .userListRealtime

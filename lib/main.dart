@@ -1,7 +1,7 @@
-import 'package:crash_report/tampilan/loadingPage.dart';
+import 'package:crash_report/tampilan/login/loadingPage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_file.dart';
-import 'tampilan/loginPage.dart';
+import 'tampilan/login/loginPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

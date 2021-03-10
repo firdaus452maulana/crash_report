@@ -1,9 +1,8 @@
-import 'package:crash_report/tampilan/listLaporan.dart';
-import 'package:crash_report/tampilan/listbarangPage_teknisi.dart';
+import 'file:///D:/flutter/crash_report/lib/tampilan/mainMenu/mainMenuTeknisi.dart';
+import 'file:///D:/flutter/crash_report/lib/tampilan/mainMenu/mainMenuPegawai.dart';
+import 'package:crash_report/tampilan/mainMenu/mainMenuAdmin.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'mainMenuUser.dart';
 
 class loadingPage extends StatefulWidget {
   @override
@@ -18,15 +17,23 @@ class _loadingPageState extends State<loadingPage> {
     if (bagian == "pegawai") {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => mainMenuUser()),
+        MaterialPageRoute(builder: (context) => mainMenuAdmin()),
         (route) => false,
+      );
+    }
+
+    if (bagian == "admin") {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => mainMenuAdmin()),
+            (route) => false,
       );
     }
 
     if (bagian == "teknisi") {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => listLaporan()),
+        MaterialPageRoute(builder: (context) => mainMenuTeknisi()),
         (route) => false,
       );
     }

@@ -1,6 +1,7 @@
-import 'package:crash_report/tampilan/registerPage.dart';
+import 'file:///D:/flutter/crash_report/lib/tampilan/register/registerPageAdmin.dart';
+import 'package:crash_report/tampilan/register/registerPagePegawai.dart';
 import 'package:flutter/cupertino.dart';
-import '../tampilan/registerPageTeknisi.dart';
+import 'registerPageTeknisi.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -74,11 +75,46 @@ class _pilihBagianPageState extends State<pilihBagianPage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => registerPage()));
+                                  builder: (context) => registerPagePegawai()));
                         },
                       ),
                     ),
 
+                    // PILIH ADMIN
+                    Container(
+                      margin: EdgeInsets.only(
+                          top: 0, left: 32, right: 32, bottom: 32),
+                      child: RaisedButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(17.5)),
+                        color: Colors.white,
+                        padding: EdgeInsets.all(0),
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: double.infinity,
+                          height: 144,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(17.5),
+                              image: DecorationImage(
+                                  image: AssetImage('assets/pegawai.jpg'),
+                                  colorFilter: new ColorFilter.mode(
+                                      Colors.white.withOpacity(0.2),
+                                      BlendMode.dstATop),
+                                  fit: BoxFit.fill)),
+                          child: Text(
+                            "Admin",
+                            style: GoogleFonts.openSans(
+                                fontSize: 12, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => registerPageAdmin()));
+                        },
+                      ),
+                    ),
 
                     // PILIH TEKNISI
                     Container(

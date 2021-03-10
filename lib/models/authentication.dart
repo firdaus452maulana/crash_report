@@ -18,6 +18,18 @@ class AuthenticationService {
     }
   }
 
+  Future createAdmin(String name, String email, String password) async {
+    try {
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      User user = result.user;
+      await DatabaseManager().setAdminRealtime(name, email, user.uid);
+      return user;
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   Future createTeknisi(String name, String email, String password) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(

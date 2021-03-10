@@ -1,8 +1,8 @@
-import 'package:crash_report/tampilan/forgotPasswordPage.dart';
-import 'package:crash_report/tampilan/listLaporan.dart';
-import 'package:crash_report/tampilan/mainMenuUser.dart';
-import 'package:crash_report/tampilan/pilihBagianPage.dart';
-import 'package:crash_report/tampilan/listbarangPage_teknisi.dart';
+import 'file:///D:/flutter/crash_report/lib/tampilan/login/forgotPasswordPage.dart';
+import 'file:///D:/flutter/crash_report/lib/tampilan/mainMenu/mainMenuTeknisi.dart';
+import 'file:///D:/flutter/crash_report/lib/tampilan/mainMenu/mainMenuAdmin.dart';
+import 'file:///D:/flutter/crash_report/lib/tampilan/register/pilihBagianPage.dart';
+import 'file:///D:/flutter/crash_report/lib/tampilan/mainMenu/mainMenuPegawai.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,12 +38,20 @@ class _loginPageState extends State<loginPage> {
     _clearPreference();
   }
 
-  // NAVIGASI KE HALAMAN HOME PEGAWAI DAN TEKNISI
+  // NAVIGASI KE HALAMAN HOME PEGAWAI, ADMIN, DAN TEKNISI
   _navSignInSuccess() {
     if (bagian == "pegawai") {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => mainMenuUser()),
+        MaterialPageRoute(builder: (context) => mainMenuAdmin()),
+            (route) => false,
+      );
+    }
+
+    if (bagian == "admin") {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => mainMenuAdmin()),
         (route) => false,
       );
     }
@@ -51,7 +59,7 @@ class _loginPageState extends State<loginPage> {
     if (bagian == "teknisi") {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => listLaporan()),
+        MaterialPageRoute(builder: (context) => mainMenuTeknisi()),
         (route) => false,
       );
     }

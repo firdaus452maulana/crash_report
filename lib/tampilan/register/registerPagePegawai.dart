@@ -1,23 +1,23 @@
+import 'package:crash_report/models/authentication.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../models/authentication.dart';
-import 'package:crash_report/tampilan/loginPage.dart';
+import 'file:///D:/flutter/crash_report/lib/tampilan/login/loginPage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class registerPage extends StatefulWidget {
+class registerPagePegawai extends StatefulWidget {
   @override
-  _registerPageState createState() => _registerPageState();
+  _registerPagePegawaiState createState() => _registerPagePegawaiState();
 }
 
-class _registerPageState extends State<registerPage> {
+class _registerPagePegawaiState extends State<registerPagePegawai> {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   bool _secureText = true;
   String valueDivisi;
 
-  List divisi = ["Divisi 1", "Divisi 2", "Divisi 3"];
+  List divisi = ["ATC", "ARO", "PIA"];
 
   final auth = FirebaseAuth.instance;
   final AuthenticationService _auth = AuthenticationService();

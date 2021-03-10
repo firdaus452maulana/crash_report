@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class listbarangPage_teknisi extends StatefulWidget {
+class mainMenuPegawai extends StatefulWidget {
   @override
-  _listbarangPage_teknisiState createState() => _listbarangPage_teknisiState();
+  _mainMenuPegawaiState createState() => _mainMenuPegawaiState();
 }
 
-class _listbarangPage_teknisiState extends State<listbarangPage_teknisi>
+class _mainMenuPegawaiState extends State<mainMenuPegawai>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
   ScrollController _scrollController;
