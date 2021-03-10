@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:crash_report/tampilan/sideBar.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
@@ -15,18 +16,26 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
   ScrollController _scrollController;
+  String valueStatus;
+
+  Query _queryLaporan, _queryBarang;
+  String uid = '';
+  String name = '';
+  String role = '';
+  File image;
 
   var scaffoldKey = GlobalKey<ScaffoldState>();
-
-  Query _query;
-  String uid, name, role;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: 2);
     _scrollController = ScrollController();
-    _query = FirebaseDatabase.instance
+    _queryLaporan = FirebaseDatabase.instance
+        .reference()
+        .child('listLaporan')
+        .orderByChild('nama');
+    _queryBarang = FirebaseDatabase.instance
         .reference()
         .child('listBarang')
         .orderByChild('nama');
@@ -53,7 +62,6 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
           ),
           child: Stack(
             children: [
-
               Container(
                 alignment: Alignment.centerRight,
                 padding: EdgeInsets.only(right: 24, left: 24, top: 24),
@@ -84,7 +92,6 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                   ],
                 ),
               ),
-
 
               Theme(
                 data: theme,
@@ -154,6 +161,219 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
     );
   }
 
+  //LIST LAPORAN
+  Widget _buildListLaporan({Map laporan, final theme}) {
+    return Container(
+      child: Container(
+          margin: EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                spreadRadius: 2,
+                blurRadius: 6,
+                offset: Offset(0, 0),
+              )
+            ],
+            borderRadius: BorderRadius.circular(17.5),
+          ),
+          child: Stack(
+            children: [
+              Theme(
+                data: theme,
+                child: ExpansionTile(
+                  tilePadding: EdgeInsets.all(0),
+                  childrenPadding: EdgeInsets.all(0),
+                  trailing: Text(''),
+                  title: Stack(
+                    children: <Widget>[
+                      Container(
+                        width: double.infinity,
+                        //color: Colors.green,
+                        margin: EdgeInsets.only(
+                            left: 24, top: 16, bottom: 16, right: 24),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          //posisi
+                          mainAxisSize: MainAxisSize.min,
+                          // untuk mengatur agar widget column mengikuti widget
+                          children: <Widget>[
+                            Text(
+                              laporan['nama'],
+                              style: GoogleFonts.openSans(
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                            ),
+                            Text(
+                              laporan['date'],
+                              style: GoogleFonts.openSans(
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 12,
+                                  color: Colors.black.withOpacity(0.25)),
+                            ),
+                            Text(
+                              laporan['time'],
+                              style: GoogleFonts.openSans(
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w300,
+                                fontSize: 12,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  children: <Widget>[
+                    Container(
+                      width: double.infinity,
+                      //color: Colors.cyan,
+                      margin: EdgeInsets.only(left: 24, bottom: 32, right: 24),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            'Pelapor',
+                            style: GoogleFonts.openSans(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            laporan['namaPelapor'],
+                            style: GoogleFonts.openSans(
+                                fontWeight: FontWeight.w300,
+                                fontSize: 12,
+                                color: Colors.black.withOpacity(0.25)),
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            'Catatan Kerusakan',
+                            style: GoogleFonts.openSans(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            laporan['laporan'],
+                            style: GoogleFonts.openSans(
+                                fontWeight: FontWeight.w300,
+                                fontSize: 12,
+                                color: Colors.black.withOpacity(0.25)),
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            'Status Pelaporan',
+                            style: GoogleFonts.openSans(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12,
+                              color: Colors.black,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 6,
+                          ),
+                          /*Text(
+                            laporan['key'],
+                            style: GoogleFonts.openSans(
+                                fontWeight: FontWeight.w300,
+                                fontSize: 12,
+                                color: Colors.black.withOpacity(0.25)),
+                          ),*/
+                          Container(
+                            height: 24,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(30)),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.15),
+                                    spreadRadius: 0,
+                                    blurRadius: 2,
+                                    offset: Offset(0, 0),
+                                  )
+                                ]),
+                            /*child: DropdownButtonFormField(
+                              icon: Icon(Icons.expand_more),
+                              iconSize: 16,
+                              decoration: InputDecoration(
+                                  labelStyle: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.black.withOpacity(0.25)),
+                                  fillColor: Colors.white,
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(30)),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                      borderSide: BorderSide(
+                                          color: Colors.transparent)),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                      borderSide: BorderSide(
+                                          color: Colors.transparent)),
+                                  filled: false,
+                                  contentPadding:
+                                  EdgeInsets.only(left: 16.0, right: 16.0),
+                                  hintStyle: GoogleFonts.openSans(
+                                      fontSize: 12,
+                                      color:
+                                      Color(0xFF000000).withOpacity(0.25)),
+                                  errorBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                      borderSide:
+                                      BorderSide(color: Colors.red)),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                      borderSide: BorderSide(
+                                          color: Colors.transparent)),
+                                  errorStyle:
+                                  GoogleFonts.openSans(fontSize: 10)),
+                              value: valueStatus = laporan['status'],
+                              onChanged: (newValue) {
+                                setState(() {
+                                  valueStatus = newValue;
+                                  _updateStatus(barangKey: laporan['key']);
+                                });
+                              },
+                              items: divisi.map((valueItem) {
+                                return DropdownMenuItem(
+                                  value: valueItem,
+                                  child: Text(
+                                    valueItem,
+                                    style: GoogleFonts.openSans(
+                                        fontSize: 12, color: Color(0xFF000000)),
+                                  ),
+                                );
+                              }).toList(),
+                            ),*/
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          )),
+    );
+  }
+
   // AMBIL SHARED PREFERENCES
   Future<void> _ambilPreference() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -164,6 +384,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
     });
   }
 
+  //TAMPILAN
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).copyWith(dividerColor: Colors.transparent);
@@ -270,7 +491,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                       ),
                       tabs: <Widget>[
                         Tab(
-                          text: "List Barang",
+                          text: "Daftar Barang",
                         ),
                         Tab(
                           text: "Laporan",
@@ -292,32 +513,53 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                           //physics: NeverScrollableScrollPhysics(),
                           children: [
                             // TAB VIEW LIST BARANG
-                            CupertinoScrollbar(
-                              controller: _scrollController,
-                              child: FirebaseAnimatedList(
-                                query: _query,
-                                itemBuilder: (BuildContext context,
-                                    DataSnapshot snapshot,
-                                    Animation<double> animation,
-                                    int index) {
-                                  Map barang = snapshot.value;
-                                  if (barang ==null){
-                                    return Container(
-                                      height: 100,
-                                      color: Colors.red,
-                                    );
-                                  } else {
-                                    return _buildListBarang(
-                                        barang: barang, theme: theme);
-                                  }
-
-                                },
+                            MediaQuery.removePadding(
+                              context: context,
+                              removeTop: true,
+                              child: CupertinoScrollbar(
+                                controller: _scrollController,
+                                child: FirebaseAnimatedList(
+                                  padding: EdgeInsets.all(0),
+                                  query: _queryBarang,
+                                  itemBuilder: (BuildContext context,
+                                      DataSnapshot snapshot,
+                                      Animation<double> animation,
+                                      int index) {
+                                    Map barang = snapshot.value;
+                                    if (barang == null) {
+                                      return Container(
+                                        height: 100,
+                                        color: Colors.red,
+                                      );
+                                    } else {
+                                      return _buildListBarang(
+                                          barang: barang, theme: theme);
+                                    }
+                                  },
+                                ),
                               ),
                             ),
 
                             // TAB VIEW LAPORAN
-                            Center(
-                                child: Text("Ini nanti ubah ke list laporan")),
+                            MediaQuery.removePadding(
+                              context: context,
+                              removeTop: true,
+                              child: CupertinoScrollbar(
+                                controller: _scrollController,
+                                child: FirebaseAnimatedList(
+                                  query: _queryLaporan,
+                                  itemBuilder: (BuildContext context,
+                                      DataSnapshot snapshot,
+                                      Animation<double> animation,
+                                      int index) {
+                                    Map laporan = snapshot.value;
+                                    laporan['key'] = snapshot.key;
+                                    return _buildListLaporan(
+                                        laporan: laporan, theme: theme);
+                                  },
+                                ),
+                              ),
+                            ),
                           ]),
                     ),
                   )
@@ -339,6 +581,10 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
     if (status == 'Rusak') {
       color = Color(0xFFFF6A6A);
     }
+    if (status == 'Dalam Perbaikan') {
+      color = Color(0xFFFFD54F);
+    }
     return color;
   }
+
 }
