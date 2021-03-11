@@ -407,7 +407,7 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                               ),
                             ),
                             onPressed: () {
-                              _selesaiLaporan();
+                              _selesaiLaporan(barangKey: laporan['key']);
                             },
                           ),
                         ],
@@ -422,8 +422,9 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
   }
 
   //SUBMIT PROGRESS LAPORAN
-  Future<void> _selesaiLaporan() async {
-
+  _selesaiLaporan({String barangKey}){
+    if (_listLaporanRef.child(barangKey) != null)
+      _listLaporanRef.child(barangKey).remove();
   }
 
   // WARNA STATUS
