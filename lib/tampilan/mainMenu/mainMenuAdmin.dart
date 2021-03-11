@@ -431,7 +431,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                       Container(
                         width: double.infinity,
                         //color: Colors.green,
-                        margin: EdgeInsets.only(left: 24, top: 16, bottom: 16, right: 24),
+                        margin: EdgeInsets.only(left: 24, top: 16, bottom: 16, right: 72),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           //posisi

@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 
 class mainMenuPegawai extends StatefulWidget {
   @override
@@ -18,7 +19,19 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
   ScrollController _scrollController;
   String valueStatus;
 
+  TextEditingController _namaAlatController,
+      _lokasiController,
+      _divisiController,
+      _uploadedFileURL,
+      _laporanController,
+      _dateController,
+      _timeController;
+  String valueDivisi;
+
+  List divisi = ["Divisi 1", "Divisi 2", "Divisi 3"];
+
   Query _queryLaporan, _queryBarang;
+  DatabaseReference _ref, _repref;
   String uid = '';
   String name = '';
   String role = '';
@@ -39,6 +52,8 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
         .reference()
         .child('listBarang')
         .orderByChild('nama');
+    _ref = FirebaseDatabase.instance.reference().child('listBarang');
+    _repref = FirebaseDatabase.instance.reference().child('listLaporan');
     _ambilPreference();
   }
 
@@ -104,7 +119,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                       Container(
                         width: double.infinity,
                         //color: Colors.green,
-                        margin: EdgeInsets.only(left: 24, top: 16, bottom: 16, right: 24),
+                        margin: EdgeInsets.only(left: 24, top: 16, bottom: 16, right: 72),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           //posisi
@@ -150,6 +165,44 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                             margin: EdgeInsets.only(bottom: 24.0),
                             child: new Image.network(barang['imageURL']),
                           ),
+                          Container(
+                            width: double.infinity,
+                            //color: Colors.green,
+                            padding: EdgeInsets.all(0),
+                            margin: EdgeInsets.only(bottom: 24),
+                            alignment: Alignment.center,
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Container(
+                                    //color: Colors.red,
+                                    alignment: Alignment.centerRight,
+                                    child: RaisedButton(
+                                      color: Color(0xFF031F4B),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(30)),
+                                      textColor: Colors.white,
+                                      child: Container(
+                                        width: 85,
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          "Komplain",
+                                          style: GoogleFonts.openSans(
+                                            fontSize: 12,
+                                            fontStyle: FontStyle.normal,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        _showDialogKomplain(barang['key']);
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -161,7 +214,291 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
     );
   }
 
-  //LIST LAPORAN
+  //DIALOG ADD KOMPLAIN
+  Widget _showDialogKomplain(String barangKey) {
+    getBarangDetail(barangKey: barangKey);
+
+    DateTime now = DateTime.now();
+    DateFormat format = new DateFormat("EEEE, d LLLL yyyy", "id_ID");
+    String formattedDate = format.format(now);
+
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            child: Container(
+              padding: EdgeInsets.all(24),
+              child: SingleChildScrollView(
+                child: Stack(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(
+                          top: 16, bottom: 16, left: 8, right: 8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        //posisi
+                        mainAxisSize: MainAxisSize.min,
+                        // untuk mengatur agar widget column mengikuti widget
+                        children: <Widget>[
+                          Container(
+                              child: Text(
+                                "Komplain Kerusakan",
+                                style: GoogleFonts.openSans(
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              )),
+
+                          SizedBox(height: 16),
+
+                          Center(
+                            child: Text(
+                              "--- Deskripsi Alat ---",
+                              style: GoogleFonts.openSans(
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                                color: Colors.black.withOpacity(0.25),
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(height: 4),
+
+                          Container(
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                //posisi
+                                mainAxisSize: MainAxisSize.min,
+                                // untuk mengatur agar widget column mengikuti widget
+                                children: <Widget>[
+                                  Text(
+                                    _namaAlatController.text,
+                                    style: GoogleFonts.openSans(
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  Text(
+                                    _lokasiController.text,
+                                    style: GoogleFonts.openSans(
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 12,
+                                        color: Colors.black.withOpacity(0.25)),
+                                  ),
+                                  Text(
+                                    _divisiController.text,
+                                    style: GoogleFonts.openSans(
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.w300,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ]),
+                          ),
+
+                          SizedBox(height: 16),
+
+                          Center(
+                            child: Text(
+                              "--- Identitas Diri ---",
+                              style: GoogleFonts.openSans(
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                                color: Colors.black.withOpacity(0.25),
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(height: 4),
+
+                          Container(
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                //posisi
+                                mainAxisSize: MainAxisSize.min,
+                                // untuk mengatur agar widget column mengikuti widget
+                                children: <Widget>[
+                                  Text(
+                                    name,
+                                    style: GoogleFonts.openSans(
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  Text(
+                                    role,
+                                    style: GoogleFonts.openSans(
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 12,
+                                        color: Colors.black.withOpacity(0.5)),
+                                  ),
+                                ]),
+                          ),
+
+                          SizedBox(height: 16),
+
+                          Center(
+                            child: Text(
+                              "--- Laporan ---",
+                              style: GoogleFonts.openSans(
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                                color: Colors.black.withOpacity(0.25),
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(height: 4),
+
+                          Container(
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                //posisi
+                                mainAxisSize: MainAxisSize.min,
+                                // untuk mengatur agar widget column mengikuti widget
+                                children: <Widget>[
+                                  Text(
+                                    _dateController.text =
+                                        formattedDate,
+                                    style: GoogleFonts.openSans(
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+
+                                  Text(_timeController.text =
+                                  "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}"
+                                  ),
+
+                                  //LAPORAN KERUSAKAN
+                                  Container(
+                                    child: TextFormField(
+                                      cursorColor: Colors.black,
+                                      style: GoogleFonts.openSans(fontSize: 12),
+                                      maxLines: null,
+                                      controller: _laporanController,
+                                      decoration: new InputDecoration(
+                                          fillColor: Colors.white,
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(8)),
+                                          ),
+                                          enabledBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(8)),
+                                              borderSide: BorderSide(
+                                                  color: Color(0xFF000000)
+                                                      .withOpacity(0.15))),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(8)),
+                                              borderSide: BorderSide(
+                                                  color: Color(0xFF031F4B))),
+                                          filled: false,
+                                          contentPadding: EdgeInsets.only(
+                                              left: 24.0, right: 24.0),
+                                          hintStyle: GoogleFonts.openSans(
+                                              fontSize: 12,
+                                              color: Color(0xFF000000)
+                                                  .withOpacity(0.15)),
+                                          hintText: "Komplain Kerusakan",
+                                          errorBorder: OutlineInputBorder(
+                                              borderRadius:
+                                              BorderRadius.all(Radius.circular(8)),
+                                              borderSide: BorderSide(color: Colors.red)),
+                                          focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(8)), borderSide: BorderSide(color: Colors.red, width: 1)),
+                                          errorStyle: GoogleFonts.openSans(fontSize: 10)),
+                                      obscureText: false,
+                                      validator: (value) {
+                                        if (value.isEmpty) {
+                                          return "Field is required";
+                                        }
+                                        return null;
+                                      },
+                                      onSaved: (value) {},
+                                    ),
+                                  ),
+                                  Text(
+                                    "Ini nanti dikasih gambar",
+                                    style: GoogleFonts.openSans(
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ]),
+                          ),
+
+                          SizedBox(height: 16),
+
+                          //Button
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: RaisedButton(
+                              color: Color(0xFF031F4B),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30)),
+                              textColor: Colors.white,
+                              child: Container(
+                                height: 42.5,
+                                width: 85,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Komplain",
+                                  style: GoogleFonts.openSans(
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              onPressed: () {
+                                updateKomplain(barangKey: barangKey);
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    //Icon Close
+                    Positioned(
+                      right: 0.0,
+                      child: GestureDetector(
+                        onTap: () {
+                          resetAndClose();
+                        },
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: CircleAvatar(
+                            radius: 14,
+                            backgroundColor: Color(0xFF031F4B),
+                            child: Icon(
+                              Icons.close,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
+  //LIST KOMPLAIN
   Widget _buildListLaporan({Map laporan, final theme}) {
     return Container(
       child: Container(
@@ -303,65 +640,6 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                                     offset: Offset(0, 0),
                                   )
                                 ]),
-                            /*child: DropdownButtonFormField(
-                              icon: Icon(Icons.expand_more),
-                              iconSize: 16,
-                              decoration: InputDecoration(
-                                  labelStyle: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.black.withOpacity(0.25)),
-                                  fillColor: Colors.white,
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(30)),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(30)),
-                                      borderSide: BorderSide(
-                                          color: Colors.transparent)),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(30)),
-                                      borderSide: BorderSide(
-                                          color: Colors.transparent)),
-                                  filled: false,
-                                  contentPadding:
-                                  EdgeInsets.only(left: 16.0, right: 16.0),
-                                  hintStyle: GoogleFonts.openSans(
-                                      fontSize: 12,
-                                      color:
-                                      Color(0xFF000000).withOpacity(0.25)),
-                                  errorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(30)),
-                                      borderSide:
-                                      BorderSide(color: Colors.red)),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(30)),
-                                      borderSide: BorderSide(
-                                          color: Colors.transparent)),
-                                  errorStyle:
-                                  GoogleFonts.openSans(fontSize: 10)),
-                              value: valueStatus = laporan['status'],
-                              onChanged: (newValue) {
-                                setState(() {
-                                  valueStatus = newValue;
-                                  _updateStatus(barangKey: laporan['key']);
-                                });
-                              },
-                              items: divisi.map((valueItem) {
-                                return DropdownMenuItem(
-                                  value: valueItem,
-                                  child: Text(
-                                    valueItem,
-                                    style: GoogleFonts.openSans(
-                                        fontSize: 12, color: Color(0xFF000000)),
-                                  ),
-                                );
-                              }).toList(),
-                            ),*/
                           ),
                         ],
                       ),
@@ -570,6 +848,64 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
         ],
       ),
     );
+  }
+
+  getBarangDetail({String barangKey}) async {
+    DataSnapshot snapshot = await _ref.child(barangKey).once();
+
+    Map barang = snapshot.value;
+
+    _namaAlatController.text = barang['nama'];
+    _lokasiController.text = barang['letak'];
+    _divisiController.text = barang['divisi'];
+    _uploadedFileURL.text = barang['imageURL'];
+  }
+
+  updateKomplain({String barangKey}) {
+    String namaPelapor = name;
+    String laporan = _laporanController.text;
+    String status = 'Rusak';
+    String date = _dateController.text;
+    String time = _timeController.text;
+    String namaAlat = _namaAlatController.text;
+
+    Map<String, String> report = {
+      'namaPelapor': namaPelapor,
+      'nama': namaAlat,
+      'laporan': laporan,
+      'date': date,
+      'time': time,
+      'status': status,
+    };
+
+    Map<String, String> barang = {
+      'status': status,
+    };
+
+    _repref.child(barangKey).set(report).then((value) {
+      _namaAlatController.clear();
+      _lokasiController.clear();
+      _divisiController.clear();
+      valueDivisi = null;
+      _uploadedFileURL.clear();
+    });
+
+    _ref.child(barangKey).update(barang).then((value) {
+      Navigator.pop(context);
+      _laporanController.clear();
+      _dateController.clear();
+    });
+  }
+
+  resetAndClose(){
+    _namaAlatController.clear();
+    _lokasiController.clear();
+    _divisiController.clear();
+    valueDivisi = null;
+    _uploadedFileURL.clear();
+    _laporanController.clear();
+    _dateController.clear();
+    Navigator.pop(context);
   }
 
   Color getStatusColor(String status) {

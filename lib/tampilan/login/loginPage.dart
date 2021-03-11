@@ -43,7 +43,7 @@ class _loginPageState extends State<loginPage> {
     if (bagian == "pegawai") {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => mainMenuAdmin()),
+        MaterialPageRoute(builder: (context) => mainMenuPegawai()),
             (route) => false,
       );
     }
