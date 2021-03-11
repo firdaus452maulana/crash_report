@@ -194,16 +194,19 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
           ),
           child: Stack(
             children: [
-              Container(
+              Align(
                 alignment: Alignment.centerRight,
-                height: 16,
-                width: 16,
-                padding: EdgeInsets.only(right: 24, left: 24, top: 24),
-                decoration: BoxDecoration(
-                  color: notifikasiColor,
-                  borderRadius: BorderRadius.circular(2.5),
-                )
+                child: Container(
+                    height: 16,
+                    width: 16,
+                    padding: EdgeInsets.only(right: 24, left: 24, top: 24),
+                    decoration: BoxDecoration(
+                      color: notifikasiColor,
+                      borderRadius: BorderRadius.circular(2.5),
+                    )
+                ),
               ),
+
               Theme(
                 data: theme,
                 child: ExpansionTile(
@@ -387,6 +390,26 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                               }).toList(),
                             ),
                           ),
+                          RaisedButton(
+                            color: Color(0xFF031F4B),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30)),
+                            textColor: Colors.white,
+                            child: Container(
+                              height: 48,
+                              width: 108,
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                "Selesai",
+                                style: GoogleFonts.openSans(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            onPressed: () {
+                              _selesaiLaporan();
+                            },
+                          ),
                         ],
                       ),
                     )
@@ -396,6 +419,11 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
             ],
           )),
     );
+  }
+
+  //SUBMIT PROGRESS LAPORAN
+  Future<void> _selesaiLaporan() async {
+
   }
 
   // WARNA STATUS
