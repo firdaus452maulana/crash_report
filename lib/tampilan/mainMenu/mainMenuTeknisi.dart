@@ -176,6 +176,7 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
 
   //LIST LAPORAN
   Widget _buildListLaporan({Map laporan, final theme}) {
+    Color notifikasiColor = getStatusColor(laporan['status']);
     return Container(
       child: Container(
           margin: EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
@@ -193,6 +194,16 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
           ),
           child: Stack(
             children: [
+              Container(
+                alignment: Alignment.centerRight,
+                height: 16,
+                width: 16,
+                padding: EdgeInsets.only(right: 24, left: 24, top: 24),
+                decoration: BoxDecoration(
+                  color: notifikasiColor,
+                  borderRadius: BorderRadius.circular(2.5),
+                )
+              ),
               Theme(
                 data: theme,
                 child: ExpansionTile(
