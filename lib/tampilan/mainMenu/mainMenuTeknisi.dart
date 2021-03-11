@@ -216,7 +216,7 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                         width: double.infinity,
                         //color: Colors.green,
                         margin: EdgeInsets.only(
-                            left: 24, top: 16, bottom: 16, right: 24),
+                            left: 24, top: 16, bottom: 16, right: 72),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           //posisi
@@ -450,172 +450,180 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
             height: 256,
             width: double.infinity,
             color: Color(0xFF031F4B),
+          ),
 
-            // SELAMAT DATANG USER
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(
-                    Icons.menu,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    scaffoldKey.currentState.openDrawer();
-                  },
+          // SELAMAT DATANG USER
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                  //color: Colors.red,
+                  margin: EdgeInsets.only(left: 20, right: 20, top: 36),
+                  child: GestureDetector(
+                      onTap: () {
+                        scaffoldKey.currentState.openDrawer();
+                      },
+                      child: Icon(
+                        Icons.menu,
+                        color: Colors.white,
+                      )
+                  )
+              ),
+
+              Container(
+                margin: EdgeInsets.only(left: 32, right: 32, top: 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Selamat Datang,",
+                      style: GoogleFonts.openSans(
+                          color: Color(0xFF949090),
+                          fontWeight: FontWeight.w300,
+                          fontSize: 16),
+                    ),
+                    Text(
+                      name,
+                      style: GoogleFonts.openSans(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
+                    ),
+                    Text(
+                      role,
+                      style: GoogleFonts.openSans(
+                          color: Color(0xFFADABAB),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14),
+                    ),
+                  ],
                 ),
-                Container(
-                  margin: EdgeInsets.only(left: 24, right: 24, top: 8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Selamat Datang,",
-                        style: GoogleFonts.openSans(
-                            color: Color(0xFF949090),
-                            fontWeight: FontWeight.w300,
-                            fontSize: 16),
-                      ),
-                      Text(
-                        name,
-                        style: GoogleFonts.openSans(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
-                      ),
-                      Text(
-                        role,
-                        style: GoogleFonts.openSans(
-                            color: Color(0xFFADABAB),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14),
-                      ),
+              ),
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.all(0),
+                  margin:
+                      EdgeInsets.only(top: 24, bottom: 28, left: 16, right: 16),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.5),
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20),
+                      topLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                      bottomLeft: Radius.circular(20),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.25),
+                        spreadRadius: 0,
+                        blurRadius: 20,
+                        offset: Offset(0, 0),
+                      )
                     ],
                   ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.all(0),
-            margin: EdgeInsets.only(top: 164, bottom: 28, left: 16, right: 16),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.5),
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(20),
-                topLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
-                bottomLeft: Radius.circular(20),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.25),
-                  spreadRadius: 0,
-                  blurRadius: 20,
-                  offset: Offset(0, 0),
-                )
-              ],
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Column(
-                children: [
-                  Container(
-                    height: 36,
-                    child: TabBar(
-                      controller: _tabController,
-                      isScrollable: false,
-                      labelPadding: EdgeInsets.all(0),
-                      labelColor: Colors.black,
-                      labelStyle: GoogleFonts.openSans(
-                          fontWeight: FontWeight.bold, fontSize: 12),
-                      unselectedLabelStyle: GoogleFonts.openSans(
-                          fontWeight: FontWeight.w400, fontSize: 12),
-                      unselectedLabelColor: Colors.black.withOpacity(0.5),
-                      indicator: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(20),
-                          topLeft: Radius.circular(20),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 36,
+                          child: TabBar(
+                            controller: _tabController,
+                            isScrollable: false,
+                            labelPadding: EdgeInsets.all(0),
+                            labelColor: Colors.black,
+                            labelStyle: GoogleFonts.openSans(
+                                fontWeight: FontWeight.bold, fontSize: 12),
+                            unselectedLabelStyle: GoogleFonts.openSans(
+                                fontWeight: FontWeight.w400, fontSize: 12),
+                            unselectedLabelColor: Colors.black.withOpacity(0.5),
+                            indicator: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(20),
+                                topLeft: Radius.circular(20),
+                              ),
+                            ),
+                            tabs: <Widget>[
+                              Tab(
+                                text: "List Barang",
+                              ),
+                              Tab(
+                                text: "Laporan",
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      tabs: <Widget>[
-                        Tab(
-                          text: "List Barang",
-                        ),
-                        Tab(
-                          text: "Laporan",
-                        ),
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(0),
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20),
+                              ),
+                            ),
+                            child: new TabBarView(controller: _tabController,
+                                //physics: NeverScrollableScrollPhysics(),
+                                children: [
+                                  // TAB VIEW LIST BARANG
+                                  MediaQuery.removePadding(
+                                    context: context,
+                                    removeTop: true,
+                                    child: CupertinoScrollbar(
+                                      controller: _scrollController,
+                                      child: FirebaseAnimatedList(
+                                        padding: EdgeInsets.all(0),
+                                        query: _queryBarang,
+                                        itemBuilder: (BuildContext context,
+                                            DataSnapshot snapshot,
+                                            Animation<double> animation,
+                                            int index) {
+                                          Map barang = snapshot.value;
+                                          if (barang == null) {
+                                            return Container(
+                                              height: 100,
+                                              color: Colors.red,
+                                            );
+                                          } else {
+                                            return _buildListBarang(
+                                                barang: barang, theme: theme);
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ),
+
+                                  // TAB VIEW LIST LAPORAN
+                                  MediaQuery.removePadding(
+                                    context: context,
+                                    removeTop: true,
+                                    child: CupertinoScrollbar(
+                                      controller: _scrollController,
+                                      child: FirebaseAnimatedList(
+                                        query: _queryLaporan,
+                                        itemBuilder: (BuildContext context,
+                                            DataSnapshot snapshot,
+                                            Animation<double> animation,
+                                            int index) {
+                                          Map laporan = snapshot.value;
+                                          laporan['key'] = snapshot.key;
+                                          return _buildListLaporan(
+                                              laporan: laporan, theme: theme);
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ]),
+                          ),
+                        )
                       ],
                     ),
                   ),
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(0),
-                          bottomLeft: Radius.circular(20),
-                          bottomRight: Radius.circular(20),
-                        ),
-                      ),
-                      child: new TabBarView(controller: _tabController,
-                          //physics: NeverScrollableScrollPhysics(),
-                          children: [
-                            // TAB VIEW LIST BARANG
-                            MediaQuery.removePadding(
-                              context: context,
-                              removeTop: true,
-                              child: CupertinoScrollbar(
-                                controller: _scrollController,
-                                child: FirebaseAnimatedList(
-                                  padding: EdgeInsets.all(0),
-                                  query: _queryBarang,
-                                  itemBuilder: (BuildContext context,
-                                      DataSnapshot snapshot,
-                                      Animation<double> animation,
-                                      int index) {
-                                    Map barang = snapshot.value;
-                                    if (barang == null) {
-                                      return Container(
-                                        height: 100,
-                                        color: Colors.red,
-                                      );
-                                    } else {
-                                      return _buildListBarang(
-                                          barang: barang, theme: theme);
-                                    }
-                                  },
-                                ),
-                              ),
-                            ),
-
-                            // TAB VIEW LIST LAPORAN
-                            MediaQuery.removePadding(
-                              context: context,
-                              removeTop: true,
-                              child: CupertinoScrollbar(
-                                controller: _scrollController,
-                                child: FirebaseAnimatedList(
-                                  query: _queryLaporan,
-                                  itemBuilder: (BuildContext context,
-                                      DataSnapshot snapshot,
-                                      Animation<double> animation,
-                                      int index) {
-                                    Map laporan = snapshot.value;
-                                    laporan['key'] = snapshot.key;
-                                    return _buildListLaporan(
-                                        laporan: laporan, theme: theme);
-                                  },
-                                ),
-                              ),
-                            ),
-                          ]),
-                    ),
-                  )
-                ],
+                ),
               ),
-            ),
+            ],
           ),
         ],
       ),

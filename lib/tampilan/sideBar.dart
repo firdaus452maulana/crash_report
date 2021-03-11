@@ -126,38 +126,24 @@ class _sideBarState extends State<sideBar> {
                       child: Container(
                         color: Colors.transparent,
                         padding: EdgeInsets.all(0),
-                        child: Expanded(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              /*IconButton(
-                                icon: Icon(Icons.settings),
-                                color: Colors.white,
-                                onPressed: () {},
-                              ),*/
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      name,
-                                      style: GoogleFonts.openSans(
-                                          color: Colors.white,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      role,
-                                      style: GoogleFonts.openSans(
-                                          color: Color(0xFFADABAB),
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w300),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              name,
+                              style: GoogleFonts.openSans(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              role,
+                              style: GoogleFonts.openSans(
+                                  color: Color(0xFFADABAB),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w300),
+                            ),
+                          ],
                         ),
                       ),
                     ),

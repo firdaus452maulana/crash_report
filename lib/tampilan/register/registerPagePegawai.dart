@@ -91,7 +91,7 @@ class _registerPagePegawaiState extends State<registerPagePegawai> {
                 child: Container(
                   margin: EdgeInsets.only(left: 32, right: 32, top: 32, bottom: 32),
                   padding:
-                      EdgeInsets.only(left: 24, right: 8, top: 24, bottom: 24),
+                      EdgeInsets.only(left: 24, right: 24, top: 24, bottom: 24),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     boxShadow: [
@@ -107,7 +107,7 @@ class _registerPagePegawaiState extends State<registerPagePegawai> {
                   child: Form(
                     key: _formKey,
                     child: Container(
-                      padding: EdgeInsets.only(right: 16),
+                      //color: Colors.blue,
                       child: Column(
                         children: [
                           // TULISAN SIGN UP
@@ -481,10 +481,14 @@ class _registerPagePegawaiState extends State<registerPagePegawai> {
                                         color: Color(0xFF000000)
                                             .withOpacity(.25)),
                                   ),
+                                  SizedBox(width: 4,),
                                   Container(
                                     width: 54,
                                     child: FlatButton(
                                       padding: EdgeInsets.all(0.0),
+                                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                      splashColor: Colors.transparent,
+                                      highlightColor: Colors.transparent,
                                       child: Text(
                                         "Sign In",
                                         style: GoogleFonts.openSans(

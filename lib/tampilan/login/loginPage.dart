@@ -435,10 +435,13 @@ class _loginPageState extends State<loginPage> {
                                                   color: Color(0xFF000000)
                                                       .withOpacity(.25)),
                                             ),
+                                            SizedBox(width: 4,),
                                             Container(
-                                              width: 54,
+                                              width: 64,
+                                              //color: Colors.red,
                                               child: FlatButton(
                                                 padding: EdgeInsets.all(0.0),
+                                                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                                 splashColor: Colors.transparent,
                                                 highlightColor: Colors.transparent,
                                                 child: Text(
