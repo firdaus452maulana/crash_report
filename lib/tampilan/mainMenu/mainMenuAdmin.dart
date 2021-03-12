@@ -74,37 +74,14 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
 
   //Buat gridViewGambar
   Widget buildGridView({Map image, String barangKey}) {
-    // return Card(
-    //   child: IconButton(
-    //     icon: Icon(Icons.add),
-    //     onPressed: () {
-    //       setState(() async {
-    //         File imageFile;
-    //         await ImagePicker.pickImage(source: ImageSource.gallery).then((img) {
-    //           imageFile = img;
-    //         });
-    //         postImage(imageFile).then((downloadUrl) {
-    //           Map<String, String> hashMap = {
-    //             'URL' : downloadUrl.toString(),
-    //           };
-    //           _ref.child(barangKey).child("image").set(hashMap).then((value){
-    //             SnackBar snackbar = SnackBar(
-    //                 content: Text('Uploaded Successfully'));
-    //             scaffoldKey.currentState.showSnackBar(snackbar);
-    //           });
-    //         });
-    //       });
-    //     },
-    //   ),
-    // );
     return Card(
       clipBehavior: Clip.antiAlias,
       child: Stack(
         children: <Widget>[
           Image.network(
             image['URL'],
-            width: 300,
-            height: 300,
+            width: 100,
+            height: 100,
           ),
           Positioned(
             right: 5,
@@ -112,7 +89,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
             child: InkWell(
               child: Icon(
                 Icons.remove_circle,
-                size: 20,
+                size: 25,
                 color: Colors.red,
               ),
               onTap: () {
@@ -548,7 +525,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                     Map<String, String> hashMap = {
                                       'URL' : downloadUrl.toString(),
                                     };
-                                    _ref.child(barang['key']).child("image").set(hashMap).then((value){
+                                    _ref.child(barang['key']).child("image").push().set(hashMap).then((value){
                                       SnackBar snackbar = SnackBar(
                                           content: Text('Uploaded Successfully'));
                                       scaffoldKey.currentState.showSnackBar(snackbar);
@@ -559,6 +536,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                             ),
                           ),
                           Container(
+                            height: 100,
                             //color: Colors.grey[200],
                             margin: EdgeInsets.only(bottom: 24.0),
                             child: FirebaseAnimatedList(
@@ -569,6 +547,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                       Animation<double> animation,
                                       int index) {
                                     Map image = snapshot.value;
+                                    image['key'] = snapshot.key;
                                     return buildGridView(image: image ,barangKey: barang['key']);
                                   },
                             ),
