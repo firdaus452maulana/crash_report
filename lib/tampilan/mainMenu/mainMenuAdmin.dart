@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:path/path.dart' as Path;
 import 'package:crash_report/tampilan/sideBar.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
@@ -11,8 +10,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:multi_image_picker/multi_image_picker.dart';
-import 'package:carousel_pro/carousel_pro.dart';
 
 class mainMenuAdmin extends StatefulWidget {
   @override
@@ -35,7 +32,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
 
   List divisi = ["Divisi 1", "Divisi 2", "Divisi 3"];
 
-  Query _query;
+  Query _query, _queryLaporan;
   DatabaseReference _ref, _repref;
   String uid = '';
   String name = '';
@@ -49,7 +46,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(vsync: this, length: 2);
+    _tabController = TabController(vsync: this, length: 3);
     _scrollController = ScrollController();
     _namaAlatController = TextEditingController();
     _lokasiController = TextEditingController();
@@ -63,18 +60,23 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
     _query = FirebaseDatabase.instance
         .reference()
         .child('listBarang')
-        .orderByChild('divisi');
+        .orderByChild('nama');
+    _queryLaporan = FirebaseDatabase.instance
+        .reference()
+        .child('listLaporan')
+        .orderByChild('nama');
     _ambilPreference();
     _indogs();
   }
 
   Future<void> _indogs() async {
-  await initializeDateFormatting('id_ID', null);
-}
+    await initializeDateFormatting('id_ID', null);
+  }
 
   //Buat gridViewGambar
   Widget buildGridView({Map image, String barangKey}) {
     return Card(
+      //color: Colors.blue,
       clipBehavior: Clip.antiAlias,
       child: Stack(
         children: <Widget>[
@@ -94,7 +96,11 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
               ),
               onTap: () {
                 setState(() {
-                  _ref.child(barangKey).child("image").child(image['key']).remove();
+                  _ref
+                      .child(barangKey)
+                      .child("image")
+                      .child(image['key'])
+                      .remove();
                 });
               },
             ),
@@ -110,15 +116,16 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
         context: context,
         builder: (context) {
           return Dialog(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             child: SingleChildScrollView(
               child: Container(
                 padding: EdgeInsets.all(24),
                 child: Stack(
                   children: <Widget>[
                     Container(
-                      padding:
-                          EdgeInsets.only(top: 16, bottom: 16, left: 8, right: 8),
+                      padding: EdgeInsets.only(
+                          top: 16, bottom: 16, left: 8, right: 8),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         //posisi
@@ -166,18 +173,21 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                       EdgeInsets.only(left: 24.0, right: 24.0),
                                   hintStyle: GoogleFonts.openSans(
                                       fontSize: 12,
-                                      color: Color(0xFF000000).withOpacity(0.15)),
+                                      color:
+                                          Color(0xFF000000).withOpacity(0.15)),
                                   hintText: "Nama Alat",
                                   errorBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(30)),
-                                      borderSide: BorderSide(color: Colors.red)),
+                                      borderSide:
+                                          BorderSide(color: Colors.red)),
                                   focusedErrorBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(30)),
                                       borderSide: BorderSide(
                                           color: Colors.red, width: 1)),
-                                  errorStyle: GoogleFonts.openSans(fontSize: 10)),
+                                  errorStyle:
+                                      GoogleFonts.openSans(fontSize: 10)),
                               obscureText: false,
                               validator: (value) {
                                 if (value.isEmpty) {
@@ -220,18 +230,21 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                       EdgeInsets.only(left: 24.0, right: 24.0),
                                   hintStyle: GoogleFonts.openSans(
                                       fontSize: 12,
-                                      color: Color(0xFF000000).withOpacity(0.15)),
+                                      color:
+                                          Color(0xFF000000).withOpacity(0.15)),
                                   hintText: "Lokasi",
                                   errorBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(30)),
-                                      borderSide: BorderSide(color: Colors.red)),
+                                      borderSide:
+                                          BorderSide(color: Colors.red)),
                                   focusedErrorBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(30)),
                                       borderSide: BorderSide(
                                           color: Colors.red, width: 1)),
-                                  errorStyle: GoogleFonts.openSans(fontSize: 10)),
+                                  errorStyle:
+                                      GoogleFonts.openSans(fontSize: 10)),
                               obscureText: false,
                               validator: (value) {
                                 if (value.isEmpty) {
@@ -265,8 +278,8 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(30)),
                                     borderSide: BorderSide(
-                                        color:
-                                            Color(0xFF000000).withOpacity(0.15))),
+                                        color: Color(0xFF000000)
+                                            .withOpacity(0.15))),
                                 focusedBorder: OutlineInputBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(30)),
@@ -285,8 +298,8 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                 focusedErrorBorder: OutlineInputBorder(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(30)),
-                                    borderSide:
-                                        BorderSide(color: Colors.red, width: 1)),
+                                    borderSide: BorderSide(
+                                        color: Colors.red, width: 1)),
                                 errorStyle: GoogleFonts.openSans(fontSize: 10)),
                             hint: Text(
                               "divisi",
@@ -426,7 +439,6 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
           ),
           child: Stack(
             children: [
-
               Container(
                 alignment: Alignment.centerRight,
                 margin: EdgeInsets.only(right: 24, left: 24, top: 24),
@@ -457,7 +469,6 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                   ],
                 ),
               ),
-
               Theme(
                 data: theme,
                 child: ExpansionTile(
@@ -469,7 +480,8 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                       Container(
                         width: double.infinity,
                         //color: Colors.green,
-                        margin: EdgeInsets.only(left: 24, top: 16, bottom: 16, right: 72),
+                        margin: EdgeInsets.only(
+                            left: 24, top: 16, bottom: 16, right: 72),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           //posisi
@@ -518,17 +530,26 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                               onPressed: () {
                                 setState(() async {
                                   File imageFile;
-                                  await ImagePicker.pickImage(source: ImageSource.gallery).then((img) {
+                                  await ImagePicker.pickImage(
+                                          source: ImageSource.gallery)
+                                      .then((img) {
                                     imageFile = img;
                                   });
                                   postImage(imageFile).then((downloadUrl) {
                                     Map<String, String> hashMap = {
-                                      'URL' : downloadUrl.toString(),
+                                      'URL': downloadUrl.toString(),
                                     };
-                                    _ref.child(barang['key']).child("image").push().set(hashMap).then((value){
+                                    _ref
+                                        .child(barang['key'])
+                                        .child("image")
+                                        .push()
+                                        .set(hashMap)
+                                        .then((value) {
                                       SnackBar snackbar = SnackBar(
-                                          content: Text('Uploaded Successfully'));
-                                      scaffoldKey.currentState.showSnackBar(snackbar);
+                                          content:
+                                              Text('Uploaded Successfully'));
+                                      scaffoldKey.currentState
+                                          .showSnackBar(snackbar);
                                     });
                                   });
                                 });
@@ -540,20 +561,23 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                             //color: Colors.grey[200],
                             margin: EdgeInsets.only(bottom: 24.0),
                             child: FirebaseAnimatedList(
-                                  query: _ref.child(barang['key']).child("image").orderByChild('URL'),
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (BuildContext context,
-                                      DataSnapshot snapshot,
-                                      Animation<double> animation,
-                                      int index) {
-                                    Map image = snapshot.value;
-                                    image['key'] = snapshot.key;
-                                    return buildGridView(image: image ,barangKey: barang['key']);
-                                  },
+                              query: _ref
+                                  .child(barang['key'])
+                                  .child("image")
+                                  .orderByChild('URL'),
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (BuildContext context,
+                                  DataSnapshot snapshot,
+                                  Animation<double> animation,
+                                  int index) {
+                                Map image = snapshot.value;
+                                image['key'] = snapshot.key;
+                                return buildGridView(
+                                    image: image, barangKey: barang['key']);
+                              },
                             ),
                             // new Image.network(barang['imageURL']),
                           ),
-
                           Container(
                             width: double.infinity,
                             //color: Colors.green,
@@ -575,7 +599,6 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                     ),
                                   ),
                                 ),
-
                                 Expanded(
                                   child: Container(
                                     //color: Colors.red,
@@ -583,7 +606,8 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                     child: RaisedButton(
                                       color: Color(0xFF031F4B),
                                       shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(30)),
+                                          borderRadius:
+                                              BorderRadius.circular(30)),
                                       textColor: Colors.white,
                                       child: Container(
                                         width: 85,
@@ -609,6 +633,139 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                         ],
                       ),
                     ),
+                  ],
+                ),
+              ),
+            ],
+          )),
+    );
+  }
+
+  //LIST LAPORAN
+  Widget _buildListLaporan({Map laporan, final theme}) {
+    Color notifikasiColor = getStatusColor(laporan['status']);
+    return Container(
+      child: Container(
+          margin: EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                spreadRadius: 2,
+                blurRadius: 6,
+                offset: Offset(0, 0),
+              )
+            ],
+            borderRadius: BorderRadius.circular(17.5),
+          ),
+          child: Stack(
+            children: [
+              Align(
+                alignment: Alignment.centerRight,
+                child: Container(
+                    height: 16,
+                    width: 16,
+                    margin: EdgeInsets.only(right: 24, left: 24, top: 32),
+                    padding: EdgeInsets.only(right: 24, left: 24, top: 24),
+                    decoration: BoxDecoration(
+                      color: notifikasiColor,
+                      borderRadius: BorderRadius.circular(2.5),
+                    )),
+              ),
+              Theme(
+                data: theme,
+                child: ExpansionTile(
+                  tilePadding: EdgeInsets.all(0),
+                  childrenPadding: EdgeInsets.all(0),
+                  trailing: Text(''),
+                  title: Stack(
+                    children: <Widget>[
+                      Container(
+                        width: double.infinity,
+                        //color: Colors.green,
+                        margin: EdgeInsets.only(
+                            left: 24, top: 16, bottom: 16, right: 72),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          //posisi
+                          mainAxisSize: MainAxisSize.min,
+                          // untuk mengatur agar widget column mengikuti widget
+                          children: <Widget>[
+                            Text(
+                              laporan['nama'],
+                              style: GoogleFonts.openSans(
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                            ),
+                            Text(
+                              laporan['date'],
+                              style: GoogleFonts.openSans(
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 12,
+                                  color: Colors.black.withOpacity(0.25)),
+                            ),
+                            Text(
+                              laporan['time'],
+                              style: GoogleFonts.openSans(
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.w300,
+                                fontSize: 12,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  children: <Widget>[
+                    Container(
+                      width: double.infinity,
+                      //color: Colors.cyan,
+                      margin: EdgeInsets.only(left: 24, bottom: 8, right: 24),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            'Pelapor',
+                            style: GoogleFonts.openSans(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            laporan['namaPelapor'],
+                            style: GoogleFonts.openSans(
+                                fontWeight: FontWeight.w300,
+                                fontSize: 12,
+                                color: Colors.black.withOpacity(0.25)),
+                          ),
+                          SizedBox(height: 8),
+                          Text(
+                            'Catatan Kerusakan',
+                            style: GoogleFonts.openSans(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 12,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            laporan['laporan'],
+                            style: GoogleFonts.openSans(
+                                fontWeight: FontWeight.w300,
+                                fontSize: 12,
+                                color: Colors.black.withOpacity(0.25)),
+                          ),
+                        ],
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -771,8 +928,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                 // untuk mengatur agar widget column mengikuti widget
                                 children: <Widget>[
                                   Text(
-                                    _dateController.text =
-                                        formattedDate,
+                                    _dateController.text = formattedDate,
                                     style: GoogleFonts.openSans(
                                       fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.normal,
@@ -781,9 +937,8 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                   ),
 
                                   Text(_timeController.text =
-                                  "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}"
-                                  ),
-                                  
+                                      "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}"),
+
                                   //LAPORAN KERUSAKAN
                                   Container(
                                     child: TextFormField(
@@ -910,15 +1065,15 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
           return Dialog(
             backgroundColor: Colors.black.withOpacity(0.75),
             shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
             child: Container(
               padding: EdgeInsets.all(24),
               child: SingleChildScrollView(
                 child: Stack(
                   children: <Widget>[
                     Container(
-                      padding:
-                      EdgeInsets.only(top: 16, bottom: 8, left: 8, right: 8),
+                      padding: EdgeInsets.only(
+                          top: 16, bottom: 8, left: 8, right: 8),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         //posisi
@@ -937,22 +1092,18 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
-
                           SizedBox(height: 16),
-
                           Center(
                               child: Text(
-                                "Apakah Kau Yakin ?",
-                                style: GoogleFonts.openSans(
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 12,
-                                  color: Colors.white,
-                                ),
-                              )),
-
+                            "Apakah Kau Yakin ?",
+                            style: GoogleFonts.openSans(
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 12,
+                              color: Colors.white,
+                            ),
+                          )),
                           SizedBox(height: 16),
-
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
@@ -1081,7 +1232,8 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
 
   Future<dynamic> postImage(File imageFile) async {
     String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-    Reference reference = FirebaseStorage.instance.ref().child('fotoBarang/$fileName');
+    Reference reference =
+        FirebaseStorage.instance.ref().child('fotoBarang/$fileName');
     await reference.putFile(imageFile);
     // UploadTask uploadTask = reference.putData((await imageFile.getByteData()).buffer.asUint8List());
     return await reference.getDownloadURL();
@@ -1217,6 +1369,9 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                           text: "List Barang",
                         ),
                         Tab(
+                          text: "Komplain",
+                        ),
+                        Tab(
                           text: "Laporan",
                         ),
                       ],
@@ -1252,9 +1407,26 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                               ),
                             ),
 
-                            // TAB VIEW LAPORAN
+                            // TAB VIEW KOMPLAIN
                             Center(
-                                child: Text("Ini nanti ubah ke list laporan")),
+                                child: Text("Ini nanti ubah ke list KOMPLAIN")),
+
+                            // TAB VIEW LAPORAN
+                            CupertinoScrollbar(
+                              controller: _scrollController,
+                              child: FirebaseAnimatedList(
+                                query: _queryLaporan,
+                                itemBuilder: (BuildContext context,
+                                    DataSnapshot snapshot,
+                                    Animation<double> animation,
+                                    int index) {
+                                  Map laporan = snapshot.value;
+                                  laporan['key'] = snapshot.key;
+                                  return _buildListLaporan(
+                                      laporan: laporan, theme: theme);
+                                },
+                              ),
+                            ),
                           ]),
                     ),
                   )
@@ -1321,7 +1493,6 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
     //     _uploadedFileURL.clear();
     //     image.delete();
     //   });
-
   }
 
   updateReport({String barangKey}) {
@@ -1360,7 +1531,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
     });
   }
 
-  resetAndClose(){
+  resetAndClose() {
     _namaAlatController.clear();
     _lokasiController.clear();
     _divisiController.clear();
@@ -1371,9 +1542,8 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
     Navigator.pop(context);
   }
 
-  hapusBarangLaporan({String barangKey}){
-    if (_repref.child(barangKey) != null)
-      _repref.child(barangKey).remove();
+  hapusBarangLaporan({String barangKey}) {
+    if (_repref.child(barangKey) != null) _repref.child(barangKey).remove();
     _ref.child(barangKey).remove().whenComplete(() => resetAndClose());
   }
 

@@ -53,12 +53,29 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
     await initializeDateFormatting('id_ID', null);
   }
 
-  // LIST BARANG
+  //Buat gridViewGambar
+  Widget buildGridView({Map image, String barangKey}) {
+    return Card(
+      //color: Colors.blue,
+      clipBehavior: Clip.antiAlias,
+      child: Stack(
+        children: <Widget>[
+          Image.network(
+            image['URL'],
+            width: 100,
+            height: 100,
+          ),
+        ],
+      ),
+    );
+  }
+
+  //LIST BARANG
   Widget _buildListBarang({Map barang, final theme}) {
     Color statusColor = getStatusColor(barang['status']);
     return Container(
       child: Container(
-          margin: EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+          margin: EdgeInsets.only(left: 16, right: 16, top: 16),
           decoration: BoxDecoration(
             color: Colors.white,
             boxShadow: [
@@ -75,10 +92,10 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
             children: [
               Container(
                 alignment: Alignment.centerRight,
-                padding: EdgeInsets.only(right: 24, left: 24, top: 24),
+                margin: EdgeInsets.only(right: 24, left: 24, top: 24),
                 //color: Colors.cyan,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   //posisi
                   mainAxisSize: MainAxisSize.min,
                   // untuk mengatur agar widget column mengikuti widget
@@ -115,9 +132,9 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                         width: double.infinity,
                         //color: Colors.green,
                         margin: EdgeInsets.only(
-                            left: 24, top: 16, bottom: 16, right: 24),
+                            left: 24, top: 16, bottom: 16, right: 72),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           //posisi
                           mainAxisSize: MainAxisSize.min,
                           // untuk mengatur agar widget column mengikuti widget
@@ -159,9 +176,31 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                       child: Column(
                         children: <Widget>[
                           Container(
+                            height: 100,
                             //color: Colors.grey[200],
-                            margin: EdgeInsets.only(bottom: 24.0),
-                            child: new Image.network(barang['imageURL']),
+                            child: FirebaseAnimatedList(
+                              query: _listBarangRef
+                                  .child(barang['key'])
+                                  .child("image")
+                                  .orderByChild('URL'),
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (BuildContext context,
+                                  DataSnapshot snapshot,
+                                  Animation<double> animation,
+                                  int index) {
+                                Map image = snapshot.value;
+                                image['key'] = snapshot.key;
+                                return buildGridView(
+                                    image: image, barangKey: barang['key']);
+                              },
+                            ),
+                          ),
+                          Container(
+                            width: double.infinity,
+                            //color: Colors.green,
+                            padding: EdgeInsets.all(0),
+                            margin: EdgeInsets.only(bottom: 24),
+                            alignment: Alignment.center,
                           ),
                         ],
                       ),
@@ -603,22 +642,15 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                                     child: CupertinoScrollbar(
                                       controller: _scrollController,
                                       child: FirebaseAnimatedList(
-                                        padding: EdgeInsets.all(0),
                                         query: _queryBarang,
                                         itemBuilder: (BuildContext context,
                                             DataSnapshot snapshot,
                                             Animation<double> animation,
                                             int index) {
                                           Map barang = snapshot.value;
-                                          if (barang == null) {
-                                            return Container(
-                                              height: 100,
-                                              color: Colors.red,
-                                            );
-                                          } else {
-                                            return _buildListBarang(
-                                                barang: barang, theme: theme);
-                                          }
+                                          barang['key'] = snapshot.key;
+                                          return _buildListBarang(
+                                              barang: barang, theme: theme);
                                         },
                                       ),
                                     ),

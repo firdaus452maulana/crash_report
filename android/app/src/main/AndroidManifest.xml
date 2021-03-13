@@ -9,7 +9,7 @@
 
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="SiAPP"
+        android:label="SIAP"
         android:icon="@mipmap/logo_perang_only">
         <activity
             android:name=".MainActivity"
