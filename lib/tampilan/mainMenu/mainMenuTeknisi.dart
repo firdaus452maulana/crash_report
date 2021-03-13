@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:crash_report/tampilan/historyLaporan.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:crash_report/tampilan/sideBar.dart';
@@ -6,6 +7,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class mainMenuTeknisi extends StatefulWidget {
@@ -23,7 +25,7 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
   List divisi = ["Dalam Perbaikan", "Rusak", "Normal"];
 
   Query _queryLaporan, _queryBarang;
-  DatabaseReference _listLaporanRef, _listBarangRef;
+  DatabaseReference _listLaporanRef, _listBarangRef, _historyLaporanRef;
   String uid = '';
   String name = '';
   String role = '';
@@ -37,6 +39,8 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
     _listLaporanRef =
         FirebaseDatabase.instance.reference().child('listLaporan');
     _listBarangRef = FirebaseDatabase.instance.reference().child('listBarang');
+    _historyLaporanRef =
+        FirebaseDatabase.instance.reference().child('historyLaporan');
     _queryLaporan = FirebaseDatabase.instance
         .reference()
         .child('listLaporan')
@@ -242,10 +246,8 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                     decoration: BoxDecoration(
                       color: notifikasiColor,
                       borderRadius: BorderRadius.circular(2.5),
-                    )
-                ),
+                    )),
               ),
-
               Theme(
                 data: theme,
                 child: ExpansionTile(
@@ -429,25 +431,26 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                               }).toList(),
                             ),
                           ),
-                          RaisedButton(
-                            color: Color(0xFF031F4B),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30)),
-                            textColor: Colors.white,
-                            child: Container(
-                              height: 48,
-                              width: 108,
-                              alignment: Alignment.centerRight,
+                          Container(
+                            alignment: Alignment.centerRight,
+                            child: RaisedButton(
+                              color: Color(0xFF031F4B),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30)),
+                              textColor: Colors.white,
                               child: Text(
                                 "Selesai",
                                 style: GoogleFonts.openSans(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold),
+                                    fontSize: 12, fontWeight: FontWeight.bold),
                               ),
+                              onPressed: () {
+                                _selesaiLaporan(
+                                    barangKey: laporan['key'],
+                                    nama: laporan['nama'],
+                                    date: laporan['date'],
+                                    time: laporan['time']);
+                              },
                             ),
-                            onPressed: () {
-                              _selesaiLaporan(barangKey: laporan['key']);
-                            },
                           ),
                         ],
                       ),
@@ -461,9 +464,25 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
   }
 
   //SUBMIT PROGRESS LAPORAN
-  _selesaiLaporan({String barangKey}){
-    if (_listLaporanRef.child(barangKey) != null)
+  _selesaiLaporan({String barangKey, String nama, String date, String time}) {
+    DateTime now = DateTime.now();
+    DateFormat format = new DateFormat("EEEE, d LLLL yyyy", "id_ID");
+    String formattedDate = format.format(now);
+
+    _historyLaporanRef.push().set({
+      'barangKey': barangKey,
+      'nama': nama,
+      'dateMulai': date,
+      'dateSelesai': formattedDate,
+      'timeMulai': time,
+      'timeSelesai':
+          "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
+      'namaTeknisi': name,
+      'status': valueStatus,
+    });
+    if (_listLaporanRef.child(barangKey) != null) {
       _listLaporanRef.child(barangKey).remove();
+    }
   }
 
   // WARNA STATUS
@@ -524,20 +543,38 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Container(
-                  //color: Colors.red,
-                  margin: EdgeInsets.only(left: 20, right: 20, top: 36),
-                  child: GestureDetector(
-                      onTap: () {
-                        scaffoldKey.currentState.openDrawer();
-                      },
-                      child: Icon(
-                        Icons.menu,
-                        color: Colors.white,
-                      )
-                  )
+              Row(
+                children: [
+                  Container(
+                      //color: Colors.red,
+                      margin: EdgeInsets.only(left: 20, top: 36),
+                      child: GestureDetector(
+                          onTap: () {
+                            scaffoldKey.currentState.openDrawer();
+                          },
+                          child: Icon(
+                            Icons.menu,
+                            color: Colors.white,
+                          ))),
+                  Expanded(
+                    child: Container(
+                        alignment: Alignment.centerRight,
+                        //color: Colors.green,
+                        margin: EdgeInsets.only(right: 20, top: 36),
+                        child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => historyLaporan()));
+                            },
+                            child: Icon(
+                              Icons.history,
+                              color: Colors.white,
+                            ))),
+                  ),
+                ],
               ),
-
               Container(
                 margin: EdgeInsets.only(left: 32, right: 32, top: 24),
                 child: Column(
