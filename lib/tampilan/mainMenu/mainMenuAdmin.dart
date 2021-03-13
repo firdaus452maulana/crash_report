@@ -1472,7 +1472,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
       'letak': lokasi,
       'divisi': divisi,
       'status': status,
-      // 'imageURL': URL,
+      // 'image': "",
     };
 
     _ref.push().set(barang).then((value) {

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:carousel_pro/carousel_pro.dart';
 import 'package:crash_report/tampilan/sideBar.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
@@ -55,6 +56,57 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
     _ref = FirebaseDatabase.instance.reference().child('listBarang');
     _repref = FirebaseDatabase.instance.reference().child('listLaporan');
     _ambilPreference();
+  }
+
+  //BUILD VIEW IMAGE
+  Widget _viewImage(String barangKey){
+
+    List<NetworkImage> _listOfImages = <NetworkImage>[];
+    return StreamBuilder(
+        stream: _ref.child(barangKey).child('image').onValue,
+        builder: (context, AsyncSnapshot<Event> snapshot) {
+          if (snapshot.hasData) {
+            _listOfImages.clear();
+            DataSnapshot dataValues = snapshot.data.snapshot;
+            Map<dynamic, dynamic> values = dataValues.value;
+            values.forEach((key, values) {
+              _listOfImages.add(NetworkImage(values['URL']));
+            });
+            return Column(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.all(10.0),
+                  height: 200,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                  ),
+                  width: MediaQuery.of(context).size.width,
+                  child: Carousel(
+                      boxFit: BoxFit.cover,
+                      images: _listOfImages,
+                      autoplay: false,
+                      indicatorBgPadding: 3.0,
+                      dotPosition: DotPosition.bottomCenter,
+                      dotSize: 5.0,
+                      dotSpacing: 16.0,
+                      animationCurve: Curves.fastOutSlowIn,
+                      animationDuration:
+                      Duration(milliseconds: 2000)),
+                ),
+                Container(
+                  height: 1,
+                  width: MediaQuery.of(context).size.width,
+                  color: Color(0xFF031F4B),
+                )
+              ],
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        });
+
   }
 
   // LIST BARANG
@@ -163,7 +215,21 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                           Container(
                             //color: Colors.grey[200],
                             margin: EdgeInsets.only(bottom: 24.0),
-                            child: new Image.network(barang['imageURL']),
+                            child:
+                            (barang['image'] == "")
+                                ?
+                            Text(
+                              "Belum Ada Gambar yang Ditampilkan",
+                              style: GoogleFonts.openSans(
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 12,
+                              ),
+                            )
+                                :
+                            _viewImage(barang['key'])
+                            // _viewImage(barang['key']),
+                            // new Image.network(barang['imageURL']),
                           ),
                           Container(
                             width: double.infinity,
@@ -804,6 +870,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                                       Animation<double> animation,
                                       int index) {
                                     Map barang = snapshot.value;
+                                    barang['key'] = snapshot.key;
                                     if (barang == null) {
                                       return Container(
                                         height: 100,
