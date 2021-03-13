@@ -17,7 +17,7 @@ class _loadingPageState extends State<loadingPage> {
     if (bagian == "pegawai") {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => mainMenuAdmin()),
+        MaterialPageRoute(builder: (context) => mainMenuPegawai()),
         (route) => false,
       );
     }
