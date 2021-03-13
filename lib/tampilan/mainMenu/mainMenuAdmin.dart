@@ -11,6 +11,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
+import '../historyLaporan.dart';
+
 class mainMenuAdmin extends StatefulWidget {
   @override
   _mainMenuAdminState createState() => _mainMenuAdminState();
@@ -1275,52 +1277,76 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
             height: 256,
             width: double.infinity,
             color: Color(0xFF031F4B),
-
-            // SELAMAT DATANG USER
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(
-                    Icons.menu,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    scaffoldKey.currentState.openDrawer();
-                  },
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 24, right: 24, top: 8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Selamat Datang,",
-                        style: GoogleFonts.openSans(
-                            color: Color(0xFF949090),
-                            fontWeight: FontWeight.w300,
-                            fontSize: 16),
-                      ),
-                      Text(
-                        name,
-                        style: GoogleFonts.openSans(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
-                      ),
-                      Text(
-                        role,
-                        style: GoogleFonts.openSans(
-                            color: Color(0xFFADABAB),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
           ),
+
+          // SELAMAT DATANG USER
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                children: [
+                  Container(
+                      //color: Colors.red,
+                      margin: EdgeInsets.only(left: 20, top: 36),
+                      child: GestureDetector(
+                          onTap: () {
+                            scaffoldKey.currentState.openDrawer();
+                          },
+                          child: Icon(
+                            Icons.menu,
+                            color: Colors.white,
+                          ))),
+                  Expanded(
+                    child: Container(
+                        alignment: Alignment.centerRight,
+                        //color: Colors.green,
+                        margin: EdgeInsets.only(right: 20, top: 36),
+                        child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => historyLaporan()));
+                            },
+                            child: Icon(
+                              Icons.history,
+                              color: Colors.white,
+                            ))),
+                  ),
+                ],
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 24, right: 24, top: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Selamat Datang,",
+                      style: GoogleFonts.openSans(
+                          color: Color(0xFF949090),
+                          fontWeight: FontWeight.w300,
+                          fontSize: 16),
+                    ),
+                    Text(
+                      name,
+                      style: GoogleFonts.openSans(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
+                    ),
+                    Text(
+                      role,
+                      style: GoogleFonts.openSans(
+                          color: Color(0xFFADABAB),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+
           Container(
             padding: EdgeInsets.all(0),
             margin: EdgeInsets.only(top: 164, bottom: 24, left: 24, right: 24),
