@@ -10,7 +10,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-
 import '../historyLaporan.dart';
 
 class mainMenuAdmin extends StatefulWidget {
@@ -334,36 +333,6 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                           ),
 
                           SizedBox(height: 16),
-
-                          // FlatButton(
-                          //   color: Colors.grey,
-                          //   shape: RoundedRectangleBorder(
-                          //     borderRadius: BorderRadius.circular(12),
-                          //   ),
-                          //   textColor: Colors.white,
-                          //   child: Container(
-                          //     height: 42.5,
-                          //     alignment: Alignment.center,
-                          //     child: Row(
-                          //       children: <Widget>[
-                          //         Icon(Icons.add_a_photo),
-                          //         SizedBox(width: 10),
-                          //         Text(
-                          //           "Gambar/Foto",
-                          //           style: GoogleFonts.openSans(
-                          //               fontStyle: FontStyle.normal,
-                          //               fontWeight: FontWeight.bold,
-                          //               fontSize: 12.0),
-                          //         ),
-                          //       ],
-                          //     ),
-                          //   ),
-                          //   onPressed: () {
-                          //     loadAssets();
-                          //   },
-                          // ),
-                          //
-                          // SizedBox(height: 16),
 
                           //Button
                           Align(
@@ -1164,74 +1133,6 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
         });
   }
 
-  // // TAMBAH GAMBAR DOANG DARI GALLERY
-  // Future<void> getImage() async {
-  //   image.create();
-  //   await ImagePicker.pickImage(source: ImageSource.gallery).then((img) {
-  //     image = img;
-  //   });
-  // }
-
-  // void uploadImages(String barangKey, List<Asset> images) {
-  //   for (var imageFile in images) {
-  //     postImage(imageFile).then((downloadUrl) {
-  //       imageUrls.add(downloadUrl.toString());
-  //       if (imageUrls.length == images.length) {
-  //         Map<String, String> hashMap = {
-  //           'imageUrl' : downloadUrl.toString(),
-  //         };
-  //         _ref.child(barangKey).child('image').set(hashMap).then((value) {
-  //           SnackBar snackbar = SnackBar(
-  //               content: Text('Uploaded Successfully'));
-  //           scaffoldKey.currentState.showSnackBar(snackbar);
-  //           setState(() {
-  //             images = [];
-  //             imageUrls = [];
-  //           });
-  //         });
-  //       }
-  //     }).catchError((err) {
-  //       print(err);
-  //     });
-  //   }
-  // }
-
-  // Future<void> loadAssets() async {
-  //   List<Asset> resultList = List<Asset>();
-  //   String error = 'No Error Dectected';
-  //   try {
-  //     resultList = await MultiImagePicker.pickImages(
-  //       maxImages: 3,
-  //       enableCamera: true,
-  //       selectedAssets: images,
-  //       cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
-  //       materialOptions: MaterialOptions(
-  //         actionBarColor: "#abcdef",
-  //         actionBarTitle: "Upload Image",
-  //         allViewTitle: "All Photos",
-  //         useDetailsView: false,
-  //         selectCircleStrokeColor: "#000000",
-  //       ),
-  //     );
-  //     print(resultList.length);
-  //     print((await resultList[0].getThumbByteData(122, 100)));
-  //     print((await resultList[0].getByteData()));
-  //     print((await resultList[0].metadata));
-  //
-  //   } on Exception catch (e) {
-  //     error = e.toString();
-  //   }
-  //
-  //   // If the widget was removed from the tree while the asynchronous platform
-  //   // message was in flight, we want to discard the reply rather than calling
-  //   // setState to update our non-existent appearance.
-  //   if (!mounted) return;
-  //   setState(() {
-  //     images = resultList;
-  //     _error = error;
-  //   });
-  // }
-
   Future<dynamic> postImage(File imageFile) async {
     String fileName = DateTime.now().millisecondsSinceEpoch.toString();
     Reference reference =
@@ -1240,16 +1141,6 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
     // UploadTask uploadTask = reference.putData((await imageFile.getByteData()).buffer.asUint8List());
     return await reference.getDownloadURL();
   }
-
-  // // UPLOAD GAMBAR KE DATABASE
-  // Future<void> sendImage() async {
-  //   Reference _storef = FirebaseStorage.instance
-  //       .ref()
-  //       .child('fotoBarang/${Path.basename(image.path)}');
-  //   await _storef.putFile(image);
-  //
-  //   _uploadedFileURL.text = await _storef.getDownloadURL();
-  // }
 
   // AMBIL SHARED PREFERENCES
   Future<void> _ambilPreference() async {
@@ -1484,21 +1375,17 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
   }
 
   saveBarang() {
-    //SEND IMAGE KE DATABASE
-    // sendImage();
 
     String namaAlat = _namaAlatController.text;
     String lokasi = _lokasiController.text;
     String divisi = valueDivisi;
     String status = 'Normal';
-    // String URL = _uploadedFileURL.text;
 
     Map<String, String> barang = {
       'nama': namaAlat,
       'letak': lokasi,
       'divisi': divisi,
       'status': status,
-      // 'image': "",
     };
 
     _ref.push().set(barang).then((value) {
@@ -1508,17 +1395,6 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
       _divisiController.clear();
       valueDivisi = null;
     });
-
-    // if (URL != null) {
-    //   _ref.push().set(barang).then((value) {
-    //     Navigator.pop(context);
-    //     _namaAlatController.clear();
-    //     _lokasiController.clear();
-    //     _divisiController.clear();
-    //     valueDivisi = null;
-    //     _uploadedFileURL.clear();
-    //     image.delete();
-    //   });
   }
 
   updateReport({String barangKey}) {

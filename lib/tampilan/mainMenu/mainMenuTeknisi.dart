@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:carousel_pro/carousel_pro.dart';
 import 'package:crash_report/tampilan/historyLaporan.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -57,22 +58,57 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
     await initializeDateFormatting('id_ID', null);
   }
 
-  //Buat gridViewGambar
-  Widget buildGridView({Map image, String barangKey}) {
-    return Card(
-      //color: Colors.blue,
-      clipBehavior: Clip.antiAlias,
-      child: Stack(
-        children: <Widget>[
-          Image.network(
-            image['URL'],
-            width: 100,
-            height: 100,
-          ),
-        ],
-      ),
-    );
+  //BUILD VIEW IMAGE
+  Widget _viewImage(String barangKey){
+
+    List<NetworkImage> _listOfImages = <NetworkImage>[];
+    return StreamBuilder(
+        stream: _listBarangRef.child(barangKey).child('image').onValue,
+        builder: (context, AsyncSnapshot<Event> snapshot) {
+          if (snapshot.hasData) {
+            _listOfImages.clear();
+            DataSnapshot dataValues = snapshot.data.snapshot;
+            Map<dynamic, dynamic> values = dataValues.value;
+            values.forEach((key, values) {
+              _listOfImages.add(NetworkImage(values['URL']));
+            });
+            return Column(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.all(10.0),
+                  height: 200,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                  ),
+                  width: MediaQuery.of(context).size.width,
+                  child: Carousel(
+                      boxFit: BoxFit.cover,
+                      images: _listOfImages,
+                      autoplay: false,
+                      indicatorBgPadding: 3.0,
+                      dotPosition: DotPosition.bottomCenter,
+                      dotSize: 5.0,
+                      dotSpacing: 16.0,
+                      animationCurve: Curves.fastOutSlowIn,
+                      animationDuration:
+                      Duration(milliseconds: 2000)),
+                ),
+                Container(
+                  height: 1,
+                  width: MediaQuery.of(context).size.width,
+                  color: Color(0xFF031F4B),
+                )
+              ],
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        });
+
   }
+
 
   //LIST BARANG
   Widget _buildListBarang({Map barang, final theme}) {
@@ -180,24 +216,23 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                       child: Column(
                         children: <Widget>[
                           Container(
-                            height: 100,
                             //color: Colors.grey[200],
-                            child: FirebaseAnimatedList(
-                              query: _listBarangRef
-                                  .child(barang['key'])
-                                  .child("image")
-                                  .orderByChild('URL'),
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (BuildContext context,
-                                  DataSnapshot snapshot,
-                                  Animation<double> animation,
-                                  int index) {
-                                Map image = snapshot.value;
-                                image['key'] = snapshot.key;
-                                return buildGridView(
-                                    image: image, barangKey: barang['key']);
-                              },
-                            ),
+                              margin: EdgeInsets.only(bottom: 24.0),
+                              child:
+                              (barang['image'] == "")
+                                  ?
+                              Text(
+                                "Belum Ada Gambar yang Ditampilkan",
+                                style: GoogleFonts.openSans(
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 12,
+                                ),
+                              )
+                                  :
+                              _viewImage(barang['key'])
+                            // _viewImage(barang['key']),
+                            // new Image.network(barang['imageURL']),
                           ),
                           Container(
                             width: double.infinity,
