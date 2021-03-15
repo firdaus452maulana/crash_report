@@ -1,4 +1,5 @@
 import 'package:crash_report/tampilan/reportBugPage.dart';
+import 'package:crash_report/tampilan/aboutUsPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -89,7 +90,12 @@ class _sideBarState extends State<sideBar> {
                       "Tentang Aplikasi",
                       style: GoogleFonts.openSans(color: Colors.white, fontSize: 12),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => aboutUsPage()));
+                    },
                   ),
                   FlatButton.icon(
                     icon: Icon(
