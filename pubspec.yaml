@@ -37,6 +37,7 @@ dependencies:
   flutter_email_sender:
   intl:
   carousel_pro: ^1.0.0
+  url_launcher: ^4.2.0+3
   multi_image_picker:
 
   # The following adds the Cupertino Icons font to your application.
@@ -66,6 +67,11 @@ flutter:
     - assets/empty-box.png
     - assets/pegawai.jpg
     - assets/teknisi.jpeg
+    - assets/ig.png
+    - assets/wa.svg
+    - assets/wa.png
+    - assets/waw.png
+    - assets/igw.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
