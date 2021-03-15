@@ -65,144 +65,163 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
         if (snapshot.hasData) {
           DataSnapshot dataValues = snapshot.data.snapshot;
           Map<dynamic, dynamic> laporan = dataValues.value;
-          if (laporan['kerjakan'] != 'true') {
-            return Container(
-              width: double.infinity,
-              margin: EdgeInsets.only(top: 16),
-              child: RaisedButton(
-                color: Color(0xFF031F4B),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30)),
-                textColor: Colors.white,
-                child: Text(
-                  "Kerjakan",
-                  style: GoogleFonts.openSans(
-                      fontSize: 12, fontWeight: FontWeight.bold),
+          if (laporan != null) {
+            if (laporan['kerjakan'] != 'true') {
+              return Container(
+                width: double.infinity,
+                margin: EdgeInsets.only(top: 16),
+                child: RaisedButton(
+                  color: Color(0xFF031F4B),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30)),
+                  textColor: Colors.white,
+                  child: Text(
+                    "Kerjakan",
+                    style: GoogleFonts.openSans(
+                        fontSize: 12, fontWeight: FontWeight.bold),
+                  ),
+                  onPressed: () {
+                    print("bool: " + laporan.toString());
+                    _listLaporanRef.child(barangKey).update({
+                      'kerjakan': 'true',
+                    });
+                  },
                 ),
-                onPressed: () {
-                  print("bool: " + barangKey.toString());
-                  _listLaporanRef.child(barangKey).update({
-                    'kerjakan': 'true',
-                  });
-                },
-              ),
-            );
+              );
+            } else {
+              return Container(
+                //color: Colors.cyan,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Status Pelaporan',
+                      style: GoogleFonts.openSans(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 12,
+                        color: Colors.black,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 6,
+                    ),
+
+                    Container(
+                      height: 24,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(30)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.15),
+                              spreadRadius: 0,
+                              blurRadius: 2,
+                              offset: Offset(0, 0),
+                            )
+                          ]),
+                      child: DropdownButtonFormField(
+                        icon: Icon(Icons.expand_more),
+                        iconSize: 16,
+                        decoration: InputDecoration(
+                            labelStyle: TextStyle(
+                                fontSize: 12,
+                                color: Colors.black.withOpacity(0.25)),
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30)),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(30)),
+                                borderSide:
+                                    BorderSide(color: Colors.transparent)),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(30)),
+                                borderSide:
+                                    BorderSide(color: Colors.transparent)),
+                            filled: false,
+                            contentPadding:
+                                EdgeInsets.only(left: 16.0, right: 16.0),
+                            hintStyle: GoogleFonts.openSans(
+                                fontSize: 12,
+                                color: Color(0xFF000000).withOpacity(0.25)),
+                            errorBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(30)),
+                                borderSide: BorderSide(color: Colors.red)),
+                            focusedErrorBorder: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(30)),
+                                borderSide:
+                                    BorderSide(color: Colors.transparent)),
+                            errorStyle: GoogleFonts.openSans(fontSize: 10)),
+                        value: valueStatus = laporan['status'],
+                        onChanged: (newValue) {
+                          setState(() {
+                            valueStatus = newValue;
+                            _updateStatus(barangKey: barangKey);
+                          });
+                        },
+                        items: divisi.map((valueItem) {
+                          return DropdownMenuItem(
+                            value: valueItem,
+                            child: Text(
+                              valueItem,
+                              style: GoogleFonts.openSans(
+                                  fontSize: 12, color: Color(0xFF000000)),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 24),
+                      alignment: Alignment.centerRight,
+                      child: RaisedButton(
+                        color: Color(0xFF031F4B),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30)),
+                        textColor: Colors.white,
+                        child: Text(
+                          "Selesai",
+                          style: GoogleFonts.openSans(
+                              fontSize: 12, fontWeight: FontWeight.bold),
+                        ),
+                        onPressed: () {
+                          _selesaiLaporan(
+                              barangKey: barangKey,
+                              nama: laporan['nama'],
+                              date: laporan['date'],
+                              time: laporan['time']);
+                          print("bool: " + laporan.toString());
+                        },
+                      ),
+                    ),
+                    //Text("TRUE"),
+                  ],
+                ),
+              );
+            }
           } else {
             return Container(
-              //color: Colors.cyan,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Status Pelaporan',
-                    style: GoogleFonts.openSans(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 6,
-                  ),
-
-                  Container(
-                    height: 24,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(30)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.15),
-                            spreadRadius: 0,
-                            blurRadius: 2,
-                            offset: Offset(0, 0),
-                          )
-                        ]),
-                    child: DropdownButtonFormField(
-                      icon: Icon(Icons.expand_more),
-                      iconSize: 16,
-                      decoration: InputDecoration(
-                          labelStyle: TextStyle(
-                              fontSize: 12,
-                              color: Colors.black.withOpacity(0.25)),
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
-                              borderSide:
-                                  BorderSide(color: Colors.transparent)),
-                          focusedBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
-                              borderSide:
-                                  BorderSide(color: Colors.transparent)),
-                          filled: false,
-                          contentPadding:
-                              EdgeInsets.only(left: 16.0, right: 16.0),
-                          hintStyle: GoogleFonts.openSans(
-                              fontSize: 12,
-                              color: Color(0xFF000000).withOpacity(0.25)),
-                          errorBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
-                              borderSide: BorderSide(color: Colors.red)),
-                          focusedErrorBorder: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(30)),
-                              borderSide:
-                                  BorderSide(color: Colors.transparent)),
-                          errorStyle: GoogleFonts.openSans(fontSize: 10)),
-                      value: valueStatus = laporan['status'],
-                      onChanged: (newValue) {
-                        setState(() {
-                          valueStatus = newValue;
-                          _updateStatus(barangKey: barangKey);
-                        });
-                      },
-                      items: divisi.map((valueItem) {
-                        return DropdownMenuItem(
-                          value: valueItem,
-                          child: Text(
-                            valueItem,
-                            style: GoogleFonts.openSans(
-                                fontSize: 12, color: Color(0xFF000000)),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 24),
-                    alignment: Alignment.centerRight,
-                    child: RaisedButton(
-                      color: Color(0xFF031F4B),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30)),
-                      textColor: Colors.white,
-                      child: Text(
-                        "Selesai",
-                        style: GoogleFonts.openSans(
-                            fontSize: 12, fontWeight: FontWeight.bold),
-                      ),
-                      onPressed: () {
-                        _selesaiLaporan(
-                            barangKey: barangKey,
-                            nama: laporan['nama'],
-                            date: laporan['date'],
-                            time: laporan['time']);
-                      },
-                    ),
-                  ),
-                  //Text("TRUE"),
-                ],
+              width: double.infinity,
+              alignment: Alignment.center,
+              child: Text(
+                "Sudah Dikerjakan",
+                textAlign: TextAlign.center,
+                style: GoogleFonts.openSans(
+                  fontStyle: FontStyle.normal,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                  color: Colors.black,
+                ),
               ),
             );
           }
         } else {
-          return Container(color: Colors.blue, height: 100,);
+          return Container();
         }
       },
     );
@@ -546,13 +565,7 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
       'namaTeknisi': name,
       'status': valueStatus,
     });
-    try {
-      _listLaporanRef.child(barangKey).remove();
-    } catch (e) {}
-
-    /*if (_listLaporanRef.child(barangKey) != null) {
-
-    }*/
+    _listLaporanRef.child(barangKey).remove();
   }
 
   // WARNA STATUS
