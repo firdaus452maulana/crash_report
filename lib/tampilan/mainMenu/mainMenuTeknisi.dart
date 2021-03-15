@@ -184,10 +184,14 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)),
                         textColor: Colors.white,
-                        child: Text(
-                          "Selesai",
-                          style: GoogleFonts.openSans(
-                              fontSize: 12, fontWeight: FontWeight.bold),
+                        child: Container(
+                          height: 48,
+                          alignment: Alignment.center,
+                          child: Text(
+                            "Selesai",
+                            style: GoogleFonts.openSans(
+                                fontSize: 12, fontWeight: FontWeight.bold),
+                          ),
                         ),
                         onPressed: () {
                           _selesaiLaporan(
@@ -196,6 +200,7 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                               date: laporan['date'],
                               time: laporan['time']);
                           print("bool: " + laporan.toString());
+                          _showDialogSave();
                         },
                       ),
                     ),
@@ -224,6 +229,34 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
           return Container();
         }
       },
+    );
+  }
+
+  //Dialog Save Laporan
+  Widget _showDialogSave(){
+    showDialog(
+      context: context,
+      builder: (context){
+        return Dialog(
+          backgroundColor: Colors.black.withOpacity(0.75),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+          child: Container(
+            height: 24,
+            width: 80,
+            alignment: Alignment.center,
+            child: Text(
+              "Perubahan disimpan",
+              textAlign: TextAlign.center,
+              style: GoogleFonts.openSans(
+                fontStyle: FontStyle.normal,
+                fontWeight: FontWeight.normal,
+                fontSize: 12,
+                color: Colors.white
+              )
+            ),
+          ),
+        );
+      }
     );
   }
 
@@ -437,13 +470,16 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
               Align(
                 alignment: Alignment.centerRight,
                 child: Container(
-                    height: 16,
-                    width: 16,
-                    margin: EdgeInsets.only(right: 24, left: 24, top: 32),
-                    decoration: BoxDecoration(
-                      color: notifikasiColor,
-                      borderRadius: BorderRadius.circular(2.5),
-                    )),
+                  margin: EdgeInsets.only(right: 24, top: 24),
+                  child: Container(
+                      height: 16,
+                      width: 16,
+                      margin: EdgeInsets.only(right: 24, left: 24, top: 32),
+                      decoration: BoxDecoration(
+                        color: notifikasiColor,
+                        borderRadius: BorderRadius.circular(2.5),
+                      )),
+                )
               ),
               Theme(
                 data: theme,
