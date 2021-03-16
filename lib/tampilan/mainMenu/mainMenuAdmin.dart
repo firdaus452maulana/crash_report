@@ -104,7 +104,9 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                       .child("image")
                       .child(image['key'])
                       .remove();
+
                 });
+                checkImage(barangKey: barangKey);
               },
             ),
           ),
@@ -1380,6 +1382,17 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
     );
   }
 
+  checkImage({String barangKey}) async {
+    DataSnapshot snapshot = await _ref.child(barangKey).once();
+
+    Map barang = snapshot.value;
+
+    if (barang['image'] == null)
+      {
+        _ref.child(barangKey).update({'image' : ""});
+      }
+  }
+
   getBarangDetail({String barangKey}) async {
     DataSnapshot snapshot = await _ref.child(barangKey).once();
 
@@ -1408,6 +1421,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
       'letak': lokasi,
       'divisi': divisi,
       'status': status,
+      'image' : ""
     };
 
     _ref.push().set(barang).then((value) {
