@@ -33,7 +33,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
   ScrollController _scrollController;
   String valueDivisi;
 
-  List divisi = ["Divisi 1", "Divisi 2", "Divisi 3"];
+  List divisi = ["ATC", "ARO", "PIA"];
 
   Query _query, _queryLaporan;
   DatabaseReference _ref, _repref;
@@ -1421,7 +1421,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
       'letak': lokasi,
       'divisi': divisi,
       'status': status,
-      'image' : ""
+      'image' : "",
     };
 
     _ref.push().set(barang).then((value) {
