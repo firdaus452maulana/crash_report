@@ -32,6 +32,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
   TabController _tabController;
   ScrollController _scrollController;
   String valueDivisi;
+  bool listBarang, listLaporan, listKomplain;
 
   List divisi = ["Divisi 1", "Divisi 2", "Divisi 3"];
 
@@ -1378,6 +1379,15 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
         },
       ),
     );
+  }
+
+  validateListBarang () async {
+    DataSnapshot snapshot = await _ref.once();
+
+    if (snapshot.value == null)
+      listBarang = false;
+    else
+      listBarang = true;
   }
 
   getBarangDetail({String barangKey}) async {
