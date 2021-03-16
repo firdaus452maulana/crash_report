@@ -25,16 +25,14 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
   TextEditingController _namaAlatController,
       _lokasiController,
       _divisiController,
-      _uploadedFileURL,
       _laporanController,
       _dateController,
       _timeController;
   TabController _tabController;
   ScrollController _scrollController;
   String valueDivisi;
-  bool listBarang, listLaporan, listKomplain;
 
-  List divisi = ["Divisi 1", "Divisi 2", "Divisi 3"];
+  List divisi = ["ATC", "ARO", "PIA"];
 
   Query _query, _queryLaporan;
   DatabaseReference _ref, _repref;
@@ -56,7 +54,6 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
     _lokasiController = TextEditingController();
     _divisiController = TextEditingController();
     _laporanController = TextEditingController();
-    _uploadedFileURL = TextEditingController();
     _dateController = TextEditingController();
     _timeController = TextEditingController();
     _ref = FirebaseDatabase.instance.reference().child('listBarang');
@@ -105,295 +102,16 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                       .child("image")
                       .child(image['key'])
                       .remove();
+                  FirebaseStorage.instance.refFromURL(image['URL']).delete();
+
                 });
+                checkImage(barangKey: barangKey);
               },
             ),
           ),
         ],
       ),
     );
-  }
-
-  // DIALOG ADD BARANG
-  Widget _showDialogPenambahan() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return Dialog(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            child: SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.all(24),
-                child: Stack(
-                  children: <Widget>[
-                    Form(
-                      key: _formKey,
-                      child: Container(
-                        padding: EdgeInsets.only(
-                            top: 16, bottom: 16, left: 8, right: 8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          //posisi
-                          mainAxisSize: MainAxisSize.min,
-                          // untuk mengatur agar widget column mengikuti widget
-                          children: <Widget>[
-                            Container(
-                                child: Text(
-                              "Tambah Barang",
-                              style: GoogleFonts.openSans(
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            )),
-
-                            SizedBox(height: 16),
-
-                            // NAMA ALAT
-                            Container(
-                              child: TextFormField(
-                                cursorColor: Colors.black,
-                                style: GoogleFonts.openSans(fontSize: 12),
-                                keyboardType: TextInputType.text,
-                                controller: _namaAlatController,
-                                decoration: new InputDecoration(
-                                    fillColor: Colors.white,
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(30)),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.all(Radius.circular(30)),
-                                        borderSide: BorderSide(
-                                            color: Color(0xFF000000)
-                                                .withOpacity(0.15))),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.all(Radius.circular(30)),
-                                        borderSide:
-                                            BorderSide(color: Color(0xFF031F4B))),
-                                    filled: false,
-                                    contentPadding:
-                                        EdgeInsets.only(left: 24.0, right: 24.0),
-                                    hintStyle: GoogleFonts.openSans(
-                                        fontSize: 12,
-                                        color:
-                                            Color(0xFF000000).withOpacity(0.15)),
-                                    hintText: "Nama Alat",
-                                    errorBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.all(Radius.circular(30)),
-                                        borderSide:
-                                            BorderSide(color: Colors.red)),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.all(Radius.circular(30)),
-                                        borderSide: BorderSide(
-                                            color: Colors.red, width: 1)),
-                                    errorStyle:
-                                        GoogleFonts.openSans(fontSize: 10)),
-                                obscureText: false,
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return "Field is required";
-                                  }
-                                  return null;
-                                },
-                                onSaved: (value) {},
-                              ),
-                            ),
-
-                            SizedBox(height: 16),
-
-                            // LOKASI
-                            Container(
-                              child: TextFormField(
-                                cursorColor: Colors.black,
-                                style: GoogleFonts.openSans(fontSize: 12),
-                                keyboardType: TextInputType.text,
-                                controller: _lokasiController,
-                                decoration: new InputDecoration(
-                                    fillColor: Colors.white,
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(30)),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.all(Radius.circular(30)),
-                                        borderSide: BorderSide(
-                                            color: Color(0xFF000000)
-                                                .withOpacity(0.15))),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.all(Radius.circular(30)),
-                                        borderSide:
-                                            BorderSide(color: Color(0xFF031F4B))),
-                                    filled: false,
-                                    contentPadding:
-                                        EdgeInsets.only(left: 24.0, right: 24.0),
-                                    hintStyle: GoogleFonts.openSans(
-                                        fontSize: 12,
-                                        color:
-                                            Color(0xFF000000).withOpacity(0.15)),
-                                    hintText: "Lokasi",
-                                    errorBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.all(Radius.circular(30)),
-                                        borderSide:
-                                            BorderSide(color: Colors.red)),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.all(Radius.circular(30)),
-                                        borderSide: BorderSide(
-                                            color: Colors.red, width: 1)),
-                                    errorStyle:
-                                        GoogleFonts.openSans(fontSize: 10)),
-                                obscureText: false,
-                                validator: (value) {
-                                  if (value.isEmpty) {
-                                    return "Field is required";
-                                  }
-                                  return null;
-                                },
-                                onSaved: (value) {},
-                              ),
-                            ),
-
-                            SizedBox(height: 16),
-
-                            // DIVISI
-                            DropdownButtonFormField(
-                              icon: Padding(
-                                padding: const EdgeInsets.only(right: 16.0),
-                                child: Icon(
-                                  Icons.keyboard_arrow_down,
-                                  color: Color(0xFF000000).withOpacity(0.25),
-                                  size: 20,
-                                ),
-                              ),
-                              decoration: InputDecoration(
-                                  fillColor: Colors.white,
-                                  border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(30)),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(30)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF000000)
-                                              .withOpacity(0.15))),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(30)),
-                                      borderSide:
-                                          BorderSide(color: Color(0xFF031F4B))),
-                                  filled: false,
-                                  contentPadding:
-                                      EdgeInsets.only(left: 24.0, right: 0),
-                                  hintStyle: GoogleFonts.openSans(
-                                      fontSize: 12,
-                                      color: Color(0xFF000000).withOpacity(0.25)),
-                                  errorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(30)),
-                                      borderSide: BorderSide(color: Colors.red)),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(30)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red, width: 1)),
-                                  errorStyle: GoogleFonts.openSans(fontSize: 10)),
-                              hint: Text(
-                                "divisi",
-                                style: GoogleFonts.openSans(
-                                    fontSize: 12,
-                                    color: Color(0xFF000000).withOpacity(.25)),
-                              ),
-                              value: valueDivisi,
-                              onChanged: (newValue) {
-                                setState(() {
-                                  valueDivisi = newValue;
-                                });
-                              },
-                              validator: (value) {
-                                if (valueDivisi == null) {
-                                  return "Divisi harus dipilih!";
-                                }
-                                return null;
-                              },
-                              items: divisi.map((valueItem) {
-                                return DropdownMenuItem(
-                                  value: valueItem,
-                                  child: Text(
-                                    valueItem,
-                                    style: GoogleFonts.openSans(
-                                        fontSize: 12, color: Color(0xFF000000)),
-                                  ),
-                                );
-                              }).toList(),
-                            ),
-
-                            SizedBox(height: 16),
-
-                            //Button
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: RaisedButton(
-                                color: Color(0xFF031F4B),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30)),
-                                textColor: Colors.white,
-                                child: Container(
-                                  height: 42.5,
-                                  width: 85,
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "Save",
-                                    style: GoogleFonts.openSans(
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  saveBarang();
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    //Icon Close
-                    Positioned(
-                      right: 0.0,
-                      child: GestureDetector(
-                        onTap: () {
-                          resetAndClose();
-                        },
-                        child: Align(
-                          alignment: Alignment.topRight,
-                          child: CircleAvatar(
-                            radius: 14,
-                            backgroundColor: Color(0xFF031F4B),
-                            child: Icon(
-                              Icons.close,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        });
   }
 
   //LIST BARANG
@@ -582,6 +300,22 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                       ),
                                     ),
                                   ),
+
+                                  SizedBox(width: 12,),
+
+                                  Container(
+                                    //color: Colors.pink,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        _showDialogEdit(barang['key']);
+                                      },
+                                      child: Icon(
+                                        Icons.edit,
+                                        color: Colors.grey[400],
+                                        size: 32,
+                                      ),
+                                    ),
+                                  ),
                                   Expanded(
                                     child: Container(
                                       //color: Colors.red,
@@ -757,6 +491,289 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
             ],
           )),
     );
+  }
+
+  // DIALOG ADD BARANG
+  Widget _showDialogPenambahan() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            child: SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.all(24),
+                child: Stack(
+                  children: <Widget>[
+                    Form(
+                      key: _formKey,
+                      child: Container(
+                        padding: EdgeInsets.only(
+                            top: 16, bottom: 16, left: 8, right: 8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          //posisi
+                          mainAxisSize: MainAxisSize.min,
+                          // untuk mengatur agar widget column mengikuti widget
+                          children: <Widget>[
+                            Container(
+                                child: Text(
+                                  "Tambah Barang",
+                                  style: GoogleFonts.openSans(
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                )),
+
+                            SizedBox(height: 16),
+
+                            // NAMA ALAT
+                            Container(
+                              child: TextFormField(
+                                cursorColor: Colors.black,
+                                style: GoogleFonts.openSans(fontSize: 12),
+                                keyboardType: TextInputType.text,
+                                controller: _namaAlatController,
+                                decoration: new InputDecoration(
+                                    fillColor: Colors.white,
+                                    border: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                        borderSide: BorderSide(
+                                            color: Color(0xFF000000)
+                                                .withOpacity(0.15))),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                        borderSide:
+                                        BorderSide(color: Color(0xFF031F4B))),
+                                    filled: false,
+                                    contentPadding:
+                                    EdgeInsets.only(left: 24.0, right: 24.0),
+                                    hintStyle: GoogleFonts.openSans(
+                                        fontSize: 12,
+                                        color:
+                                        Color(0xFF000000).withOpacity(0.15)),
+                                    hintText: "Nama Alat",
+                                    errorBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                        borderSide:
+                                        BorderSide(color: Colors.red)),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                        borderSide: BorderSide(
+                                            color: Colors.red, width: 1)),
+                                    errorStyle:
+                                    GoogleFonts.openSans(fontSize: 10)),
+                                obscureText: false,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Field is required";
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {},
+                              ),
+                            ),
+
+                            SizedBox(height: 16),
+
+                            // LOKASI
+                            Container(
+                              child: TextFormField(
+                                cursorColor: Colors.black,
+                                style: GoogleFonts.openSans(fontSize: 12),
+                                keyboardType: TextInputType.text,
+                                controller: _lokasiController,
+                                decoration: new InputDecoration(
+                                    fillColor: Colors.white,
+                                    border: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                        borderSide: BorderSide(
+                                            color: Color(0xFF000000)
+                                                .withOpacity(0.15))),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                        borderSide:
+                                        BorderSide(color: Color(0xFF031F4B))),
+                                    filled: false,
+                                    contentPadding:
+                                    EdgeInsets.only(left: 24.0, right: 24.0),
+                                    hintStyle: GoogleFonts.openSans(
+                                        fontSize: 12,
+                                        color:
+                                        Color(0xFF000000).withOpacity(0.15)),
+                                    hintText: "Lokasi",
+                                    errorBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                        borderSide:
+                                        BorderSide(color: Colors.red)),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                        borderSide: BorderSide(
+                                            color: Colors.red, width: 1)),
+                                    errorStyle:
+                                    GoogleFonts.openSans(fontSize: 10)),
+                                obscureText: false,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Field is required";
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {},
+                              ),
+                            ),
+
+                            SizedBox(height: 16),
+
+                            // DIVISI
+                            DropdownButtonFormField(
+                              icon: Padding(
+                                padding: const EdgeInsets.only(right: 16.0),
+                                child: Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: Color(0xFF000000).withOpacity(0.25),
+                                  size: 20,
+                                ),
+                              ),
+                              decoration: InputDecoration(
+                                  fillColor: Colors.white,
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(30)),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                      borderSide: BorderSide(
+                                          color: Color(0xFF000000)
+                                              .withOpacity(0.15))),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                      borderSide:
+                                      BorderSide(color: Color(0xFF031F4B))),
+                                  filled: false,
+                                  contentPadding:
+                                  EdgeInsets.only(left: 24.0, right: 0),
+                                  hintStyle: GoogleFonts.openSans(
+                                      fontSize: 12,
+                                      color: Color(0xFF000000).withOpacity(0.25)),
+                                  errorBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                      borderSide: BorderSide(color: Colors.red)),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                      borderSide: BorderSide(
+                                          color: Colors.red, width: 1)),
+                                  errorStyle: GoogleFonts.openSans(fontSize: 10)),
+                              hint: Text(
+                                "divisi",
+                                style: GoogleFonts.openSans(
+                                    fontSize: 12,
+                                    color: Color(0xFF000000).withOpacity(.25)),
+                              ),
+                              value: valueDivisi,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  valueDivisi = newValue;
+                                });
+                              },
+                              validator: (value) {
+                                if (valueDivisi == null) {
+                                  return "Divisi harus dipilih!";
+                                }
+                                return null;
+                              },
+                              items: divisi.map((valueItem) {
+                                return DropdownMenuItem(
+                                  value: valueItem,
+                                  child: Text(
+                                    valueItem,
+                                    style: GoogleFonts.openSans(
+                                        fontSize: 12, color: Color(0xFF000000)),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+
+                            SizedBox(height: 16),
+
+                            //Button
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: RaisedButton(
+                                color: Color(0xFF031F4B),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30)),
+                                textColor: Colors.white,
+                                child: Container(
+                                  height: 42.5,
+                                  width: 85,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Save",
+                                    style: GoogleFonts.openSans(
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  saveBarang();
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    //Icon Close
+                    Positioned(
+                      right: 0.0,
+                      child: GestureDetector(
+                        onTap: () {
+                          justReset();
+                          Navigator.pop(context);
+                        },
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: CircleAvatar(
+                            radius: 14,
+                            backgroundColor: Color(0xFF031F4B),
+                            child: Icon(
+                              Icons.close,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
   }
 
   //DIALOG ADD LAPORAN
@@ -1021,7 +1038,8 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                       right: 0.0,
                       child: GestureDetector(
                         onTap: () {
-                          resetAndClose();
+                          justReset();
+                          Navigator.pop(context);
                         },
                         child: Align(
                           alignment: Alignment.topRight,
@@ -1113,7 +1131,8 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                   ),
                                 ),
                                 onPressed: () {
-                                  resetAndClose();
+                                  justReset();
+                                  Navigator.pop(context);
                                 },
                               ),
                               FlatButton(
@@ -1140,6 +1159,291 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                             ],
                           ),
                         ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
+  //DIALOG EDIT BARANG
+  Widget _showDialogEdit(String barangKey) {
+    getBarangDetail(barangKey: barangKey);
+
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            child: SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.all(24),
+                child: Stack(
+                  children: <Widget>[
+                    Form(
+                      key: _formKey,
+                      child: Container(
+                        padding: EdgeInsets.only(
+                            top: 16, bottom: 16, left: 8, right: 8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          //posisi
+                          mainAxisSize: MainAxisSize.min,
+                          // untuk mengatur agar widget column mengikuti widget
+                          children: <Widget>[
+                            Container(
+                                child: Text(
+                                  "Edit Barang",
+                                  style: GoogleFonts.openSans(
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                )),
+
+                            SizedBox(height: 16),
+
+                            // NAMA ALAT
+                            Container(
+                              child: TextFormField(
+                                cursorColor: Colors.black,
+                                style: GoogleFonts.openSans(fontSize: 12),
+                                keyboardType: TextInputType.text,
+                                controller: _namaAlatController,
+                                decoration: new InputDecoration(
+                                    fillColor: Colors.white,
+                                    border: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                        borderSide: BorderSide(
+                                            color: Color(0xFF000000)
+                                                .withOpacity(0.15))),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                        borderSide:
+                                        BorderSide(color: Color(0xFF031F4B))),
+                                    filled: false,
+                                    contentPadding:
+                                    EdgeInsets.only(left: 24.0, right: 24.0),
+                                    hintStyle: GoogleFonts.openSans(
+                                        fontSize: 12,
+                                        color:
+                                        Color(0xFF000000).withOpacity(0.15)),
+                                    hintText: "Nama Alat",
+                                    errorBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                        borderSide:
+                                        BorderSide(color: Colors.red)),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                        borderSide: BorderSide(
+                                            color: Colors.red, width: 1)),
+                                    errorStyle:
+                                    GoogleFonts.openSans(fontSize: 10)),
+                                obscureText: false,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Field is required";
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {},
+                              ),
+                            ),
+
+                            SizedBox(height: 16),
+
+                            // LOKASI
+                            Container(
+                              child: TextFormField(
+                                cursorColor: Colors.black,
+                                style: GoogleFonts.openSans(fontSize: 12),
+                                keyboardType: TextInputType.text,
+                                controller: _lokasiController,
+                                decoration: new InputDecoration(
+                                    fillColor: Colors.white,
+                                    border: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                        borderSide: BorderSide(
+                                            color: Color(0xFF000000)
+                                                .withOpacity(0.15))),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                        borderSide:
+                                        BorderSide(color: Color(0xFF031F4B))),
+                                    filled: false,
+                                    contentPadding:
+                                    EdgeInsets.only(left: 24.0, right: 24.0),
+                                    hintStyle: GoogleFonts.openSans(
+                                        fontSize: 12,
+                                        color:
+                                        Color(0xFF000000).withOpacity(0.15)),
+                                    hintText: "Lokasi",
+                                    errorBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                        borderSide:
+                                        BorderSide(color: Colors.red)),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(30)),
+                                        borderSide: BorderSide(
+                                            color: Colors.red, width: 1)),
+                                    errorStyle:
+                                    GoogleFonts.openSans(fontSize: 10)),
+                                obscureText: false,
+                                validator: (value) {
+                                  if (value.isEmpty) {
+                                    return "Field is required";
+                                  }
+                                  return null;
+                                },
+                                onSaved: (value) {},
+                              ),
+                            ),
+
+                            SizedBox(height: 16),
+
+                            // DIVISI
+                            DropdownButtonFormField(
+                              icon: Padding(
+                                padding: const EdgeInsets.only(right: 16.0),
+                                child: Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: Color(0xFF000000).withOpacity(0.25),
+                                  size: 20,
+                                ),
+                              ),
+                              decoration: InputDecoration(
+                                  fillColor: Colors.white,
+                                  border: OutlineInputBorder(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(30)),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                      borderSide: BorderSide(
+                                          color: Color(0xFF000000)
+                                              .withOpacity(0.15))),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                      borderSide:
+                                      BorderSide(color: Color(0xFF031F4B))),
+                                  filled: false,
+                                  contentPadding:
+                                  EdgeInsets.only(left: 24.0, right: 0),
+                                  hintStyle: GoogleFonts.openSans(
+                                      fontSize: 12,
+                                      color: Color(0xFF000000).withOpacity(0.25)),
+                                  errorBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                      borderSide: BorderSide(color: Colors.red)),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(30)),
+                                      borderSide: BorderSide(
+                                          color: Colors.red, width: 1)),
+                                  errorStyle: GoogleFonts.openSans(fontSize: 10)),
+                              hint: Text(
+                                "divisi",
+                                style: GoogleFonts.openSans(
+                                    fontSize: 12,
+                                    color: Color(0xFF000000).withOpacity(.25)),
+                              ),
+                              value: valueDivisi,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  valueDivisi = newValue;
+                                });
+                              },
+                              validator: (value) {
+                                if (valueDivisi == null) {
+                                  return "Divisi harus dipilih!";
+                                }
+                                return null;
+                              },
+                              items: divisi.map((valueItem) {
+                                return DropdownMenuItem(
+                                  value: valueItem,
+                                  child: Text(
+                                    valueItem,
+                                    style: GoogleFonts.openSans(
+                                        fontSize: 12, color: Color(0xFF000000)),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+
+                            SizedBox(height: 16),
+
+                            //Button
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: RaisedButton(
+                                color: Color(0xFF031F4B),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30)),
+                                textColor: Colors.white,
+                                child: Container(
+                                  height: 42.5,
+                                  width: 85,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Save",
+                                    style: GoogleFonts.openSans(
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  updateBarang(barangKey);
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    //Icon Close
+                    Positioned(
+                      right: 0.0,
+                      child: GestureDetector(
+                        onTap: () {
+                          justReset();
+                          Navigator.pop(context);
+                        },
+                        child: Align(
+                          alignment: Alignment.topRight,
+                          child: CircleAvatar(
+                            radius: 14,
+                            backgroundColor: Color(0xFF031F4B),
+                            child: Icon(
+                              Icons.close,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -1375,19 +1679,22 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
         child: Icon(Icons.add),
         backgroundColor: Color(0xFF031F4B),
         onPressed: () {
+          justReset();
           _showDialogPenambahan();
         },
       ),
     );
   }
 
-  validateListBarang () async {
-    DataSnapshot snapshot = await _ref.once();
+  checkImage({String barangKey}) async {
+    DataSnapshot snapshot = await _ref.child(barangKey).once();
 
-    if (snapshot.value == null)
-      listBarang = false;
-    else
-      listBarang = true;
+    Map barang = snapshot.value;
+
+    if (barang['image'] == null)
+      {
+        _ref.child(barangKey).update({'image' : ""});
+      }
   }
 
   getBarangDetail({String barangKey}) async {
@@ -1398,7 +1705,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
     _namaAlatController.text = barang['nama'];
     _lokasiController.text = barang['letak'];
     _divisiController.text = barang['divisi'];
-    _uploadedFileURL.text = barang['imageURL'];
+    valueDivisi = _divisiController.text;
   }
 
   saveBarang() {
@@ -1418,14 +1725,35 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
       'letak': lokasi,
       'divisi': divisi,
       'status': status,
+      'image' : "",
     };
 
     _ref.push().set(barang).then((value) {
+      justReset();
       Navigator.pop(context);
-      _namaAlatController.clear();
-      _lokasiController.clear();
-      _divisiController.clear();
-      valueDivisi = null;
+    });
+  }
+
+  updateBarang(String barangKey) {
+
+    String namaAlat = _namaAlatController.text;
+    String lokasi = _lokasiController.text;
+    String divisi = valueDivisi;
+
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+    _formKey.currentState.save();
+
+    Map<String, String> barang = {
+      'nama': namaAlat,
+      'letak': lokasi,
+      'divisi': divisi,
+    };
+
+    _ref.child(barangKey).update(barang).then((value) {
+      justReset();
+      Navigator.pop(context);
     });
   }
 
@@ -1462,30 +1790,29 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
       _lokasiController.clear();
       _divisiController.clear();
       valueDivisi = null;
-      _uploadedFileURL.clear();
     });
 
     _ref.child(barangKey).update(barang).then((value) {
+      justReset();
       Navigator.pop(context);
-      _laporanController.clear();
-      _dateController.clear();
     });
   }
 
-  resetAndClose() {
+  justReset() {
     _namaAlatController.clear();
     _lokasiController.clear();
     _divisiController.clear();
     valueDivisi = null;
-    _uploadedFileURL.clear();
     _laporanController.clear();
     _dateController.clear();
-    Navigator.pop(context);
   }
 
   hapusBarangLaporan({String barangKey}) {
     if (_repref.child(barangKey) != null) _repref.child(barangKey).remove();
-    _ref.child(barangKey).remove().whenComplete(() => resetAndClose());
+    _ref.child(barangKey).remove().whenComplete(() {
+      justReset();
+      Navigator.pop(context);
+    });
   }
 
   Color getStatusColor(String status) {
