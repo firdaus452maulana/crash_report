@@ -21,24 +21,20 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
   ScrollController _scrollController;
   String valueStatus;
 
-  TextEditingController _namaAlatController,
-      _lokasiController,
-      _divisiController,
-      _uploadedFileURL,
-      _laporanController,
-      _dateController,
-      _timeController;
+  TextEditingController _laporanController;
+
   String valueDivisi;
 
   List divisi = ["Divisi 1", "Divisi 2", "Divisi 3"];
 
-  Query _queryLaporan, _queryBarang;
-  DatabaseReference _ref, _compref;
+  Query _queryBarang, _queryKomplain;
+  DatabaseReference _ref, _compref, _comprefAdmin;
   String uid = '';
   String name = '';
   String role = '';
   File image;
   String valueKomplainStr;
+  String komplainNoteKey;
 
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -47,16 +43,17 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
     super.initState();
     _tabController = TabController(vsync: this, length: 2);
     _scrollController = ScrollController();
-    _queryLaporan = FirebaseDatabase.instance
-        .reference()
-        .child('listLaporan')
-        .orderByChild('nama');
     _queryBarang = FirebaseDatabase.instance
         .reference()
         .child('listBarang')
         .orderByChild('nama');
+    _queryKomplain =
+        FirebaseDatabase.instance.reference().child('listKomplain');
     _ref = FirebaseDatabase.instance.reference().child('listBarang');
-    _compref = FirebaseDatabase.instance.reference().child('listKomplain');
+    _compref =
+        FirebaseDatabase.instance.reference().child('listKomplainPegawai');
+    _comprefAdmin =
+        FirebaseDatabase.instance.reference().child('listKomplainAdmin');
     _ambilPreference();
     _indogs();
   }
@@ -69,10 +66,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
   Widget _viewImage(String barangKey) {
     List<NetworkImage> _listOfImages = <NetworkImage>[];
     return StreamBuilder(
-        stream: _ref
-            .child(barangKey)
-            .child('image')
-            .onValue,
+        stream: _ref.child(barangKey).child('image').onValue,
         builder: (context, AsyncSnapshot<Event> snapshot) {
           if (snapshot.hasData) {
             _listOfImages.clear();
@@ -89,10 +83,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                   decoration: BoxDecoration(
                     color: Colors.white,
                   ),
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width,
+                  width: MediaQuery.of(context).size.width,
                   child: Carousel(
                       boxFit: BoxFit.cover,
                       images: _listOfImages,
@@ -102,15 +93,11 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                       dotSize: 5.0,
                       dotSpacing: 16.0,
                       animationCurve: Curves.fastOutSlowIn,
-                      animationDuration:
-                      Duration(milliseconds: 2000)),
+                      animationDuration: Duration(milliseconds: 2000)),
                 ),
                 Container(
                   height: 1,
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width,
+                  width: MediaQuery.of(context).size.width,
                   color: Color(0xFF031F4B),
                 )
               ],
@@ -120,8 +107,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
               child: CircularProgressIndicator(),
             );
           }
-        }
-    );
+        });
   }
 
   // LIST BARANG
@@ -174,7 +160,6 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                   ],
                 ),
               ),
-
               Theme(
                 data: theme,
                 child: ExpansionTile(
@@ -229,24 +214,21 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                       child: Column(
                         children: <Widget>[
                           Container(
-                            //color: Colors.grey[200],
+                              //color: Colors.grey[200],
                               margin: EdgeInsets.only(bottom: 24.0),
-                              child:
-                              (barang['image'] == "")
-                                  ?
-                              Text(
-                                "Belum Ada Gambar yang Ditampilkan",
-                                style: GoogleFonts.openSans(
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 12,
-                                ),
-                              )
-                                  :
-                              _viewImage(barang['key'])
-                            // _viewImage(barang['key']),
-                            // new Image.network(barang['imageURL']),
-                          ),
+                              child: (barang['image'] == "")
+                                  ? Text(
+                                      "Belum Ada Gambar yang Ditampilkan",
+                                      style: GoogleFonts.openSans(
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 12,
+                                      ),
+                                    )
+                                  : _viewImage(barang['key'])
+                              // _viewImage(barang['key']),
+                              // new Image.network(barang['imageURL']),
+                              ),
                           Container(
                             width: double.infinity,
                             //color: Colors.green,
@@ -262,8 +244,8 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                                     child: RaisedButton(
                                       color: Color(0xFF031F4B),
                                       shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              30)),
+                                          borderRadius:
+                                              BorderRadius.circular(30)),
                                       textColor: Colors.white,
                                       child: Container(
                                         width: 85,
@@ -306,7 +288,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
         builder: (context) {
           return Dialog(
             shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             child: Container(
               padding: EdgeInsets.all(24),
               child: SingleChildScrollView(
@@ -323,14 +305,13 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                         children: <Widget>[
                           Container(
                               child: Text(
-                                "Komplain Kerusakan",
-                                style: GoogleFonts.openSans(
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                ),
-                              )
-                          ),
+                            "Komplain Kerusakan",
+                            style: GoogleFonts.openSans(
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          )),
                           SizedBox(height: 16),
 
                           Container(
@@ -342,40 +323,40 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                               decoration: new InputDecoration(
                                   fillColor: Colors.white,
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(8)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8)),
                                   ),
                                   enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(8)),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8)),
                                       borderSide: BorderSide(
                                           color: Color(0xFF000000)
                                               .withOpacity(0.15))),
                                   focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(8)),
-                                      borderSide: BorderSide(
-                                          color: Color(0xFF031F4B))),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8)),
+                                      borderSide:
+                                          BorderSide(color: Color(0xFF031F4B))),
                                   filled: false,
-                                  contentPadding: EdgeInsets.only(
-                                      left: 24.0, right: 24.0),
+                                  contentPadding:
+                                      EdgeInsets.only(left: 24.0, right: 24.0),
                                   hintStyle: GoogleFonts.openSans(
                                       fontSize: 12,
-                                      color: Color(0xFF000000)
-                                          .withOpacity(0.15)),
+                                      color:
+                                          Color(0xFF000000).withOpacity(0.15)),
                                   hintText: "Komplain Kerusakan",
                                   errorBorder: OutlineInputBorder(
                                       borderRadius:
-                                      BorderRadius.all(Radius.circular(8)),
-                                      borderSide: BorderSide(
-                                          color: Colors.red)),
+                                          BorderRadius.all(Radius.circular(8)),
+                                      borderSide:
+                                          BorderSide(color: Colors.red)),
                                   focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(8)),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(8)),
                                       borderSide: BorderSide(
                                           color: Colors.red, width: 1)),
-                                  errorStyle: GoogleFonts.openSans(
-                                      fontSize: 10)),
+                                  errorStyle:
+                                      GoogleFonts.openSans(fontSize: 10)),
                               obscureText: false,
                               validator: (value) {
                                 if (value.isEmpty) {
@@ -388,7 +369,6 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                               },
                             ),
                           ),
-
 
                           //Button
                           Align(
@@ -447,8 +427,34 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
         });
   }
 
+  /*_cekUidKomplain(String komplainKey) async {
+    DataSnapshot snapshotKomplain =
+        await _compref.child(komplainKey).child('komplain').child(uid).once();
+    Map komplainNote = snapshotKomplain.value;
+    komplainNote['key'] = snapshotKomplain.key;
+    komplainNoteKey = snapshotKomplain.key;
+    print("komplainNote: " + komplainNoteKey.toString());
+    print("komplainKey: " + komplainKey.toString());
+  }*/
+
+  /*Widget _buildListKomplainNote({Map komplainNote, String komplainKey}) {
+    return Container(
+      child: Column(
+        children: [
+          RaisedButton(
+            onPressed: () {
+              _cekUidKomplain(komplainKey);
+            },
+          ),
+          Text(komplainNote['note']),
+        ],
+      ),
+    );
+  }*/
+
   //LIST KOMPLAIN
   Widget _buildListKomplain({Map komplain, final theme}) {
+    //String komplainKey = komplain['key'];
     return Container(
       child: Container(
           margin: EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
@@ -479,14 +485,13 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                         //color: Colors.green,
                         margin: EdgeInsets.only(
                             left: 24, top: 16, bottom: 16, right: 24),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                        child: Row(
                           //posisi
                           mainAxisSize: MainAxisSize.min,
                           // untuk mengatur agar widget column mengikuti widget
                           children: <Widget>[
                             Text(
-                              laporan['nama'],
+                              komplain['nama'],
                               style: GoogleFonts.openSans(
                                 fontStyle: FontStyle.normal,
                                 fontWeight: FontWeight.w700,
@@ -494,21 +499,33 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                                 color: Colors.black,
                               ),
                             ),
-                            Text(
-                              laporan['date'],
-                              style: GoogleFonts.openSans(
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 12,
-                                  color: Colors.black.withOpacity(0.25)),
-                            ),
-                            Text(
-                              laporan['time'],
-                              style: GoogleFonts.openSans(
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.w300,
-                                fontSize: 12,
-                                color: Colors.black,
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.topRight,
+                                //color: Colors.red,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      komplain['date'],
+                                      textAlign: TextAlign.right,
+                                      style: GoogleFonts.openSans(
+                                        fontStyle: FontStyle.normal,
+                                        fontSize: 12,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    Text(
+                                      komplain['time'],
+                                      textAlign: TextAlign.right,
+                                      style: GoogleFonts.openSans(
+                                        fontStyle: FontStyle.normal,
+                                        fontSize: 12,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
@@ -526,70 +543,42 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            'Pelapor',
+                            "Catatan Komplain",
+                            textAlign: TextAlign.right,
                             style: GoogleFonts.openSans(
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.bold,
                               fontSize: 12,
                               color: Colors.black,
                             ),
                           ),
                           Text(
-                            laporan['namaPelapor'],
+                            komplain['note'],
+                            textAlign: TextAlign.right,
                             style: GoogleFonts.openSans(
-                                fontWeight: FontWeight.w300,
-                                fontSize: 12,
-                                color: Colors.black.withOpacity(0.25)),
-                          ),
-                          SizedBox(height: 8),
-                          Text(
-                            'Catatan Kerusakan',
-                            style: GoogleFonts.openSans(
-                              fontWeight: FontWeight.w600,
+                              fontStyle: FontStyle.normal,
                               fontSize: 12,
-                              color: Colors.black,
+                              color: Colors.black.withOpacity(0.25),
                             ),
                           ),
-                          Text(
-                            laporan['laporan'],
-                            style: GoogleFonts.openSans(
-                                fontWeight: FontWeight.w300,
-                                fontSize: 12,
-                                color: Colors.black.withOpacity(0.25)),
-                          ),
-                          SizedBox(height: 8),
-                          Text(
-                            'Status Pelaporan',
-                            style: GoogleFonts.openSans(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 12,
-                              color: Colors.black,
+                          /*Container(
+                            height: 100,
+                            child: FirebaseAnimatedList(
+                              query: _compref
+                                  .child(uid)
+                                  .child('komplain')
+                                  .orderByKey(),
+                              itemBuilder: (BuildContext context,
+                                  DataSnapshot snapshot,
+                                  Animation<double> animation,
+                                  int index) {
+                                Map komplain = snapshot.value;
+                                komplain['key'] = snapshot.key;
+                                return _buildListKomplainNote(
+                                    komplainNote: komplain,
+                                    komplainKey: komplainKey);
+                              },
                             ),
-                          ),
-                          SizedBox(
-                            height: 6,
-                          ),
-                          /*Text(
-                            laporan['key'],
-                            style: GoogleFonts.openSans(
-                                fontWeight: FontWeight.w300,
-                                fontSize: 12,
-                                color: Colors.black.withOpacity(0.25)),
                           ),*/
-                          Container(
-                            height: 24,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                BorderRadius.all(Radius.circular(30)),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.15),
-                                    spreadRadius: 0,
-                                    blurRadius: 2,
-                                    offset: Offset(0, 0),
-                                  )
-                                ]),
-                          ),
                         ],
                       ),
                     )
@@ -775,13 +764,16 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                               child: CupertinoScrollbar(
                                 controller: _scrollController,
                                 child: FirebaseAnimatedList(
-                                  query: _queryLaporan,
+                                  query: _compref
+                                      .child(uid)
+                                      .child('komplain')
+                                      .orderByKey(),
                                   itemBuilder: (BuildContext context,
                                       DataSnapshot snapshot,
                                       Animation<double> animation,
                                       int index) {
                                     Map komplain = snapshot.value;
-                                    komplain['key'] = snapshot.key;
+                                    //komplain['key'] = snapshot.key;
                                     return _buildListKomplain(
                                         komplain: komplain, theme: theme);
                                   },
@@ -811,17 +803,15 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
     divisi = barang['divisi'];
   }
 
-  _isiKomplain(){
-
-  }
+  _isiKomplain() {}
 
   updateKomplain({String barangKey}) async {
     DateTime now = DateTime.now();
-    DateFormat format = new DateFormat("EEEE, d LLLL yyyy", "id_ID");
+    DateFormat format = new DateFormat("d/LL/yyyy", "id_ID");
     String formattedDate = format.format(now);
 
     DataSnapshot snapshot = await _ref.child(barangKey).once();
-    DataSnapshot snapshotKomplain = await _compref.child(barangKey).once();
+    DataSnapshot snapshotKomplain = await _compref.child(uid).once();
 
     Map barang = snapshot.value;
     Map isiKomplain = snapshotKomplain.value;
@@ -832,36 +822,48 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
     divisi = barang['divisi'];
     status = barang['status'];
 
-
-    Map<String, String> report = {
-      'namaPelapor': name,
-      'nama': nama,
-      'komplain': "",
-      'date': formattedDate,
-      'time': "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
-      'status': status,
-    };
-    
-    if (isiKomplain.toString() == "null"){
+    if (isiKomplain.toString() == "null") {
       print("isiKomplain: " + isiKomplain.toString());
-      _compref
-          .child(barangKey)
-          .set(report)
-          .then((value) {
-            _compref.child(barangKey).child('komplain').child(uid).set({'note': valueKomplainStr,});
-        resetAndClose();
-        SnackBar snackbar = SnackBar(
-            content:
-            Text('Komplain Tersampaikan'));
-        scaffoldKey.currentState
-            .showSnackBar(snackbar);
+      _compref.child(uid).child('komplain').child(barangKey).set({
+        'nama': nama,
+        'note': valueKomplainStr,
+        'date': formattedDate,
+        'time':
+            "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
       });
-    } else{
-      _compref.child(barangKey).child('komplain').push().set({'note': valueKomplainStr, 'uid': uid,});
+      _comprefAdmin.child(barangKey).child('komplain').push().set({
+        'namaPekomplain': name,
+        'uidPekomplain': uid,
+        'nama': nama,
+        'note': valueKomplainStr,
+        'date': formattedDate,
+        'time':
+        "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
+      });
+      resetAndClose();
+      SnackBar snackbar = SnackBar(content: Text('Komplain Tersampaikan'));
+      scaffoldKey.currentState.showSnackBar(snackbar);
+    } else {
+      _compref.child(uid).child('komplain').child(barangKey).set({
+        'nama': nama,
+        'note': valueKomplainStr,
+        'date': formattedDate,
+        'time':
+            "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
+      });
+      _comprefAdmin.child(barangKey).child('komplain').push().set({
+        'namaPekomplain': name,
+        'uidPekomplain': uid,
+        'nama': nama,
+        'note': valueKomplainStr,
+        'date': formattedDate,
+        'time':
+        "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
+      });
+      resetAndClose();
+      SnackBar snackbar = SnackBar(content: Text('Komplain Tersampaikan'));
+      scaffoldKey.currentState.showSnackBar(snackbar);
     }
-
-
-
   }
 
   resetAndClose() {
@@ -869,9 +871,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
   }
 
   Color getStatusColor(String status) {
-    Color color = Theme
-        .of(context)
-        .accentColor;
+    Color color = Theme.of(context).accentColor;
 
     if (status == 'Normal') {
       color = Color(0xFF628C57);
@@ -884,5 +884,4 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
     }
     return color;
   }
-
 }
