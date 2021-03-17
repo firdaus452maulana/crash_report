@@ -811,14 +811,20 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
     divisi = barang['divisi'];
   }
 
+  _isiKomplain(){
+
+  }
+
   updateKomplain({String barangKey}) async {
     DateTime now = DateTime.now();
     DateFormat format = new DateFormat("EEEE, d LLLL yyyy", "id_ID");
     String formattedDate = format.format(now);
 
     DataSnapshot snapshot = await _ref.child(barangKey).once();
+    DataSnapshot snapshotKomplain = await _compref.child(barangKey).once();
 
     Map barang = snapshot.value;
+    Map isiKomplain = snapshotKomplain.value;
     String nama, lokasi, divisi, komplain, status;
 
     nama = barang['nama'];
@@ -828,28 +834,33 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
 
 
     Map<String, String> report = {
-      'uid' : uid,
       'namaPelapor': name,
       'nama': nama,
-      'komplain': valueKomplainStr,
+      'komplain': "",
       'date': formattedDate,
       'time': "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
       'status': status,
     };
+    
+    if (isiKomplain.toString() == "null"){
+      print("isiKomplain: " + isiKomplain.toString());
+      _compref
+          .child(barangKey)
+          .set(report)
+          .then((value) {
+            _compref.child(barangKey).child('komplain').push().set({'note': valueKomplainStr, 'uid': uid,});
+        resetAndClose();
+        SnackBar snackbar = SnackBar(
+            content:
+            Text('Komplain Tersampaikan'));
+        scaffoldKey.currentState
+            .showSnackBar(snackbar);
+      });
+    } else{
+      _compref.child(barangKey).child('komplain').push().set({'note': valueKomplainStr, 'uid': uid,});
+    }
 
-    _compref
-        .child(barangKey)
-        .child("komplain")
-        .push()
-        .set(report)
-        .then((value) {
-          resetAndClose();
-      SnackBar snackbar = SnackBar(
-          content:
-          Text('Komplain Tersampaikan'));
-      scaffoldKey.currentState
-          .showSnackBar(snackbar);
-    });
+
 
   }
 
