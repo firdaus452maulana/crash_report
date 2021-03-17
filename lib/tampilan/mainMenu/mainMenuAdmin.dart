@@ -30,7 +30,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
       _timeController;
   TabController _tabController;
   ScrollController _scrollController;
-  String valueDivisi;
+  String valueDivisi, _filterSelected;
 
   List divisi = ["ATC", "ARO", "PIA"];
 
@@ -490,6 +490,46 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
               ),
             ],
           )),
+    );
+  }
+
+  //FILTER
+  Widget _buildFilterType(String title){
+    return InkWell(
+      child: Container(
+        height: 40,
+        width: 90,
+        decoration: BoxDecoration(
+          color: _filterSelected == title ? Color(0xFF031F4B) : Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: Color(0xFF031F4B)),
+        ),
+        child: Center(
+          child: Text(
+            title,
+            style: GoogleFonts.openSans(
+                    fontStyle: FontStyle.normal,
+                    fontWeight: FontWeight.normal,
+                    fontSize: 18,
+            )),),
+      ),
+      onTap: () async {
+        setState(() {
+          _filterSelected = title;
+        });
+        if (_filterSelected == "Semua"){
+          _query = FirebaseDatabase.instance
+              .reference()
+              .child('listBarang')
+              .orderByChild('nama');
+        } else {
+          _query = FirebaseDatabase.instance
+              .reference()
+              .child('listBarang')
+              .orderByChild('divisi')
+              .equalTo(_filterSelected);
+        }
+      },
     );
   }
 
@@ -1629,21 +1669,42 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                           //physics: NeverScrollableScrollPhysics(),
                           children: [
                             // TAB VIEW LIST BARANG
-                            CupertinoScrollbar(
-                              controller: _scrollController,
-                              child: FirebaseAnimatedList(
-                                query: _query,
-                                itemBuilder: (BuildContext context,
-                                    DataSnapshot snapshot,
-                                    Animation<double> animation,
-                                    int index) {
-                                  Map barang = snapshot.value;
-                                  barang['key'] = snapshot.key;
-                                  return _buildListBarang(
-                                      barang: barang, theme: theme);
+                            Column(
+                              children: [
+                                Container(
+                                  height: 40,
+                                  child: ListView (
+                                    scrollDirection: Axis.horizontal,
+                                    children: [ 
+                                      _buildFilterType('Semua'),
+                                      SizedBox(width: 8),
+                                      _buildFilterType('ATC'),
+                                      SizedBox(width: 8),
+                                      _buildFilterType('ARO'),
+                                      SizedBox(width: 8),
+                                      _buildFilterType('PIA'),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: CupertinoScrollbar(
+                                    controller: _scrollController,
+                                    child: FirebaseAnimatedList(
+                                      query: _query,
+                                      itemBuilder: (BuildContext context,
+                                          DataSnapshot snapshot,
+                                          Animation<double> animation,
+                                          int index) {
+                                        Map barang = snapshot.value;
+                                        barang['key'] = snapshot.key;
+                                        return _buildListBarang(
+                                            barang: barang, theme: theme);
 
-                                },
-                              ),
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
 
                             // TAB VIEW KOMPLAIN
