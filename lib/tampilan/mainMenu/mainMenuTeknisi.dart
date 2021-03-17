@@ -241,18 +241,94 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
           backgroundColor: Colors.black.withOpacity(0.75),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
           child: Container(
-            height: 24,
-            width: 80,
-            alignment: Alignment.center,
-            child: Text(
-              "Perubahan disimpan",
-              textAlign: TextAlign.center,
-              style: GoogleFonts.openSans(
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.normal,
-                fontSize: 12,
-                color: Colors.white
-              )
+            padding: EdgeInsets.all(24),
+            child: SingleChildScrollView(
+              child: Stack(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.only(
+                      top: 16, bottom: 8, left: 8, right: 8
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Center(
+                          child: Text(
+                            "Apakah Anda yakin",
+                            style: GoogleFonts.openSans(
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 12,
+                              color: Colors.white,
+                            )
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        Center(
+                            child: Text(
+                                "untuk menyimpan Perubahan?",
+                                style: GoogleFonts.openSans(
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 12,
+                                  color: Colors.white,
+                                )
+                            ),
+                        ),
+                        SizedBox(height: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            FlatButton(
+                              color: Colors.grey[400],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30)),
+                              textColor: Colors.white,
+                              child: Container(
+                                height: 42.5,
+                                width: 75,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Tidak",
+                                  style: GoogleFonts.openSans(
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                                onPressed: (){
+
+                                },
+                            ),
+                            FlatButton(
+                              color: Color(0xFF031F4B),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30)),
+                              textColor: Colors.white,
+                              child: Container(
+                                height: 42.5,
+                                width: 75,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Ya",
+                                  style: GoogleFonts.openSans(
+                                    fontStyle: FontStyle.normal,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              onPressed: (){
+
+                              },
+                            ),
+                          ],
+                        )
+                      ]
+                    ),
+                  ),
+                ]
+              ),
             ),
           ),
         );
@@ -470,11 +546,11 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
               Align(
                 alignment: Alignment.centerRight,
                 child: Container(
-                  margin: EdgeInsets.only(right: 24, top: 24),
+                  margin: EdgeInsets.only(right: 16, top: 16),
                   child: Container(
                       height: 16,
                       width: 16,
-                      margin: EdgeInsets.only(right: 24, left: 24, top: 32),
+                      margin: EdgeInsets.only(right: 24, left: 24, top: 24),
                       decoration: BoxDecoration(
                         color: notifikasiColor,
                         borderRadius: BorderRadius.circular(2.5),
