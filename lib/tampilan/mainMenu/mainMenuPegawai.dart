@@ -448,7 +448,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
   }
 
   //LIST KOMPLAIN
-  Widget _buildListLaporan({Map laporan, final theme}) {
+  Widget _buildListKomplain({Map komplain, final theme}) {
     return Container(
       child: Container(
           margin: EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
@@ -780,10 +780,10 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                                       DataSnapshot snapshot,
                                       Animation<double> animation,
                                       int index) {
-                                    Map laporan = snapshot.value;
-                                    laporan['key'] = snapshot.key;
-                                    return _buildListLaporan(
-                                        laporan: laporan, theme: theme);
+                                    Map komplain = snapshot.value;
+                                    komplain['key'] = snapshot.key;
+                                    return _buildListKomplain(
+                                        komplain: komplain, theme: theme);
                                   },
                                 ),
                               ),
@@ -848,7 +848,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
           .child(barangKey)
           .set(report)
           .then((value) {
-            _compref.child(barangKey).child('komplain').push().set({'note': valueKomplainStr, 'uid': uid,});
+            _compref.child(barangKey).child('komplain').child(uid).set({'note': valueKomplainStr,});
         resetAndClose();
         SnackBar snackbar = SnackBar(
             content:
