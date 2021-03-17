@@ -65,7 +65,7 @@ class _aboutUsPageState extends State<aboutUsPage> {
                   margin: EdgeInsets.only(top: 15, right: 40),
                   //color: Colors.yellow,
                   child: Text(
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                    'Sistem Informasi Pelaporan Peralatan (SIAP) merupakan aplikasi yang memudahkan pengguna untuk melaporkan kerusakan peralatan atau inventaris. SIAP menciptakan komunikasi yang efektif antar user sebagai pemilik barang atau inventaris dengan teknisi untuk melakukan pemeliharaan. SIAP merupakan aplikasi yang dibuat tim pengembang NomaDev dan bekerja sama dengan AirNav Indonesia serta Politeknik ELektronika Negeri Surabaya',
                     style: GoogleFonts.openSans(
                         color: Colors.white,
                         fontWeight: FontWeight.w100,
@@ -97,83 +97,7 @@ class _aboutUsPageState extends State<aboutUsPage> {
                         height: 35,
                         image: AssetImage('assets/pens.png'),
                       ),
-                      Image(
-                        width: 35,
-                        height: 35,
-                        image: AssetImage('assets/NomaDev.png'),
-                      ),
                     ],
-                  ),
-                ),
-
-                Container(
-                  margin: EdgeInsets.only(top: 20,right: 30),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(right: 15),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(40.0),
-                            child: Image(
-                              width: 80,
-                              height: 80,
-                              fit: BoxFit.cover,
-                              image: AssetImage('assets/bgt.png'),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(right: 15),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(40.0),
-                            child: Image(
-                              width: 80,
-                              height: 80,
-                              fit: BoxFit.cover,
-                              image: AssetImage('assets/bgt.png'),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(right: 15),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(40.0),
-                            child: Image(
-                              width: 80,
-                              height: 80,
-                              fit: BoxFit.cover,
-                              image: AssetImage('assets/bgt.png'),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(right: 15),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(40.0),
-                            child: Image(
-                              width: 80,
-                              height: 80,
-                              fit: BoxFit.cover,
-                              image: AssetImage('assets/bgt.png'),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(right: 15),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(40.0),
-                            child: Image(
-                              width: 80,
-                              height: 80,
-                              fit: BoxFit.cover,
-                              image: AssetImage('assets/bgt.png'),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
                   ),
                 ),
               ],
@@ -188,6 +112,17 @@ class _aboutUsPageState extends State<aboutUsPage> {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                Container(
+                  margin:EdgeInsets.only(bottom: 10),
+                  child: Text(
+                   'connect with us',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.openSans(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w100,
+                          fontSize: 10),
+                    ),
+                  ),
                 Container(
                   //color: Colors.red,
                   child: Row(
@@ -250,12 +185,6 @@ class _aboutUsPageState extends State<aboutUsPage> {
                 ),
               ],
             ),
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 20, bottom: 20),
-            height: double.infinity,
-            alignment: Alignment.bottomCenter,
-            //color: Colors.yellow,
           ),
         ],
       ),
