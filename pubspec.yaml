@@ -72,6 +72,18 @@ flutter:
     - assets/wa.png
     - assets/waw.png
     - assets/igw.png
+    - assets/bg.png
+    - assets/bgt.png
+    - assets/airnav.png
+    - assets/pens.png
+    - assets/airnav2.png
+    - assets/linkedin.png
+    - assets/lnkedinw.png
+    - assets/in.png
+    - assets/in2.png
+    - assets/nomadev.jpg
+    - assets/NomaDev.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

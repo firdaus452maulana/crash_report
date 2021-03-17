@@ -31,6 +31,8 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
   String name = '';
   String role = '';
   File image;
+  Map<dynamic, dynamic> isiLaporan;
+  String isiLaporanStr;
 
   @override
   void initState() {
@@ -52,10 +54,30 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
         .orderByChild('nama');
     _ambilPreference();
     _indogs();
+    _cekIsiLaporan();
   }
 
   Future<void> _indogs() async {
     await initializeDateFormatting('id_ID', null);
+  }
+
+  _cekIsiLaporan() {
+    _listLaporanRef.once().then((value) {
+      isiLaporan = value.value;
+      isiLaporanStr = isiLaporan.toString();
+      print("isi laporan: " + isiLaporanStr.toString());
+      if (isiLaporan == null) {
+        FirebaseDatabase.instance
+            .reference()
+            .child('trigger')
+            .update({'adaLaporan': 'false'});
+      } else {
+        FirebaseDatabase.instance
+            .reference()
+            .child('trigger')
+            .update({'adaLaporan': 'true'});
+      }
+    });
   }
 
   Widget _kerjakanLaporan(String barangKey) {
@@ -185,7 +207,6 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                             borderRadius: BorderRadius.circular(30)),
                         textColor: Colors.white,
                         child: Container(
-                          height: 48,
                           alignment: Alignment.center,
                           child: Text(
                             "Selesai",
@@ -194,13 +215,11 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                           ),
                         ),
                         onPressed: () {
-                          _selesaiLaporan(
+                          _showDialogSave(
                               barangKey: barangKey,
                               nama: laporan['nama'],
                               date: laporan['date'],
                               time: laporan['time']);
-                          print("bool: " + laporan.toString());
-                          _showDialogSave();
                         },
                       ),
                     ),
@@ -233,31 +252,106 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
   }
 
   //Dialog Save Laporan
-  Widget _showDialogSave(){
+  Widget _showDialogSave(
+      {String barangKey, String nama, String date, String time}) {
     showDialog(
-      context: context,
-      builder: (context){
-        return Dialog(
-          backgroundColor: Colors.black.withOpacity(0.75),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
-          child: Container(
-            height: 24,
-            width: 80,
-            alignment: Alignment.center,
-            child: Text(
-              "Perubahan disimpan",
-              textAlign: TextAlign.center,
-              style: GoogleFonts.openSans(
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.normal,
-                fontSize: 12,
-                color: Colors.white
-              )
+        context: context,
+        builder: (context) {
+          return Dialog(
+            backgroundColor: Colors.black.withOpacity(0.75),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+            child: Container(
+              padding: EdgeInsets.all(24),
+              child: SingleChildScrollView(
+                child: Stack(children: <Widget>[
+                  Container(
+                    padding:
+                        EdgeInsets.only(top: 16, bottom: 8, left: 8, right: 8),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Center(
+                            child: Text("Apakah Anda yakin",
+                                style: GoogleFonts.openSans(
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 12,
+                                  color: Colors.white,
+                                )),
+                          ),
+                          SizedBox(height: 16),
+                          Center(
+                            child: Text("untuk menyimpan Perubahan?",
+                                style: GoogleFonts.openSans(
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 12,
+                                  color: Colors.white,
+                                )),
+                          ),
+                          SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              FlatButton(
+                                color: Colors.grey[400],
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30)),
+                                textColor: Colors.white,
+                                child: Container(
+                                  height: 42.5,
+                                  width: 75,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Tidak",
+                                    style: GoogleFonts.openSans(
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              FlatButton(
+                                color: Color(0xFF031F4B),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30)),
+                                textColor: Colors.white,
+                                child: Container(
+                                  height: 42.5,
+                                  width: 75,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "Ya",
+                                    style: GoogleFonts.openSans(
+                                      fontStyle: FontStyle.normal,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  _selesaiLaporan(
+                                      barangKey: barangKey,
+                                      nama: nama,
+                                      date: date,
+                                      time: time);
+                                  Navigator.pop(context);
+                                  _cekIsiLaporan();
+                                },
+                              ),
+                            ],
+                          )
+                        ]),
+                  ),
+                ]),
+              ),
             ),
-          ),
-        );
-      }
-    );
+          );
+        });
   }
 
   //BUILD VIEW IMAGE
@@ -468,19 +562,18 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
           child: Stack(
             children: [
               Align(
-                alignment: Alignment.centerRight,
-                child: Container(
-                  margin: EdgeInsets.only(right: 24, top: 24),
+                  alignment: Alignment.centerRight,
                   child: Container(
-                      height: 16,
-                      width: 16,
-                      margin: EdgeInsets.only(right: 24, left: 24, top: 32),
-                      decoration: BoxDecoration(
-                        color: notifikasiColor,
-                        borderRadius: BorderRadius.circular(2.5),
-                      )),
-                )
-              ),
+                    margin: EdgeInsets.only(right: 16, top: 16),
+                    child: Container(
+                        height: 16,
+                        width: 16,
+                        margin: EdgeInsets.only(right: 24, left: 24, top: 24),
+                        decoration: BoxDecoration(
+                          color: notifikasiColor,
+                          borderRadius: BorderRadius.circular(2.5),
+                        )),
+                  )),
               Theme(
                 data: theme,
                 child: ExpansionTile(
@@ -813,24 +906,57 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                                   ),
 
                                   // TAB VIEW LIST LAPORAN
-                                  MediaQuery.removePadding(
-                                    context: context,
-                                    removeTop: true,
-                                    child: CupertinoScrollbar(
-                                      controller: _scrollController,
-                                      child: FirebaseAnimatedList(
-                                        query: _queryLaporan,
-                                        itemBuilder: (BuildContext context,
-                                            DataSnapshot snapshot,
-                                            Animation<double> animation,
-                                            int index) {
-                                          Map laporan = snapshot.value;
-                                          laporan['key'] = snapshot.key;
-                                          return _buildListLaporan(
-                                              laporan: laporan, theme: theme);
-                                        },
-                                      ),
-                                    ),
+                                  StreamBuilder(
+                                    stream: FirebaseDatabase.instance
+                                        .reference()
+                                        .child('trigger')
+                                        .onValue,
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<Event> snapshot) {
+                                      if (snapshot.hasData) {
+                                        _cekIsiLaporan();
+                                        Map valueTrigger =
+                                            snapshot.data.snapshot.value;
+                                        if (valueTrigger['adaLaporan'] !=
+                                            "false") {
+                                          _cekIsiLaporan();
+                                          return MediaQuery.removePadding(
+                                            context: context,
+                                            removeTop: true,
+                                            child: CupertinoScrollbar(
+                                              controller: _scrollController,
+                                              child: FirebaseAnimatedList(
+                                                query: _queryLaporan,
+                                                itemBuilder: (BuildContext
+                                                        context,
+                                                    DataSnapshot snapshot,
+                                                    Animation<double> animation,
+                                                    int index) {
+                                                  Map laporan = snapshot.value;
+                                                  laporan['key'] = snapshot.key;
+                                                  return _buildListLaporan(
+                                                      laporan: laporan,
+                                                      theme: theme);
+                                                },
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          _cekIsiLaporan();
+                                          return MediaQuery.removePadding(
+                                            context: context,
+                                            removeTop: true,
+                                            child: CupertinoScrollbar(
+                                                controller: _scrollController,
+                                                child: Center(
+                                                  child: Text("KOSONG"),
+                                                )),
+                                          );
+                                        }
+                                      } else {
+                                        return Container();
+                                      }
+                                    },
                                   ),
                                 ]),
                           ),
