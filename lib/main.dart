@@ -1,3 +1,4 @@
+import 'package:crash_report/tampilan/homePage.dart';
 import 'package:crash_report/tampilan/login/loadingPage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_file.dart';
@@ -19,7 +20,7 @@ Future<void> main() async {
     theme: ThemeData(fontFamily: 'OpenSans'),
     home: bagian != null ? loadingPage() : loginPage(),
     debugShowCheckedModeBanner: false,
-    //home: loginPage(),
+    //home: homePage(),
   ));
 
   //runApp(MyApp());

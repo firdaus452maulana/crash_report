@@ -31,6 +31,8 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
   String name = '';
   String role = '';
   File image;
+  Map<dynamic, dynamic> isiLaporan;
+
 
   @override
   void initState() {
@@ -52,10 +54,19 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
         .orderByChild('nama');
     _ambilPreference();
     _indogs();
+    _cekIsiLaporan();
   }
 
   Future<void> _indogs() async {
     await initializeDateFormatting('id_ID', null);
+  }
+
+  _cekIsiLaporan() {
+    _listLaporanRef.once().then((value) {
+      isiLaporan = value.value;
+      String isiLaporanStr = isiLaporan.toString();
+      print("isi laporan: " + isiLaporanStr.toString());
+    });
   }
 
   Widget _kerjakanLaporan(String barangKey) {
@@ -185,7 +196,6 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                             borderRadius: BorderRadius.circular(30)),
                         textColor: Colors.white,
                         child: Container(
-                          height: 48,
                           alignment: Alignment.center,
                           child: Text(
                             "Selesai",
@@ -194,13 +204,10 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                           ),
                         ),
                         onPressed: () {
-                          _selesaiLaporan(
-                              barangKey: barangKey,
+                          _showDialogSave(barangKey: barangKey,
                               nama: laporan['nama'],
                               date: laporan['date'],
                               time: laporan['time']);
-                          print("bool: " + laporan.toString());
-                          _showDialogSave();
                         },
                       ),
                     ),
@@ -233,7 +240,7 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
   }
 
   //Dialog Save Laporan
-  Widget _showDialogSave(){
+  Widget _showDialogSave({String barangKey, String nama, String date, String time}){
     showDialog(
       context: context,
       builder: (context){
@@ -298,7 +305,7 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                                 ),
                               ),
                                 onPressed: (){
-
+                                  Navigator.pop(context);
                                 },
                             ),
                             FlatButton(
@@ -319,7 +326,12 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                                 ),
                               ),
                               onPressed: (){
-
+                                _selesaiLaporan(
+                                    barangKey: barangKey,
+                                    nama: nama,
+                                    date: date,
+                                    time: time);
+                                Navigator.pop(context);
                               },
                             ),
                           ],
