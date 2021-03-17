@@ -6,6 +6,7 @@ import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 
@@ -32,11 +33,12 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
   List divisi = ["Divisi 1", "Divisi 2", "Divisi 3"];
 
   Query _queryLaporan, _queryBarang;
-  DatabaseReference _ref, _repref;
+  DatabaseReference _ref, _compref;
   String uid = '';
   String name = '';
   String role = '';
   File image;
+  String valueKomplainStr;
 
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -54,16 +56,23 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
         .child('listBarang')
         .orderByChild('nama');
     _ref = FirebaseDatabase.instance.reference().child('listBarang');
-    _repref = FirebaseDatabase.instance.reference().child('listLaporan');
+    _compref = FirebaseDatabase.instance.reference().child('listKomplain');
     _ambilPreference();
+    _indogs();
+  }
+
+  Future<void> _indogs() async {
+    await initializeDateFormatting('id_ID', null);
   }
 
   //BUILD VIEW IMAGE
-  Widget _viewImage(String barangKey){
-
+  Widget _viewImage(String barangKey) {
     List<NetworkImage> _listOfImages = <NetworkImage>[];
     return StreamBuilder(
-        stream: _ref.child(barangKey).child('image').onValue,
+        stream: _ref
+            .child(barangKey)
+            .child('image')
+            .onValue,
         builder: (context, AsyncSnapshot<Event> snapshot) {
           if (snapshot.hasData) {
             _listOfImages.clear();
@@ -80,7 +89,10 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                   decoration: BoxDecoration(
                     color: Colors.white,
                   ),
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width,
                   child: Carousel(
                       boxFit: BoxFit.cover,
                       images: _listOfImages,
@@ -95,7 +107,10 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                 ),
                 Container(
                   height: 1,
-                  width: MediaQuery.of(context).size.width,
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width,
                   color: Color(0xFF031F4B),
                 )
               ],
@@ -105,8 +120,8 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
               child: CircularProgressIndicator(),
             );
           }
-        });
-
+        }
+    );
   }
 
   // LIST BARANG
@@ -171,7 +186,8 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                       Container(
                         width: double.infinity,
                         //color: Colors.green,
-                        margin: EdgeInsets.only(left: 24, top: 16, bottom: 16, right: 72),
+                        margin: EdgeInsets.only(
+                            left: 24, top: 16, bottom: 16, right: 72),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           //posisi
@@ -214,20 +230,20 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                         children: <Widget>[
                           Container(
                             //color: Colors.grey[200],
-                            margin: EdgeInsets.only(bottom: 24.0),
-                            child:
-                            (barang['image'] == "")
-                                ?
-                            Text(
-                              "Belum Ada Gambar yang Ditampilkan",
-                              style: GoogleFonts.openSans(
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 12,
-                              ),
-                            )
-                                :
-                            _viewImage(barang['key'])
+                              margin: EdgeInsets.only(bottom: 24.0),
+                              child:
+                              (barang['image'] == "")
+                                  ?
+                              Text(
+                                "Belum Ada Gambar yang Ditampilkan",
+                                style: GoogleFonts.openSans(
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 12,
+                                ),
+                              )
+                                  :
+                              _viewImage(barang['key'])
                             // _viewImage(barang['key']),
                             // new Image.network(barang['imageURL']),
                           ),
@@ -246,7 +262,8 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                                     child: RaisedButton(
                                       color: Color(0xFF031F4B),
                                       shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(30)),
+                                          borderRadius: BorderRadius.circular(
+                                              30)),
                                       textColor: Colors.white,
                                       child: Container(
                                         width: 85,
@@ -284,10 +301,6 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
   Widget _showDialogKomplain(String barangKey) {
     getBarangDetail(barangKey: barangKey);
 
-    DateTime now = DateTime.now();
-    DateFormat format = new DateFormat("EEEE, d LLLL yyyy", "id_ID");
-    String formattedDate = format.format(now);
-
     showDialog(
         context: context,
         builder: (context) {
@@ -316,197 +329,66 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18,
                                 ),
-                              )),
-
+                              )
+                          ),
                           SizedBox(height: 16),
 
-                          Center(
-                            child: Text(
-                              "--- Deskripsi Alat ---",
-                              style: GoogleFonts.openSans(
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                                color: Colors.black.withOpacity(0.25),
-                              ),
+                          Container(
+                            child: TextFormField(
+                              cursorColor: Colors.black,
+                              style: GoogleFonts.openSans(fontSize: 12),
+                              maxLines: 10,
+                              controller: _laporanController,
+                              decoration: new InputDecoration(
+                                  fillColor: Colors.white,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(8)),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(8)),
+                                      borderSide: BorderSide(
+                                          color: Color(0xFF000000)
+                                              .withOpacity(0.15))),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(8)),
+                                      borderSide: BorderSide(
+                                          color: Color(0xFF031F4B))),
+                                  filled: false,
+                                  contentPadding: EdgeInsets.only(
+                                      left: 24.0, right: 24.0),
+                                  hintStyle: GoogleFonts.openSans(
+                                      fontSize: 12,
+                                      color: Color(0xFF000000)
+                                          .withOpacity(0.15)),
+                                  hintText: "Komplain Kerusakan",
+                                  errorBorder: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(8)),
+                                      borderSide: BorderSide(
+                                          color: Colors.red)),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(8)),
+                                      borderSide: BorderSide(
+                                          color: Colors.red, width: 1)),
+                                  errorStyle: GoogleFonts.openSans(
+                                      fontSize: 10)),
+                              obscureText: false,
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return "Field is required";
+                                }
+                                return null;
+                              },
+                              onChanged: (value) {
+                                valueKomplainStr = value;
+                              },
                             ),
                           ),
 
-                          SizedBox(height: 4),
-
-                          Container(
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                //posisi
-                                mainAxisSize: MainAxisSize.min,
-                                // untuk mengatur agar widget column mengikuti widget
-                                children: <Widget>[
-                                  Text(
-                                    _namaAlatController.text,
-                                    style: GoogleFonts.openSans(
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  Text(
-                                    _lokasiController.text,
-                                    style: GoogleFonts.openSans(
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 12,
-                                        color: Colors.black.withOpacity(0.25)),
-                                  ),
-                                  Text(
-                                    _divisiController.text,
-                                    style: GoogleFonts.openSans(
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w300,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ]),
-                          ),
-
-                          SizedBox(height: 16),
-
-                          Center(
-                            child: Text(
-                              "--- Identitas Diri ---",
-                              style: GoogleFonts.openSans(
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                                color: Colors.black.withOpacity(0.25),
-                              ),
-                            ),
-                          ),
-
-                          SizedBox(height: 4),
-
-                          Container(
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                //posisi
-                                mainAxisSize: MainAxisSize.min,
-                                // untuk mengatur agar widget column mengikuti widget
-                                children: <Widget>[
-                                  Text(
-                                    name,
-                                    style: GoogleFonts.openSans(
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  Text(
-                                    role,
-                                    style: GoogleFonts.openSans(
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 12,
-                                        color: Colors.black.withOpacity(0.5)),
-                                  ),
-                                ]),
-                          ),
-
-                          SizedBox(height: 16),
-
-                          Center(
-                            child: Text(
-                              "--- Laporan ---",
-                              style: GoogleFonts.openSans(
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                                color: Colors.black.withOpacity(0.25),
-                              ),
-                            ),
-                          ),
-
-                          SizedBox(height: 4),
-
-                          Container(
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                //posisi
-                                mainAxisSize: MainAxisSize.min,
-                                // untuk mengatur agar widget column mengikuti widget
-                                children: <Widget>[
-                                  Text(
-                                    _dateController.text =
-                                        formattedDate,
-                                    style: GoogleFonts.openSans(
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-
-                                  Text(_timeController.text =
-                                  "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}"
-                                  ),
-
-                                  //LAPORAN KERUSAKAN
-                                  Container(
-                                    child: TextFormField(
-                                      cursorColor: Colors.black,
-                                      style: GoogleFonts.openSans(fontSize: 12),
-                                      maxLines: null,
-                                      controller: _laporanController,
-                                      decoration: new InputDecoration(
-                                          fillColor: Colors.white,
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(8)),
-                                          ),
-                                          enabledBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(8)),
-                                              borderSide: BorderSide(
-                                                  color: Color(0xFF000000)
-                                                      .withOpacity(0.15))),
-                                          focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(8)),
-                                              borderSide: BorderSide(
-                                                  color: Color(0xFF031F4B))),
-                                          filled: false,
-                                          contentPadding: EdgeInsets.only(
-                                              left: 24.0, right: 24.0),
-                                          hintStyle: GoogleFonts.openSans(
-                                              fontSize: 12,
-                                              color: Color(0xFF000000)
-                                                  .withOpacity(0.15)),
-                                          hintText: "Komplain Kerusakan",
-                                          errorBorder: OutlineInputBorder(
-                                              borderRadius:
-                                              BorderRadius.all(Radius.circular(8)),
-                                              borderSide: BorderSide(color: Colors.red)),
-                                          focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(8)), borderSide: BorderSide(color: Colors.red, width: 1)),
-                                          errorStyle: GoogleFonts.openSans(fontSize: 10)),
-                                      obscureText: false,
-                                      validator: (value) {
-                                        if (value.isEmpty) {
-                                          return "Field is required";
-                                        }
-                                        return null;
-                                      },
-                                      onSaved: (value) {},
-                                    ),
-                                  ),
-                                  Text(
-                                    "Ini nanti dikasih gambar",
-                                    style: GoogleFonts.openSans(
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ]),
-                          ),
-
-                          SizedBox(height: 16),
 
                           //Button
                           Align(
@@ -536,6 +418,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                         ],
                       ),
                     ),
+
                     //Icon Close
                     Positioned(
                       right: 0.0,
@@ -838,7 +721,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                           text: "Daftar Barang",
                         ),
                         Tab(
-                          text: "Laporan",
+                          text: "List Komplain",
                         ),
                       ],
                     ),
@@ -921,62 +804,62 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
     DataSnapshot snapshot = await _ref.child(barangKey).once();
 
     Map barang = snapshot.value;
+    String nama, lokasi, divisi, komplain;
 
-    _namaAlatController.text = barang['nama'];
-    _lokasiController.text = barang['letak'];
-    _divisiController.text = barang['divisi'];
-    _uploadedFileURL.text = barang['imageURL'];
+    nama = barang['nama'];
+    lokasi = barang['letak'];
+    divisi = barang['divisi'];
   }
 
-  updateKomplain({String barangKey}) {
-    String namaPelapor = name;
-    String laporan = _laporanController.text;
-    String status = 'Rusak';
-    String date = _dateController.text;
-    String time = _timeController.text;
-    String namaAlat = _namaAlatController.text;
+  updateKomplain({String barangKey}) async {
+    DateTime now = DateTime.now();
+    DateFormat format = new DateFormat("EEEE, d LLLL yyyy", "id_ID");
+    String formattedDate = format.format(now);
+
+    DataSnapshot snapshot = await _ref.child(barangKey).once();
+
+    Map barang = snapshot.value;
+    String nama, lokasi, divisi, komplain, status;
+
+    nama = barang['nama'];
+    lokasi = barang['letak'];
+    divisi = barang['divisi'];
+    status = barang['status'];
+
 
     Map<String, String> report = {
-      'namaPelapor': namaPelapor,
-      'nama': namaAlat,
-      'laporan': laporan,
-      'date': date,
-      'time': time,
+      'namaPelapor': name,
+      'nama': nama,
+      'komplain': valueKomplainStr,
+      'date': formattedDate,
+      'time': "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
       'status': status,
     };
 
-    Map<String, String> barang = {
-      'status': status,
-    };
-
-    _repref.child(barangKey).set(report).then((value) {
-      _namaAlatController.clear();
-      _lokasiController.clear();
-      _divisiController.clear();
-      valueDivisi = null;
-      _uploadedFileURL.clear();
+    _ref
+        .child(barangKey)
+        .child("komplain")
+        .push()
+        .set(report)
+        .then((value) {
+          resetAndClose();
+      SnackBar snackbar = SnackBar(
+          content:
+          Text('Komplain Tersampaikan'));
+      scaffoldKey.currentState
+          .showSnackBar(snackbar);
     });
 
-    _ref.child(barangKey).update(barang).then((value) {
-      Navigator.pop(context);
-      _laporanController.clear();
-      _dateController.clear();
-    });
   }
 
-  resetAndClose(){
-    _namaAlatController.clear();
-    _lokasiController.clear();
-    _divisiController.clear();
-    valueDivisi = null;
-    _uploadedFileURL.clear();
-    _laporanController.clear();
-    _dateController.clear();
+  resetAndClose() {
     Navigator.pop(context);
   }
 
   Color getStatusColor(String status) {
-    Color color = Theme.of(context).accentColor;
+    Color color = Theme
+        .of(context)
+        .accentColor;
 
     if (status == 'Normal') {
       color = Color(0xFF628C57);
