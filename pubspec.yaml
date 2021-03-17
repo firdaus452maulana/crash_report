@@ -83,6 +83,7 @@ flutter:
     - assets/in2.png
     - assets/nomadev.jpg
     - assets/NomaDev.png
+    - assets/NomaDev2.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
