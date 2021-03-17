@@ -828,6 +828,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
 
 
     Map<String, String> report = {
+      'uid' : uid,
       'namaPelapor': name,
       'nama': nama,
       'komplain': valueKomplainStr,
@@ -836,7 +837,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
       'status': status,
     };
 
-    _ref
+    _compref
         .child(barangKey)
         .child("komplain")
         .push()
