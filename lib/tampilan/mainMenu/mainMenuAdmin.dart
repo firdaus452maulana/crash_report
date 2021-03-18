@@ -322,34 +322,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                       ),
                                     ),
                                   ),
-                                  Expanded(
-                                    child: Container(
-                                      //color: Colors.red,
-                                      alignment: Alignment.centerRight,
-                                      child: RaisedButton(
-                                        color: Color(0xFF031F4B),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(30)),
-                                        textColor: Colors.white,
-                                        child: Container(
-                                          width: 85,
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            "Lapor",
-                                            style: GoogleFonts.openSans(
-                                              fontSize: 12,
-                                              fontStyle: FontStyle.normal,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                        onPressed: () {
-                                          _showDialogLaporan(barang['key']);
-                                        },
-                                      ),
-                                    ),
-                                  ),
+
                                 ],
                               ),
                             ),
@@ -367,7 +340,8 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
   }
 
   //LIST KOMPLAIN
-  Widget _buildListKomplain({Map komplain, final theme}) {
+  Widget _buildListKomplain({Map barang, final theme}) {
+    List<String> uidPekomplain = <String>[];
     if (_compref.onValue == null){
       return Text("KOSONG");
     } else {
@@ -404,7 +378,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                     // untuk mengatur agar widget column mengikuti widget
                     children: <Widget>[
                       Text(
-                        komplain['nama'],
+                        barang['nama'],
                         style: GoogleFonts.openSans(
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w700,
@@ -413,7 +387,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                         ),
                       ),
                       Text(
-                        komplain['letak'],
+                        barang['letak'],
                         style: GoogleFonts.openSans(
                             fontStyle: FontStyle.normal,
                             fontWeight: FontWeight.normal,
@@ -421,7 +395,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                             color: Colors.black.withOpacity(0.25)),
                       ),
                       Text(
-                        komplain['divisi'],
+                        barang['divisi'],
                         style: GoogleFonts.openSans(
                           fontStyle: FontStyle.normal,
                           fontWeight: FontWeight.w300,
@@ -433,17 +407,19 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                   ),
                 ),
                 children: <Widget>[
-                  Container(
-                    height: 150,
-                    child: Expanded(
+                  Column(
+                    children: [
+                      Container(
+                        height: 150,
                         child: FirebaseAnimatedList(
-                          query: _compref.child(komplain['key']).child('komplain').orderByChild('note'),
+                          query: _compref.child(barang['key']).child('komplain').orderByChild('note'),
                           itemBuilder: (BuildContext context,
                               DataSnapshot snapshot,
                               Animation<double> animation,
                               int index) {
                             Map komplain = snapshot.value;
                             komplain['key'] = snapshot.key;
+                            uidPekomplain.add(komplain['uidPekomplain']);
                             return Container(
                               child: Container(
                                   margin: EdgeInsets.only(left: 16, right: 16),
@@ -464,11 +440,12 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                     child: ExpansionTile(
                                       tilePadding: EdgeInsets.all(0),
                                       childrenPadding: EdgeInsets.all(0),
+                                      trailing: Text(""),
                                       title: Container(
                                         width: double.infinity,
                                         //color: Colors.green,
                                         margin: EdgeInsets.only(
-                                            left: 24, top: 16, bottom: 16, right: 72),
+                                            left: 24, top: 4, bottom: 4, right: 72),
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.stretch,
                                           //posisi
@@ -537,7 +514,36 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                             );
                           },
                         ),
-                    ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 8, bottom: 8, right: 8),
+                        //height: 40,
+                        //color: Colors.red,
+                        alignment: Alignment.centerRight,
+                        child: RaisedButton(
+                          color: Color(0xFF031F4B),
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                              BorderRadius.circular(30)),
+                          textColor: Colors.white,
+                          child: Container(
+                            width: 85,
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Lapor",
+                              style: GoogleFonts.openSans(
+                                fontSize: 12,
+                                fontStyle: FontStyle.normal,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          onPressed: () {
+                            _showDialogLaporan(barang['key'], uidPekomplain);
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -964,7 +970,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
   }
 
   //DIALOG ADD LAPORAN
-  Widget _showDialogLaporan(String barangKey) {
+  Widget _showDialogLaporan(String barangKey, List uidPekomplain) {
     getBarangDetail(barangKey: barangKey);
 
     DateTime now = DateTime.now();
@@ -1179,14 +1185,6 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                       ),
                                     ),
                                   ),
-                                  Text(
-                                    "Ini nanti dikasih gambar",
-                                    style: GoogleFonts.openSans(
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 12,
-                                    ),
-                                  ),
                                 ]),
                           ),
 
@@ -1213,7 +1211,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                 ),
                               ),
                               onPressed: () {
-                                updateReport(barangKey: barangKey);
+                                updateReport(barangKey: barangKey, uidPekomplain: uidPekomplain);
                               },
                             ),
                           ),
@@ -1845,7 +1843,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                   Map komplain = snapshot.value;
                                   komplain['key'] = snapshot.key;
                                   return _buildListKomplain(
-                                      komplain: komplain, theme: theme);
+                                      barang: komplain, theme: theme);
                                 },
                               ),
                             ),
@@ -1957,7 +1955,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
     });
   }
 
-  updateReport({String barangKey}) {
+  updateReport({String barangKey, List uidPekomplain}) {
     String namaPelapor = name;
     String laporan = _laporanController.text;
     String status = 'Rusak';
@@ -1985,6 +1983,17 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
     Map<String, String> barang = {
       'status': status,
     };
+
+    _compref.child(barangKey).remove();
+
+    for (int index = 0; index < uidPekomplain.length; index++){
+      FirebaseDatabase.instance.reference()
+          .child('listKomplainPegawai')
+          .child(uidPekomplain[index])
+          .child('komplain')
+          .child(barangKey)
+          .remove();
+    }
 
     _repref.child(barangKey).set(report).then((value) {
       _namaAlatController.clear();

@@ -185,6 +185,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                                 fontStyle: FontStyle.normal,
                                 fontWeight: FontWeight.w700,
                                 fontSize: 16,
+                                color: Colors.black,
                               ),
                             ),
                             Text(
@@ -201,6 +202,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                                 fontStyle: FontStyle.normal,
                                 fontWeight: FontWeight.w300,
                                 fontSize: 12,
+                                color: Colors.black,
                               ),
                             ),
                           ],
@@ -214,21 +216,21 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                       child: Column(
                         children: <Widget>[
                           Container(
-                              //color: Colors.grey[200],
+                            //color: Colors.grey[200],
                               margin: EdgeInsets.only(bottom: 24.0),
                               child: (barang['image'] == "")
                                   ? Text(
-                                      "Belum Ada Gambar yang Ditampilkan",
-                                      style: GoogleFonts.openSans(
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 12,
-                                      ),
-                                    )
+                                "Belum Ada Gambar yang Ditampilkan",
+                                style: GoogleFonts.openSans(
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 12,
+                                ),
+                              )
                                   : _viewImage(barang['key'])
-                              // _viewImage(barang['key']),
-                              // new Image.network(barang['imageURL']),
-                              ),
+                            // _viewImage(barang['key']),
+                            // new Image.network(barang['imageURL']),
+                          ),
                           Container(
                             width: double.infinity,
                             //color: Colors.green,
@@ -245,7 +247,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                                       color: Color(0xFF031F4B),
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(30)),
+                                          BorderRadius.circular(30)),
                                       textColor: Colors.white,
                                       child: Container(
                                         width: 85,
@@ -288,7 +290,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
         builder: (context) {
           return Dialog(
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             child: Container(
               padding: EdgeInsets.all(24),
               child: SingleChildScrollView(
@@ -296,7 +298,8 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                   children: <Widget>[
                     Container(
                       padding: EdgeInsets.only(
-                          top: 16, bottom: 16, left: 8, right: 8),
+                          top: 16, bottom: 8, left: 8, right: 8),
+                      margin: EdgeInsets.only(bottom: 4),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         //posisi
@@ -305,13 +308,13 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                         children: <Widget>[
                           Container(
                               child: Text(
-                            "Komplain Kerusakan",
-                            style: GoogleFonts.openSans(
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-                          )),
+                                "Komplain Kerusakan",
+                                style: GoogleFonts.openSans(
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              )),
                           SizedBox(height: 16),
 
                           Container(
@@ -324,39 +327,39 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                                   fillColor: Colors.white,
                                   border: OutlineInputBorder(
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(8)),
+                                    BorderRadius.all(Radius.circular(8)),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                       borderRadius:
-                                          BorderRadius.all(Radius.circular(8)),
+                                      BorderRadius.all(Radius.circular(8)),
                                       borderSide: BorderSide(
                                           color: Color(0xFF000000)
                                               .withOpacity(0.15))),
                                   focusedBorder: OutlineInputBorder(
                                       borderRadius:
-                                          BorderRadius.all(Radius.circular(8)),
+                                      BorderRadius.all(Radius.circular(8)),
                                       borderSide:
-                                          BorderSide(color: Color(0xFF031F4B))),
+                                      BorderSide(color: Color(0xFF031F4B))),
                                   filled: false,
                                   contentPadding:
-                                      EdgeInsets.only(left: 24.0, right: 24.0),
+                                  EdgeInsets.only(left: 24.0, right: 24.0, top: 12.0, bottom: 12.0),
                                   hintStyle: GoogleFonts.openSans(
                                       fontSize: 12,
                                       color:
-                                          Color(0xFF000000).withOpacity(0.15)),
+                                      Color(0xFF000000).withOpacity(0.15)),
                                   hintText: "Komplain Kerusakan",
                                   errorBorder: OutlineInputBorder(
                                       borderRadius:
-                                          BorderRadius.all(Radius.circular(8)),
+                                      BorderRadius.all(Radius.circular(8)),
                                       borderSide:
-                                          BorderSide(color: Colors.red)),
+                                      BorderSide(color: Colors.red)),
                                   focusedErrorBorder: OutlineInputBorder(
                                       borderRadius:
-                                          BorderRadius.all(Radius.circular(8)),
+                                      BorderRadius.all(Radius.circular(8)),
                                       borderSide: BorderSide(
                                           color: Colors.red, width: 1)),
                                   errorStyle:
-                                      GoogleFonts.openSans(fontSize: 10)),
+                                  GoogleFonts.openSans(fontSize: 10)),
                               obscureText: false,
                               validator: (value) {
                                 if (value.isEmpty) {
@@ -371,7 +374,8 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                           ),
 
                           //Button
-                          Align(
+                          Container(
+                            margin: EdgeInsets.only(top: 12),
                             alignment: Alignment.centerRight,
                             child: RaisedButton(
                               color: Color(0xFF031F4B),
@@ -829,7 +833,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
         'note': valueKomplainStr,
         'date': formattedDate,
         'time':
-            "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
+        "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
       });
       _comprefAdmin.child(barangKey).set({
         'komplain': "",
@@ -855,7 +859,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
         'note': valueKomplainStr,
         'date': formattedDate,
         'time':
-            "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
+        "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
       });
       _comprefAdmin.child(barangKey).set({
         'komplain': "",

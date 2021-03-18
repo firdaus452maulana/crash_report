@@ -179,11 +179,21 @@ class _loginPageState extends State<loginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Image.asset(
-                        'assets/logo_perang.png',
+                        'assets/logo_perang_only.png',
                         scale: 16,
                       ),
+
                       SizedBox(
                         height: 28,
+                      ),
+                      Text(
+                          'S I A P',
+                          style: GoogleFonts.montserrat(
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            color: Color(0xFF031F4B),
+                          )
                       ),
                       Container(
                         child: Container(
