@@ -39,7 +39,7 @@ class _aboutUsPageState extends State<aboutUsPage> {
               children: [
                 Container(
                   child: Text(
-                    'SiAPP',
+                    'SIAP',
                     style: GoogleFonts.openSans(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

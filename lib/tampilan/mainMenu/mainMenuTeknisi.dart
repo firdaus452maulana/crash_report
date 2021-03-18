@@ -31,8 +31,8 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
   String name = '';
   String role = '';
   File image;
-  Map<dynamic, dynamic> isiLaporan;
-  String isiLaporanStr;
+  Map<dynamic, dynamic> isiLaporan, isiBarang;
+  String isiLaporanStr, isiBarangStr;
   bool _isButtonEnabled;
 
   @override
@@ -57,6 +57,7 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
     _ambilPreference();
     _indogs();
     _cekIsiLaporan();
+    _cekIsiBarang();
   }
 
   Future<void> _indogs() async {
@@ -80,6 +81,25 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
           'isPerbaikan': 'true',
         });
 
+      }
+    });
+  }
+
+  _cekIsiBarang() {
+    _listBarangRef.once().then((value) {
+      isiBarang = value.value;
+      isiBarangStr = isiLaporan.toString();
+      print("isi barang: " + isiBarangStr.toString());
+      if (isiBarang == null) {
+        FirebaseDatabase.instance
+            .reference()
+            .child('trigger')
+            .update({'adaBarang': 'false'});
+      } else {
+        FirebaseDatabase.instance
+            .reference()
+            .child('trigger')
+            .update({'adaBarang': 'true'});
       }
     });
   }
@@ -416,11 +436,6 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                       animationCurve: Curves.fastOutSlowIn,
                       animationDuration: Duration(milliseconds: 2000)),
                 ),
-                Container(
-                  height: 1,
-                  width: MediaQuery.of(context).size.width,
-                  color: Color(0xFF031F4B),
-                )
               ],
             );
           } else {
@@ -914,24 +929,56 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                                 //physics: NeverScrollableScrollPhysics(),
                                 children: [
                                   // TAB VIEW LIST BARANG
-                                  MediaQuery.removePadding(
-                                    context: context,
-                                    removeTop: true,
-                                    child: CupertinoScrollbar(
-                                      controller: _scrollController,
-                                      child: FirebaseAnimatedList(
-                                        query: _queryBarang,
-                                        itemBuilder: (BuildContext context,
-                                            DataSnapshot snapshot,
-                                            Animation<double> animation,
-                                            int index) {
-                                          Map barang = snapshot.value;
-                                          barang['key'] = snapshot.key;
-                                          return _buildListBarang(
-                                              barang: barang, theme: theme);
-                                        },
-                                      ),
-                                    ),
+                                  StreamBuilder(
+                                    stream: FirebaseDatabase.instance
+                                        .reference()
+                                        .child('trigger')
+                                        .onValue,
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<Event> snapshot) {
+                                      if (snapshot.hasData) {
+                                        _cekIsiBarang();
+                                        Map valueTrigger =
+                                            snapshot.data.snapshot.value;
+                                        if (valueTrigger['adaBarang'] !=
+                                            "false") {
+                                          _cekIsiBarang();
+                                          return MediaQuery.removePadding(
+                                            context: context,
+                                            removeTop: true,
+                                            child: CupertinoScrollbar(
+                                              controller: _scrollController,
+                                              child: FirebaseAnimatedList(
+                                                query: _queryBarang,
+                                                itemBuilder: (BuildContext context,
+                                                    DataSnapshot snapshot,
+                                                    Animation<double> animation,
+                                                    int index) {
+                                                  Map barang = snapshot.value;
+                                                  barang['key'] = snapshot.key;
+                                                  return _buildListBarang(
+                                                      barang: barang, theme: theme);
+                                                },
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          _cekIsiBarang();
+                                          return MediaQuery.removePadding(
+                                            context: context,
+                                            removeTop: true,
+                                            child: CupertinoScrollbar(
+                                                controller: _scrollController,
+                                                child: Center(
+
+                                                  child: Text("Belum ada barang", style: GoogleFonts.openSans(fontWeight: FontWeight.bold, color: Colors.black.withOpacity(0.25)),),
+                                                )),
+                                          );
+                                        }
+                                      } else {
+                                        return Container();
+                                      }
+                                    },
                                   ),
 
                                   // TAB VIEW LIST LAPORAN

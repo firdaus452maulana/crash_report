@@ -69,8 +69,8 @@ class _sideBarState extends State<sideBar> {
                     padding:
                         EdgeInsets.only(left: 8, right: 8, top: 24, bottom: 16),
                     child: Text(
-                      "SiAPP",
-                      style: GoogleFonts.openSans(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 30),
+                      "SIAP",
+                      style: GoogleFonts.openSans(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 30),
                     ),
                   ),
                   Container(
@@ -104,7 +104,7 @@ class _sideBarState extends State<sideBar> {
                       size: 16,
                     ),
                     label: Text(
-                      "Contact Dev Team",
+                      "Hubungi Tim Pengembang",
                       style: GoogleFonts.openSans(color: Colors.white, fontSize: 12),
                     ),
                     onPressed: () {
