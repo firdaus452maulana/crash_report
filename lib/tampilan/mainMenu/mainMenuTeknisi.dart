@@ -33,10 +33,12 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
   File image;
   Map<dynamic, dynamic> isiLaporan;
   String isiLaporanStr;
+  bool _isButtonEnabled;
 
   @override
   void initState() {
     super.initState();
+    _isButtonEnabled = true;
     _tabController = TabController(vsync: this, length: 2);
     _scrollController = ScrollController();
     _listLaporanRef =
@@ -61,6 +63,27 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
     await initializeDateFormatting('id_ID', null);
   }
 
+  _cekStatusBarang(String barangKey) {
+    _listLaporanRef.child(barangKey).once().then((value) {
+      Map isiLaporan = value.value;
+      print("cekStatusBarang: " +
+          barangKey +
+          " " +
+          isiLaporan['status'].toString());
+      if (isiLaporan['status'].toString() != "Dalam Perbaikan") {
+        _listLaporanRef.child(barangKey).update({
+          'isPerbaikan': 'false',
+        });
+
+      } else {
+        _listLaporanRef.child(barangKey).update({
+          'isPerbaikan': 'true',
+        });
+
+      }
+    });
+  }
+
   _cekIsiLaporan() {
     _listLaporanRef.once().then((value) {
       isiLaporan = value.value;
@@ -81,6 +104,7 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
   }
 
   Widget _kerjakanLaporan(String barangKey) {
+    //_cekStatusBarang(barangKey);
     return StreamBuilder(
       stream: _listLaporanRef.child(barangKey).onValue,
       builder: (context, AsyncSnapshot<Event> snapshot) {
@@ -103,10 +127,16 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                         fontSize: 12, fontWeight: FontWeight.bold),
                   ),
                   onPressed: () {
-                    print("bool: " + laporan.toString());
+                    //print("bool: " + laporan.toString());
                     _listLaporanRef.child(barangKey).update({
+                      'status': 'Dalam Perbaikan',
                       'kerjakan': 'true',
+                      'isPerbaikan': 'true',
                     });
+                    _listBarangRef.child(barangKey).update({
+                      'status': 'Dalam Perbaikan',
+                    });
+                    _cekStatusBarang(barangKey);
                   },
                 ),
               );
@@ -184,6 +214,7 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                           setState(() {
                             valueStatus = newValue;
                             _updateStatus(barangKey: barangKey);
+                            _cekStatusBarang(barangKey);
                           });
                         },
                         items: divisi.map((valueItem) {
@@ -214,13 +245,11 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                                 fontSize: 12, fontWeight: FontWeight.bold),
                           ),
                         ),
-                        onPressed: () {
-                          _showDialogSave(
-                              barangKey: barangKey,
-                              nama: laporan['nama'],
-                              date: laporan['date'],
-                              time: laporan['time']);
-                        },
+                        onPressed: laporan['isPerbaikan'] != 'true' ? () => _showDialogSave(
+                            barangKey: barangKey,
+                            nama: laporan['nama'],
+                            date: laporan['date'],
+                            time: laporan['time']) : null,
                       ),
                     ),
                     //Text("TRUE"),
@@ -949,7 +978,8 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                                             child: CupertinoScrollbar(
                                                 controller: _scrollController,
                                                 child: Center(
-                                                  child: Text("KOSONG"),
+
+                                                  child: Text("Belum ada laporan", style: GoogleFonts.openSans(fontWeight: FontWeight.bold, color: Colors.black.withOpacity(0.25)),),
                                                 )),
                                           );
                                         }

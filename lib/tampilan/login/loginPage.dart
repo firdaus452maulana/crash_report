@@ -135,7 +135,7 @@ class _loginPageState extends State<loginPage> {
   // TOAST LOGIN BERHASIL
   void showToastSignInSuccess() {
     Fluttertoast.showToast(
-        msg: 'Sign In Success',
+        msg: 'Login Berhasil',
         fontSize: 12,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
@@ -209,14 +209,20 @@ class _loginPageState extends State<loginPage> {
                                 child: Form(
                                   key: _formKey,
                                   child: Container(
+                                    //color: Colors.yellow,
                                     padding: EdgeInsets.only(right: 16),
                                     child: Column(
                                       children: [
-                                        Text(
-                                          "Sign In",
-                                          style: GoogleFonts.openSans(
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.bold),
+                                        Container(
+                                          //color: Colors.red,
+                                          alignment: Alignment.centerLeft,
+                                          margin: EdgeInsets.only(left: 15,top: 10),
+                                          child: Text(
+                                            "Masuk",
+                                            style: GoogleFonts.openSans(
+                                                fontSize: 26,
+                                                fontWeight: FontWeight.bold),
+                                          ),
                                         ),
                                         SizedBox(
                                           height: 24,
@@ -224,6 +230,7 @@ class _loginPageState extends State<loginPage> {
 
                                         // EMAIL
                                         Container(
+                                          //color: Colors.blue,
                                           child: TextFormField(
                                             controller: _emailContoller,
                                             cursorColor: Colors.black,
@@ -276,7 +283,7 @@ class _loginPageState extends State<loginPage> {
                                             obscureText: false,
                                             validator: (value) {
                                               if (value.isEmpty) {
-                                                return "Email harus diisi!";
+                                                return "Email harus diisi";
                                               }
                                               return null;
                                             },
@@ -350,7 +357,7 @@ class _loginPageState extends State<loginPage> {
                                                   fontSize: 12,
                                                   color: Color(0xFF000000)
                                                       .withOpacity(0.25)),
-                                              hintText: "password",
+                                              hintText: "kata sandi",
                                               errorBorder: OutlineInputBorder(
                                                   borderRadius:
                                                       BorderRadius.all(
@@ -373,7 +380,7 @@ class _loginPageState extends State<loginPage> {
                                             obscureText: _secureText,
                                             validator: (value) {
                                               if (value.isEmpty) {
-                                                return "Password harus diisi!";
+                                                return "Password harus diisi";
                                               }
                                               return null;
                                             },
@@ -395,7 +402,7 @@ class _loginPageState extends State<loginPage> {
                                               _passwordController.clear();
                                             },
                                             child: Text(
-                                              "Forgot Password?",
+                                              "Lupa Kata Sandi ?",
                                               style: TextStyle(fontSize: 12),
                                             ),
                                           ),
@@ -413,7 +420,7 @@ class _loginPageState extends State<loginPage> {
                                             height: 48,
                                             alignment: Alignment.center,
                                             child: Text(
-                                              "Sign In",
+                                              "Masuk",
                                               style: GoogleFonts.openSans(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.bold),
@@ -423,46 +430,43 @@ class _loginPageState extends State<loginPage> {
                                             _signIn();
                                           },
                                         ),
-
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              "Don't have an account?",
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Color(0xFF000000)
-                                                      .withOpacity(.25)),
-                                            ),
-                                            SizedBox(width: 4,),
-                                            Container(
-                                              width: 64,
-                                              //color: Colors.red,
-                                              child: FlatButton(
-                                                padding: EdgeInsets.all(0.0),
-                                                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                                splashColor: Colors.transparent,
-                                                highlightColor: Colors.transparent,
-                                                child: Text(
-                                                  "Sign Up",
-                                                  style: GoogleFonts.openSans(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              pilihBagianPage()));
-                                                  _emailContoller.clear();
-                                                  _passwordController.clear();
-                                                },
+                                        Container(
+                                          margin: EdgeInsets.only(top: 30,bottom: 10),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "Belum memiliki akun ?",
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Color(0xFF000000)
+                                                        .withOpacity(.25)),
                                               ),
-                                            ),
-                                          ],
+                                              SizedBox(width: 4,),
+                                              Container(
+                                                //color: Colors.red,
+                                                child: GestureDetector(
+                                                  child: Text(
+                                                    "Daftar",
+                                                    style: GoogleFonts.openSans(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                pilihBagianPage()));
+                                                    _emailContoller.clear();
+                                                    _passwordController.clear();
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),

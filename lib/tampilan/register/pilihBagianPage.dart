@@ -22,23 +22,21 @@ class _pilihBagianPageState extends State<pilihBagianPage> {
                     image: AssetImage('assets/background.png'),
                     fit: BoxFit.fill)),
           ),
-          Center(
-            child: SingleChildScrollView(
-              child: Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.all(32),
+         Container(
+                margin: EdgeInsets.only(left: 32,top:100,right:32,bottom:100),
                 width: double.infinity,
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(17.5)),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       margin: EdgeInsets.only(
-                          top: 24, left: 32, right: 32, bottom: 32),
+                          top: 44, left: 32, right: 32, bottom: 32),
                       child: Text(
                         "Pilih Bagian",
+                        textAlign: TextAlign.left,
                         style: GoogleFonts.openSans(
                             fontSize: 24, fontWeight: FontWeight.bold),
                       ),
@@ -47,28 +45,43 @@ class _pilihBagianPageState extends State<pilihBagianPage> {
                     // PILIH PEGAWAI
                     Container(
                       margin: EdgeInsets.only(
-                          top: 0, left: 32, right: 32, bottom: 32),
+                          top: 0, left: 32, right: 32, bottom: 15),
                       child: RaisedButton(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(17.5)),
                         color: Colors.white,
                         padding: EdgeInsets.all(0),
                         child: Container(
-                          alignment: Alignment.center,
                           width: double.infinity,
-                          height: 144,
+                          height: 100,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(17.5),
-                              image: DecorationImage(
-                                  image: AssetImage('assets/pegawai.jpg'),
-                                  colorFilter: new ColorFilter.mode(
-                                      Colors.white.withOpacity(0.2),
-                                      BlendMode.dstATop),
-                                  fit: BoxFit.fill)),
-                          child: Text(
-                            "Pegawai",
-                            style: GoogleFonts.openSans(
-                                fontSize: 12, fontWeight: FontWeight.bold),
+                            gradient: LinearGradient(
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                              colors: [Color(0xFF031F4B),Color(0xFF031F4B).withOpacity(0.5)]
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(top: 20,left: 20),
+                                child: Text(
+                                  "Pegawai",
+                                  style: GoogleFonts.openSans(
+                                      fontSize: 24, fontWeight: FontWeight.bold,color: Colors.white),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(left: 20),
+                                child: Text(
+                                  "fitur pada user pegawai apa aja",
+                                  style: GoogleFonts.openSans(
+                                      fontSize: 10, fontWeight: FontWeight.w100,color: Colors.white),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         onPressed: () {
@@ -83,28 +96,43 @@ class _pilihBagianPageState extends State<pilihBagianPage> {
                     // PILIH ADMIN
                     Container(
                       margin: EdgeInsets.only(
-                          top: 0, left: 32, right: 32, bottom: 32),
+                          top: 0, left: 32, right: 32, bottom: 15),
                       child: RaisedButton(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(17.5)),
                         color: Colors.white,
                         padding: EdgeInsets.all(0),
                         child: Container(
-                          alignment: Alignment.center,
                           width: double.infinity,
-                          height: 144,
+                          height: 100,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(17.5),
-                              image: DecorationImage(
-                                  image: AssetImage('assets/pegawai.jpg'),
-                                  colorFilter: new ColorFilter.mode(
-                                      Colors.white.withOpacity(0.2),
-                                      BlendMode.dstATop),
-                                  fit: BoxFit.fill)),
-                          child: Text(
-                            "Admin",
-                            style: GoogleFonts.openSans(
-                                fontSize: 12, fontWeight: FontWeight.bold),
+                            borderRadius: BorderRadius.circular(17.5),
+                            gradient: LinearGradient(
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
+                                colors: [Color(0xFF0C4160),Color(0xFF0C4160).withOpacity(0.5)]
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(top: 20,left: 20),
+                                child: Text(
+                                  "Admin",
+                                  style: GoogleFonts.openSans(
+                                      fontSize: 24, fontWeight: FontWeight.bold,color: Colors.white),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(left: 20),
+                                child: Text(
+                                  "fitur pada user admin apa aja",
+                                  style: GoogleFonts.openSans(
+                                      fontSize: 10, fontWeight: FontWeight.w100,color: Colors.white),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         onPressed: () {
@@ -119,28 +147,43 @@ class _pilihBagianPageState extends State<pilihBagianPage> {
                     // PILIH TEKNISI
                     Container(
                       margin: EdgeInsets.only(
-                          top: 0, left: 32, right: 32, bottom: 32),
+                          top: 0, left: 32, right: 32, bottom: 50),
                       child: RaisedButton(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(17.5)),
                         color: Colors.white,
                         padding: EdgeInsets.all(0),
                         child: Container(
-                          alignment: Alignment.center,
                           width: double.infinity,
-                          height: 144,
+                          height: 100,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(17.5),
-                              image: DecorationImage(
-                                  image: AssetImage('assets/teknisi.jpeg'),
-                                  colorFilter: new ColorFilter.mode(
-                                      Colors.white.withOpacity(0.2),
-                                      BlendMode.dstATop),
-                                  fit: BoxFit.fill)),
-                          child: Text(
-                            "Teknisi",
-                            style: GoogleFonts.openSans(
-                                fontSize: 12, fontWeight: FontWeight.bold),
+                            borderRadius: BorderRadius.circular(17.5),
+                            gradient: LinearGradient(
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
+                                colors: [Color(0xFF738FA7),Color(0xFF738FA7).withOpacity(0.5)]
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(top: 20,left: 20),
+                                child: Text(
+                                  "Teknisi",
+                                  style: GoogleFonts.openSans(
+                                      fontSize: 24, fontWeight: FontWeight.bold,color: Colors.white),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(left: 20),
+                                child: Text(
+                                  "fitur pada user teknisi apa aja",
+                                  style: GoogleFonts.openSans(
+                                      fontSize: 10, fontWeight: FontWeight.w100,color: Colors.white),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         onPressed: () {
@@ -155,8 +198,6 @@ class _pilihBagianPageState extends State<pilihBagianPage> {
                   ],
                 ),
               ),
-            ),
-          )
         ],
       ),
     );
