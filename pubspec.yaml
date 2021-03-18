@@ -84,6 +84,9 @@ flutter:
     - assets/nomadev.jpg
     - assets/NomaDev.png
     - assets/NomaDev2.png
+    - assets/color1.png
+    - assets/color2.png
+    - assets/color3.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
