@@ -33,12 +33,10 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
   File image;
   Map<dynamic, dynamic> isiLaporan, isiBarang;
   String isiLaporanStr, isiBarangStr;
-  bool _isButtonEnabled;
 
   @override
   void initState() {
     super.initState();
-    _isButtonEnabled = true;
     _tabController = TabController(vsync: this, length: 2);
     _scrollController = ScrollController();
     _listLaporanRef =
@@ -1025,7 +1023,6 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                                             child: CupertinoScrollbar(
                                                 controller: _scrollController,
                                                 child: Center(
-
                                                   child: Text("Belum ada laporan", style: GoogleFonts.openSans(fontWeight: FontWeight.bold, color: Colors.black.withOpacity(0.25)),),
                                                 )),
                                           );

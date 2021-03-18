@@ -65,7 +65,7 @@ class _aboutUsPageState extends State<aboutUsPage> {
                   margin: EdgeInsets.only(top: 15, right: 40),
                   //color: Colors.yellow,
                   child: Text(
-                    'Sistem Informasi Pelaporan Peralatan (SIAP) merupakan aplikasi yang memudahkan pengguna untuk melaporkan kerusakan peralatan atau inventaris. SIAP menciptakan komunikasi yang efektif antar user sebagai pemilik barang atau inventaris dengan teknisi untuk melakukan pemeliharaan. SIAP merupakan aplikasi yang dibuat tim pengembang NomaDev dan bekerja sama dengan AirNav Indonesia serta Politeknik ELektronika Negeri Surabaya',
+                    'Sistem Informasi Pelaporan Peralatan (SIAP) merupakan aplikasi yang memudahkan pengguna untuk melaporkan kerusakan peralatan atau inventaris. SIAP menciptakan komunikasi yang efektif antar user sebagai pemilik barang atau inventaris dengan teknisi untuk melakukan pemeliharaan. SIAP merupakan aplikasi yang dibuat tim pengembang NomaDev dan bekerja sama dengan AirNav Indonesia serta Politeknik Elektronika Negeri Surabaya.',
                     style: GoogleFonts.openSans(
                         color: Colors.white,
                         fontWeight: FontWeight.w100,

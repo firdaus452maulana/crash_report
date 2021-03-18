@@ -41,6 +41,8 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
   String role = '';
   File image;
   Map barangGlobal;
+  Map<dynamic, dynamic> isiLaporan, isiBarang, isiKomplain;
+  String isiLaporanStr, isiBarangStr, isiKomplainStr;
 
   //
   String _error = 'No Error Dectected';
@@ -74,10 +76,70 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
         .orderByKey();
     _ambilPreference();
     _indogs();
+    _cekIsiBarang();
+    _cekIsiLaporan();
+    _cekIsiKomplain();
   }
 
   Future<void> _indogs() async {
     await initializeDateFormatting('id_ID', null);
+  }
+
+  _cekIsiKomplain() {
+    _compref.once().then((value) {
+      isiKomplain = value.value;
+      isiKomplainStr = isiKomplain.toString();
+      print("isi komplain: " + isiKomplainStr.toString());
+      if (isiKomplain == null) {
+        FirebaseDatabase.instance
+            .reference()
+            .child('trigger')
+            .update({'adaKomplain': 'false'});
+      } else {
+        FirebaseDatabase.instance
+            .reference()
+            .child('trigger')
+            .update({'adaKomplain': 'true'});
+      }
+    });
+  }
+
+  _cekIsiBarang() {
+    _ref.once().then((value) {
+      isiBarang = value.value;
+      isiBarangStr = isiBarang.toString();
+      print("isi barang: " + isiBarangStr.toString());
+      if (isiBarang == null) {
+        FirebaseDatabase.instance
+            .reference()
+            .child('trigger')
+            .update({'adaBarang': 'false'});
+      } else {
+        FirebaseDatabase.instance
+            .reference()
+            .child('trigger')
+            .update({'adaBarang': 'true'});
+      }
+    });
+  }
+
+  _cekIsiLaporan() {
+    _repref.once().then((value) {
+      isiLaporan = value.value;
+      isiLaporanStr = isiLaporan.toString();
+      print("isi laporan: " + isiLaporanStr.toString());
+      if (isiLaporan == null) {
+        FirebaseDatabase.instance
+            .reference()
+            .child('trigger')
+            .update({'adaLaporan': 'false'});
+      } else {
+        FirebaseDatabase.instance
+            .reference()
+            .child('trigger')
+            .update({'adaLaporan': 'true'});
+      }
+    });
   }
 
   //Buat gridViewGambar
@@ -109,7 +171,6 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                       .child(image['key'])
                       .remove();
                   FirebaseStorage.instance.refFromURL(image['URL']).delete();
-
                 });
                 checkImage(barangKey: barangKey);
               },
@@ -123,7 +184,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
   //LIST BARANG
   Widget _buildListBarang({Map barang, final theme}) {
     Color statusColor = getStatusColor(barang['status']);
-    if (_ref.onValue == null){
+    if (_ref.onValue == null) {
       return Text("KOSONG");
     } else {
       return Container(
@@ -336,13 +397,12 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
             )),
       );
     }
-
   }
 
   //LIST KOMPLAIN
   Widget _buildListKomplain({Map barang, final theme}) {
     List<String> uidPekomplain = <String>[];
-    if (_compref.onValue == null){
+    if (_compref.onValue == null) {
       return Text("KOSONG");
     } else {
       return Container(
@@ -412,7 +472,9 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                       Container(
                         height: 150,
                         child: FirebaseAnimatedList(
-                          query: _compref.child(barang['key']).child('komplain').orderByChild('note'),
+                          query: _compref.child(barang['key'])
+                              .child('komplain')
+                              .orderByChild('note'),
                           itemBuilder: (BuildContext context,
                               DataSnapshot snapshot,
                               Animation<double> animation,
@@ -445,9 +507,13 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                         width: double.infinity,
                                         //color: Colors.green,
                                         margin: EdgeInsets.only(
-                                            left: 24, top: 4, bottom: 4, right: 72),
+                                            left: 24,
+                                            top: 4,
+                                            bottom: 4,
+                                            right: 72),
                                         child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                                          crossAxisAlignment: CrossAxisAlignment
+                                              .stretch,
                                           //posisi
                                           mainAxisSize: MainAxisSize.min,
                                           // untuk mengatur agar widget column mengikuti widget
@@ -467,7 +533,8 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                                   fontStyle: FontStyle.normal,
                                                   fontWeight: FontWeight.normal,
                                                   fontSize: 12,
-                                                  color: Colors.black.withOpacity(0.25)),
+                                                  color: Colors.black
+                                                      .withOpacity(0.25)),
                                             ),
                                             Text(
                                               komplain['time'],
@@ -485,10 +552,13 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                         Container(
                                           width: double.infinity,
                                           //color: Colors.cyan,
-                                          margin: EdgeInsets.only(left: 24, bottom: 8, right: 24),
+                                          margin: EdgeInsets.only(
+                                              left: 24, bottom: 8, right: 24),
                                           child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment
+                                                .start,
+                                            crossAxisAlignment: CrossAxisAlignment
+                                                .start,
                                             children: <Widget>[
                                               Text(
                                                 'Komplain',
@@ -503,7 +573,8 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                                 style: GoogleFonts.openSans(
                                                     fontWeight: FontWeight.w300,
                                                     fontSize: 12,
-                                                    color: Colors.black.withOpacity(0.25)),
+                                                    color: Colors.black
+                                                        .withOpacity(0.25)),
                                               ),
                                             ],
                                           ),
@@ -550,7 +621,6 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
             )),
       );
     }
-
   }
 
   //LIST LAPORAN
@@ -868,17 +938,20 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                   EdgeInsets.only(left: 24.0, right: 0),
                                   hintStyle: GoogleFonts.openSans(
                                       fontSize: 12,
-                                      color: Color(0xFF000000).withOpacity(0.25)),
+                                      color: Color(0xFF000000).withOpacity(
+                                          0.25)),
                                   errorBorder: OutlineInputBorder(
                                       borderRadius:
                                       BorderRadius.all(Radius.circular(30)),
-                                      borderSide: BorderSide(color: Colors.red)),
+                                      borderSide: BorderSide(
+                                          color: Colors.red)),
                                   focusedErrorBorder: OutlineInputBorder(
                                       borderRadius:
                                       BorderRadius.all(Radius.circular(30)),
                                       borderSide: BorderSide(
                                           color: Colors.red, width: 1)),
-                                  errorStyle: GoogleFonts.openSans(fontSize: 10)),
+                                  errorStyle: GoogleFonts.openSans(
+                                      fontSize: 10)),
                               hint: Text(
                                 "divisi",
                                 style: GoogleFonts.openSans(
@@ -982,7 +1055,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
         builder: (context) {
           return Dialog(
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             child: Container(
               padding: EdgeInsets.all(24),
               child: SingleChildScrollView(
@@ -999,13 +1072,13 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                         children: <Widget>[
                           Container(
                               child: Text(
-                            "Laporkan Kerusakan",
-                            style: GoogleFonts.openSans(
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-                          )),
+                                "Laporkan Kerusakan",
+                                style: GoogleFonts.openSans(
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              )),
 
                           SizedBox(height: 16),
 
@@ -1132,7 +1205,8 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                   ),
 
                                   Text(_timeController.text =
-                                      "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}"),
+                                  "${now.hour.toString()}:${now.minute
+                                      .toString().padLeft(2, '0')}"),
 
                                   //LAPORAN KERUSAKAN
                                   Container(
@@ -1140,7 +1214,8 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                       key: _formKey,
                                       child: TextFormField(
                                         cursorColor: Colors.black,
-                                        style: GoogleFonts.openSans(fontSize: 12),
+                                        style: GoogleFonts.openSans(
+                                            fontSize: 12),
                                         maxLines: null,
                                         controller: _laporanController,
                                         decoration: new InputDecoration(
@@ -1170,10 +1245,18 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                             hintText: "Laporan Kerusakan",
                                             errorBorder: OutlineInputBorder(
                                                 borderRadius:
-                                                    BorderRadius.all(Radius.circular(8)),
-                                                borderSide: BorderSide(color: Colors.red)),
-                                            focusedErrorBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(8)), borderSide: BorderSide(color: Colors.red, width: 1)),
-                                            errorStyle: GoogleFonts.openSans(fontSize: 10)),
+                                                BorderRadius.all(
+                                                    Radius.circular(8)),
+                                                borderSide: BorderSide(
+                                                    color: Colors.red)),
+                                            focusedErrorBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(8)),
+                                                borderSide: BorderSide(
+                                                    color: Colors.red,
+                                                    width: 1)),
+                                            errorStyle: GoogleFonts.openSans(
+                                                fontSize: 10)),
                                         obscureText: false,
                                         validator: (value) {
                                           if (value.isEmpty) {
@@ -1211,7 +1294,8 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                 ),
                               ),
                               onPressed: () {
-                                updateReport(barangKey: barangKey, uidPekomplain: uidPekomplain);
+                                updateReport(barangKey: barangKey,
+                                    uidPekomplain: uidPekomplain);
                               },
                             ),
                           ),
@@ -1256,7 +1340,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
           return Dialog(
             backgroundColor: Colors.black.withOpacity(0.75),
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(0)),
             child: Container(
               padding: EdgeInsets.all(24),
               child: SingleChildScrollView(
@@ -1272,7 +1356,8 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                         // untuk mengatur agar widget column mengikuti widget
                         children: <Widget>[
                           Text(
-                            "${_namaAlatController.text} akan dihapus secara permanen",
+                            "${_namaAlatController
+                                .text} akan dihapus secara permanen",
                             style: GoogleFonts.openSans(
                               fontStyle: FontStyle.normal,
                               fontWeight: FontWeight.bold,
@@ -1286,14 +1371,14 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                           SizedBox(height: 16),
                           Center(
                               child: Text(
-                            "Apakah Kau Yakin ?",
-                            style: GoogleFonts.openSans(
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 12,
-                              color: Colors.white,
-                            ),
-                          )),
+                                "Apakah Kau Yakin ?",
+                                style: GoogleFonts.openSans(
+                                  fontStyle: FontStyle.normal,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 12,
+                                  color: Colors.white,
+                                ),
+                              )),
                           SizedBox(height: 16),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1538,17 +1623,20 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                   EdgeInsets.only(left: 24.0, right: 0),
                                   hintStyle: GoogleFonts.openSans(
                                       fontSize: 12,
-                                      color: Color(0xFF000000).withOpacity(0.25)),
+                                      color: Color(0xFF000000).withOpacity(
+                                          0.25)),
                                   errorBorder: OutlineInputBorder(
                                       borderRadius:
                                       BorderRadius.all(Radius.circular(30)),
-                                      borderSide: BorderSide(color: Colors.red)),
+                                      borderSide: BorderSide(
+                                          color: Colors.red)),
                                   focusedErrorBorder: OutlineInputBorder(
                                       borderRadius:
                                       BorderRadius.all(Radius.circular(30)),
                                       borderSide: BorderSide(
                                           color: Colors.red, width: 1)),
-                                  errorStyle: GoogleFonts.openSans(fontSize: 10)),
+                                  errorStyle: GoogleFonts.openSans(
+                                      fontSize: 10)),
                               hint: Text(
                                 "divisi",
                                 style: GoogleFonts.openSans(
@@ -1640,9 +1728,12 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
   }
 
   Future<dynamic> postImage(File imageFile) async {
-    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+    String fileName = DateTime
+        .now()
+        .millisecondsSinceEpoch
+        .toString();
     Reference reference =
-        FirebaseStorage.instance.ref().child('fotoBarang/$fileName');
+    FirebaseStorage.instance.ref().child('fotoBarang/$fileName');
     await reference.putFile(imageFile);
     // UploadTask uploadTask = reference.putData((await imageFile.getByteData()).buffer.asUint8List());
     return await reference.getDownloadURL();
@@ -1683,7 +1774,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
               Row(
                 children: [
                   Container(
-                      //color: Colors.red,
+                    //color: Colors.red,
                       margin: EdgeInsets.only(left: 20, top: 36),
                       child: GestureDetector(
                           onTap: () {
@@ -1713,7 +1804,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                 ],
               ),
               Container(
-                margin: EdgeInsets.only(left: 24, right: 24, top: 8),
+                margin: EdgeInsets.only(left: 32, right: 32, top: 24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -1741,135 +1832,272 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                   ],
                 ),
               ),
-            ],
-          ),
 
-          Container(
-            padding: EdgeInsets.all(0),
-            margin: EdgeInsets.only(top: 164, bottom: 24, left: 24, right: 24),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.5),
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(20),
-                topLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
-                bottomLeft: Radius.circular(20),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.25),
-                  spreadRadius: 0,
-                  blurRadius: 20,
-                  offset: Offset(0, 0),
-                )
-              ],
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Column(
-                children: [
-                  Container(
-                    height: 36,
-                    child: TabBar(
-                      controller: _tabController,
-                      isScrollable: false,
-                      labelPadding: EdgeInsets.all(0),
-                      labelColor: Colors.black,
-                      labelStyle: GoogleFonts.openSans(
-                          fontWeight: FontWeight.bold, fontSize: 12),
-                      unselectedLabelStyle: GoogleFonts.openSans(
-                          fontWeight: FontWeight.w400, fontSize: 12),
-                      unselectedLabelColor: Colors.black.withOpacity(0.5),
-                      indicator: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(20),
-                          topLeft: Radius.circular(20),
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.all(0),
+                  margin: EdgeInsets.only(
+                      top: 24, bottom: 28, left: 16, right: 16),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.5),
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20),
+                      topLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                      bottomLeft: Radius.circular(20),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.25),
+                        spreadRadius: 0,
+                        blurRadius: 20,
+                        offset: Offset(0, 0),
+                      )
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 36,
+                          child: TabBar(
+                            controller: _tabController,
+                            isScrollable: false,
+                            labelPadding: EdgeInsets.all(0),
+                            labelColor: Colors.black,
+                            labelStyle: GoogleFonts.openSans(
+                                fontWeight: FontWeight.bold, fontSize: 12),
+                            unselectedLabelStyle: GoogleFonts.openSans(
+                                fontWeight: FontWeight.w400, fontSize: 12),
+                            unselectedLabelColor: Colors.black.withOpacity(0.5),
+                            indicator: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(20),
+                                topLeft: Radius.circular(20),
+                              ),
+                            ),
+                            tabs: <Widget>[
+                              Tab(
+                                text: "List Barang",
+                              ),
+                              Tab(
+                                text: "Komplain",
+                              ),
+                              Tab(
+                                text: "Laporan",
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      tabs: <Widget>[
-                        Tab(
-                          text: "List Barang",
-                        ),
-                        Tab(
-                          text: "Komplain",
-                        ),
-                        Tab(
-                          text: "Laporan",
-                        ),
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(0),
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20),
+                              ),
+                            ),
+                            child: new TabBarView(controller: _tabController,
+                                //physics: NeverScrollableScrollPhysics(),
+                                children: [
+                                  // TAB VIEW LIST BARANG
+                                  StreamBuilder(
+                                    stream: FirebaseDatabase.instance
+                                        .reference()
+                                        .child('trigger')
+                                        .onValue,
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<Event> snapshot) {
+                                      if (snapshot.hasData) {
+                                        _cekIsiBarang();
+                                        Map valueTrigger =
+                                            snapshot.data.snapshot.value;
+                                        if (valueTrigger['adaBarang'] !=
+                                            "false") {
+                                          _cekIsiBarang();
+                                          return MediaQuery.removePadding(
+                                            context: context,
+                                            removeTop: true,
+                                            child: CupertinoScrollbar(
+                                              controller: _scrollController,
+                                              child: FirebaseAnimatedList(
+                                                query: _query,
+                                                itemBuilder: (
+                                                    BuildContext context,
+                                                    DataSnapshot snapshot,
+                                                    Animation<double> animation,
+                                                    int index) {
+                                                  Map barang = snapshot.value;
+                                                  barang['key'] = snapshot.key;
+                                                  return _buildListBarang(
+                                                      barang: barang,
+                                                      theme: theme);
+                                                },
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          _cekIsiBarang();
+                                          return MediaQuery.removePadding(
+                                            context: context,
+                                            removeTop: true,
+                                            child: CupertinoScrollbar(
+                                                controller: _scrollController,
+                                                child: Center(
+                                                  child: Text(
+                                                    "Belum ada barang",
+                                                    style: GoogleFonts.openSans(
+                                                        fontWeight: FontWeight
+                                                            .bold,
+                                                        color: Colors.black
+                                                            .withOpacity(
+                                                            0.25)),),
+                                                )),
+                                          );
+                                        }
+                                      } else {
+                                        return Container();
+                                      }
+                                    },
+                                  ),
+
+                                  // TAB VIEW KOMPLAIN
+                                  StreamBuilder(
+                                    stream: FirebaseDatabase.instance
+                                        .reference()
+                                        .child('trigger')
+                                        .onValue,
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<Event> snapshot) {
+                                      if (snapshot.hasData) {
+                                        _cekIsiKomplain();
+                                        Map valueTrigger =
+                                            snapshot.data.snapshot.value;
+                                        if (valueTrigger['adaKomplain'] !=
+                                            "false") {
+                                          _cekIsiKomplain();
+                                          return MediaQuery.removePadding(
+                                            context: context,
+                                            removeTop: true,
+                                            child: CupertinoScrollbar(
+                                              controller: _scrollController,
+                                              child: FirebaseAnimatedList(
+                                                query: _queryKomplain,
+                                                itemBuilder: (
+                                                    BuildContext context,
+                                                    DataSnapshot snapshot,
+                                                    Animation<double> animation,
+                                                    int index) {
+                                                  Map komplain = snapshot.value;
+                                                  komplain['key'] =
+                                                      snapshot.key;
+                                                  return _buildListKomplain(
+                                                      barang: komplain,
+                                                      theme: theme);
+                                                },
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          _cekIsiKomplain();
+                                          return MediaQuery.removePadding(
+                                            context: context,
+                                            removeTop: true,
+                                            child: CupertinoScrollbar(
+                                                controller: _scrollController,
+                                                child: Center(
+                                                  child: Text(
+                                                    "Belum ada komplain",
+                                                    style: GoogleFonts.openSans(
+                                                        fontWeight: FontWeight
+                                                            .bold,
+                                                        color: Colors.black
+                                                            .withOpacity(
+                                                            0.25)),),
+                                                )),
+                                          );
+                                        }
+                                      } else {
+                                        return Container();
+                                      }
+                                    },
+                                  ),
+
+                                  // TAB VIEW LAPORAN
+                                  StreamBuilder(
+                                    stream: FirebaseDatabase.instance
+                                        .reference()
+                                        .child('trigger')
+                                        .onValue,
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<Event> snapshot) {
+                                      if (snapshot.hasData) {
+                                        _cekIsiLaporan();
+                                        Map valueTrigger =
+                                            snapshot.data.snapshot.value;
+                                        if (valueTrigger['adaLaporan'] !=
+                                            "false") {
+                                          _cekIsiLaporan();
+                                          return MediaQuery.removePadding(
+                                            context: context,
+                                            removeTop: true,
+                                            child: CupertinoScrollbar(
+                                              controller: _scrollController,
+                                              child: FirebaseAnimatedList(
+                                                query: _queryLaporan,
+                                                itemBuilder: (
+                                                    BuildContext context,
+                                                    DataSnapshot snapshot,
+                                                    Animation<double> animation,
+                                                    int index) {
+                                                  Map laporan = snapshot.value;
+                                                  laporan['key'] = snapshot.key;
+                                                  return _buildListLaporan(
+                                                      laporan: laporan,
+                                                      theme: theme);
+                                                },
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          _cekIsiLaporan();
+                                          return MediaQuery.removePadding(
+                                            context: context,
+                                            removeTop: true,
+                                            child: CupertinoScrollbar(
+                                                controller: _scrollController,
+                                                child: Center(
+
+                                                  child: Text(
+                                                    "Belum ada laporan",
+                                                    style: GoogleFonts.openSans(
+                                                        fontWeight: FontWeight
+                                                            .bold,
+                                                        color: Colors.black
+                                                            .withOpacity(
+                                                            0.25)),),
+                                                )),
+                                          );
+                                        }
+                                      } else {
+                                        return Container();
+                                      }
+                                    },
+                                  ),
+
+                                ]),
+                          ),
+                        )
                       ],
                     ),
                   ),
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(0),
-                          bottomLeft: Radius.circular(20),
-                          bottomRight: Radius.circular(20),
-                        ),
-                      ),
-                      child: new TabBarView(controller: _tabController,
-                          //physics: NeverScrollableScrollPhysics(),
-                          children: [
-                            // TAB VIEW LIST BARANG
-                            CupertinoScrollbar(
-                              controller: _scrollController,
-                              child: FirebaseAnimatedList(
-                                query: _query,
-                                itemBuilder: (BuildContext context,
-                                    DataSnapshot snapshot,
-                                    Animation<double> animation,
-                                    int index) {
-                                  Map barang = snapshot.value;
-                                  barang['key'] = snapshot.key;
-                                  return _buildListBarang(
-                                      barang: barang, theme: theme);
-
-                                },
-                              ),
-                            ),
-
-                            // TAB VIEW KOMPLAIN
-                            CupertinoScrollbar(
-                              controller: _scrollController,
-                              child: FirebaseAnimatedList(
-                                query: _queryKomplain,
-                                itemBuilder: (BuildContext context,
-                                    DataSnapshot snapshot,
-                                    Animation<double> animation,
-                                    int index) {
-                                  Map komplain = snapshot.value;
-                                  komplain['key'] = snapshot.key;
-                                  return _buildListKomplain(
-                                      barang: komplain, theme: theme);
-                                },
-                              ),
-                            ),
-
-                            // TAB VIEW LAPORAN
-                            CupertinoScrollbar(
-                              controller: _scrollController,
-                              child: FirebaseAnimatedList(
-                                query: _queryLaporan,
-                                itemBuilder: (BuildContext context,
-                                    DataSnapshot snapshot,
-                                    Animation<double> animation,
-                                    int index) {
-                                  Map laporan = snapshot.value;
-                                  laporan['key'] = snapshot.key;
-                                  return _buildListLaporan(
-                                      laporan: laporan, theme: theme);
-                                },
-                              ),
-                            ),
-                          ]),
-                    ),
-                  )
-                ],
+                ),
               ),
-            ),
+            ],
           ),
         ],
       ),
@@ -1889,10 +2117,9 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
 
     Map barang = snapshot.value;
 
-    if (barang['image'] == null)
-      {
-        _ref.child(barangKey).update({'image' : ""});
-      }
+    if (barang['image'] == null) {
+      _ref.child(barangKey).update({'image': ""});
+    }
   }
 
   getBarangDetail({String barangKey}) async {
@@ -1907,7 +2134,6 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
   }
 
   saveBarang() {
-
     String namaAlat = _namaAlatController.text;
     String lokasi = _lokasiController.text;
     String divisi = valueDivisi;
@@ -1923,7 +2149,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
       'letak': lokasi,
       'divisi': divisi,
       'status': status,
-      'image' : "",
+      'image': "",
     };
 
     _ref.push().set(barang).then((value) {
@@ -1933,7 +2159,6 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
   }
 
   updateBarang(String barangKey) {
-
     String namaAlat = _namaAlatController.text;
     String lokasi = _lokasiController.text;
     String divisi = valueDivisi;
@@ -1986,7 +2211,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
 
     _compref.child(barangKey).remove();
 
-    for (int index = 0; index < uidPekomplain.length; index++){
+    for (int index = 0; index < uidPekomplain.length; index++) {
       FirebaseDatabase.instance.reference()
           .child('listKomplainPegawai')
           .child(uidPekomplain[index])
@@ -2026,7 +2251,9 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
   }
 
   Color getStatusColor(String status) {
-    Color color = Theme.of(context).accentColor;
+    Color color = Theme
+        .of(context)
+        .accentColor;
 
     if (status == 'Normal') {
       color = Color(0xFF628C57);

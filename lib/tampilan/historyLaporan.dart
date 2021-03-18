@@ -205,7 +205,7 @@ class _historyLaporanState extends State<historyLaporan> {
           Container(
             color: Color(0xFF031F4B),
             child: Container(
-              margin: EdgeInsets.only(top: 36, left: 16, right: 16, bottom: 12),
+              margin: EdgeInsets.only(top: 38, left: 16, right: 16, bottom: 12),
               child: Row(
                 children: [
                   Container(

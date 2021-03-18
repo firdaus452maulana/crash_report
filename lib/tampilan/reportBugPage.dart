@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class reportBugPage extends StatefulWidget {
   @override
@@ -13,17 +14,31 @@ class _reportBugPageState extends State<reportBugPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _emailBodyController = TextEditingController();
   String valueEmailBody;
+  String uid = '';
+  String name = '';
+  String role = '';
 
   // INIT STATE
   @override
   void initState() {
     super.initState();
+    _ambilPreference();
+  }
+
+  // AMBIL SHARED PREFERENCES
+  Future<void> _ambilPreference() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      uid = preferences.getString('uid');
+      name = preferences.getString('name');
+      role = preferences.getString('role');
+    });
   }
 
   _sendEmail() async {
     final Email email = Email(
-      body: _emailBodyController.text,
-      subject: 'Contact Perang App Dev',
+      body: "Dari: ${name} (${uid})\n\n${_emailBodyController.text}",
+      subject: 'Hubungi Tim Pengembang',
       recipients: ['perang.airnav@gmail.com'],
     );
 
@@ -73,33 +88,35 @@ class _reportBugPageState extends State<reportBugPage> {
               child: Container(
                 padding: EdgeInsets.all(32),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
+                      margin: EdgeInsets.only(left: 4, right: 4),
                       width: double.infinity,
                       child: Text(
-                        "Contact Dev",
+                        "Hubungi Tim Pengembang",
                         style: GoogleFonts.openSans(
-                            fontWeight: FontWeight.bold, fontSize: 24),
-                        textAlign: TextAlign.center,
+                            fontWeight: FontWeight.bold, fontSize: 32),
+                        textAlign: TextAlign.start,
                       ),
 
                     ),
 
                     SizedBox(
-                      height: 24,
+                      height: 12,
                     ),
 
                     Container(
+                      margin: EdgeInsets.only(left: 4, right: 4),
                       width: double.infinity,
                       child: Text(
-                        "Jangan ragu untuk memberi kritik dan saran\nagar tim developer dapat menjadi lebih baik.",
+                        "Jangan ragu untuk memberi kritik dan saran agar tim developer dapat menjadi lebih baik.",
                         style: GoogleFonts.openSans(color: Colors.black.withOpacity(0.25), fontSize: 12),
-                        textAlign: TextAlign.center,
+                        textAlign: TextAlign.start,
                       ),
                     ),
                     SizedBox(
-                      height: 16,
+                      height: 32,
                     ),
                     Form(
                       key: _formKey,
@@ -137,7 +154,7 @@ class _reportBugPageState extends State<reportBugPage> {
                       ),
                     ),
                     SizedBox(
-                      height: 24,
+                      height: 32,
                     ),
                     RaisedButton(
                       color: Color(0xFF031F4B),
@@ -145,7 +162,6 @@ class _reportBugPageState extends State<reportBugPage> {
                           borderRadius: BorderRadius.circular(30)),
                       textColor: Colors.white,
                       child: Container(
-                        height: 48,
                         alignment: Alignment.center,
                         child: Text(
                           "Kirim",

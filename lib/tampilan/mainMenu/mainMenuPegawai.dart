@@ -35,6 +35,8 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
   File image;
   String valueKomplainStr;
   String komplainNoteKey;
+  Map<dynamic, dynamic> isiBarang, isiKomplain;
+  String isiBarangStr, isiKomplainStr;
 
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -56,10 +58,52 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
         FirebaseDatabase.instance.reference().child('listKomplainAdmin');
     _ambilPreference();
     _indogs();
+    _cekIsiBarang();
+    _cekIsiKomplain();
   }
 
   Future<void> _indogs() async {
     await initializeDateFormatting('id_ID', null);
+  }
+
+  _cekIsiKomplain() {
+    _compref.child(uid).once().then((value) {
+      isiKomplain = value.value;
+      isiKomplainStr = isiKomplain.toString();
+      print("isi komplain: " + isiKomplainStr.toString());
+      if (isiKomplain == null) {
+        FirebaseDatabase.instance
+            .reference()
+            .child('trigger')
+            .child('adaKomplainPegawai')
+            .update({uid: 'false'});
+      } else {
+        FirebaseDatabase.instance
+            .reference()
+            .child('trigger')
+            .child('adaKomplainPegawai')
+            .update({uid: 'true'});
+      }
+    });
+  }
+
+  _cekIsiBarang() {
+    _ref.once().then((value) {
+      isiBarang = value.value;
+      isiBarangStr = isiBarang.toString();
+      print("isi barang: " + isiBarangStr.toString());
+      if (isiBarang == null) {
+        FirebaseDatabase.instance
+            .reference()
+            .child('trigger')
+            .update({'adaBarang': 'false'});
+      } else {
+        FirebaseDatabase.instance
+            .reference()
+            .child('trigger')
+            .update({'adaBarang': 'true'});
+      }
+    });
   }
 
   //BUILD VIEW IMAGE
@@ -216,21 +260,21 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                       child: Column(
                         children: <Widget>[
                           Container(
-                            //color: Colors.grey[200],
+                              //color: Colors.grey[200],
                               margin: EdgeInsets.only(bottom: 24.0),
                               child: (barang['image'] == "")
                                   ? Text(
-                                "Belum Ada Gambar yang Ditampilkan",
-                                style: GoogleFonts.openSans(
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 12,
-                                ),
-                              )
+                                      "Belum Ada Gambar yang Ditampilkan",
+                                      style: GoogleFonts.openSans(
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 12,
+                                      ),
+                                    )
                                   : _viewImage(barang['key'])
-                            // _viewImage(barang['key']),
-                            // new Image.network(barang['imageURL']),
-                          ),
+                              // _viewImage(barang['key']),
+                              // new Image.network(barang['imageURL']),
+                              ),
                           Container(
                             width: double.infinity,
                             //color: Colors.green,
@@ -247,7 +291,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                                       color: Color(0xFF031F4B),
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
-                                          BorderRadius.circular(30)),
+                                              BorderRadius.circular(30)),
                                       textColor: Colors.white,
                                       child: Container(
                                         width: 85,
@@ -290,7 +334,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
         builder: (context) {
           return Dialog(
             shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             child: Container(
               padding: EdgeInsets.all(24),
               child: SingleChildScrollView(
@@ -308,13 +352,13 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                         children: <Widget>[
                           Container(
                               child: Text(
-                                "Komplain Kerusakan",
-                                style: GoogleFonts.openSans(
-                                  fontStyle: FontStyle.normal,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                ),
-                              )),
+                            "Komplain Kerusakan",
+                            style: GoogleFonts.openSans(
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          )),
                           SizedBox(height: 16),
 
                           Container(
@@ -327,39 +371,42 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                                   fillColor: Colors.white,
                                   border: OutlineInputBorder(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(8)),
+                                        BorderRadius.all(Radius.circular(8)),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                       borderRadius:
-                                      BorderRadius.all(Radius.circular(8)),
+                                          BorderRadius.all(Radius.circular(8)),
                                       borderSide: BorderSide(
                                           color: Color(0xFF000000)
                                               .withOpacity(0.15))),
                                   focusedBorder: OutlineInputBorder(
                                       borderRadius:
-                                      BorderRadius.all(Radius.circular(8)),
+                                          BorderRadius.all(Radius.circular(8)),
                                       borderSide:
-                                      BorderSide(color: Color(0xFF031F4B))),
+                                          BorderSide(color: Color(0xFF031F4B))),
                                   filled: false,
-                                  contentPadding:
-                                  EdgeInsets.only(left: 24.0, right: 24.0, top: 12.0, bottom: 12.0),
+                                  contentPadding: EdgeInsets.only(
+                                      left: 24.0,
+                                      right: 24.0,
+                                      top: 12.0,
+                                      bottom: 12.0),
                                   hintStyle: GoogleFonts.openSans(
                                       fontSize: 12,
                                       color:
-                                      Color(0xFF000000).withOpacity(0.15)),
+                                          Color(0xFF000000).withOpacity(0.15)),
                                   hintText: "Komplain Kerusakan",
                                   errorBorder: OutlineInputBorder(
                                       borderRadius:
-                                      BorderRadius.all(Radius.circular(8)),
+                                          BorderRadius.all(Radius.circular(8)),
                                       borderSide:
-                                      BorderSide(color: Colors.red)),
+                                          BorderSide(color: Colors.red)),
                                   focusedErrorBorder: OutlineInputBorder(
                                       borderRadius:
-                                      BorderRadius.all(Radius.circular(8)),
+                                          BorderRadius.all(Radius.circular(8)),
                                       borderSide: BorderSide(
                                           color: Colors.red, width: 1)),
                                   errorStyle:
-                                  GoogleFonts.openSans(fontSize: 10)),
+                                      GoogleFonts.openSans(fontSize: 10)),
                               obscureText: false,
                               validator: (value) {
                                 if (value.isEmpty) {
@@ -620,176 +667,261 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
             height: 256,
             width: double.infinity,
             color: Color(0xFF031F4B),
+          ),
 
-            // SELAMAT DATANG USER
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(
-                    Icons.menu,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    scaffoldKey.currentState.openDrawer();
-                  },
+          // SELAMAT DATANG USER
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                  //color: Colors.red,
+                  margin: EdgeInsets.only(left: 20, top: 36),
+                  child: GestureDetector(
+                      onTap: () {
+                        scaffoldKey.currentState.openDrawer();
+                      },
+                      child: Icon(
+                        Icons.menu,
+                        color: Colors.white,
+                      ))),
+              Container(
+                margin: EdgeInsets.only(left: 32, right: 32, top: 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Selamat Datang,",
+                      style: GoogleFonts.openSans(
+                          color: Color(0xFF949090),
+                          fontWeight: FontWeight.w300,
+                          fontSize: 16),
+                    ),
+                    Text(
+                      name,
+                      style: GoogleFonts.openSans(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
+                    ),
+                    Text(
+                      role,
+                      style: GoogleFonts.openSans(
+                          color: Color(0xFFADABAB),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14),
+                    ),
+                  ],
                 ),
-                Container(
-                  margin: EdgeInsets.only(left: 24, right: 24, top: 8),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Selamat Datang,",
-                        style: GoogleFonts.openSans(
-                            color: Color(0xFF949090),
-                            fontWeight: FontWeight.w300,
-                            fontSize: 16),
-                      ),
-                      Text(
-                        name,
-                        style: GoogleFonts.openSans(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
-                      ),
-                      Text(
-                        role,
-                        style: GoogleFonts.openSans(
-                            color: Color(0xFFADABAB),
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14),
-                      ),
+              ),
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.all(0),
+                  margin:
+                      EdgeInsets.only(top: 24, bottom: 28, left: 16, right: 16),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.5),
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20),
+                      topLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                      bottomLeft: Radius.circular(20),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.25),
+                        spreadRadius: 0,
+                        blurRadius: 20,
+                        offset: Offset(0, 0),
+                      )
                     ],
                   ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.all(0),
-            margin: EdgeInsets.only(top: 164, bottom: 24, left: 24, right: 24),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.5),
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(20),
-                topLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
-                bottomLeft: Radius.circular(20),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.25),
-                  spreadRadius: 0,
-                  blurRadius: 20,
-                  offset: Offset(0, 0),
-                )
-              ],
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Column(
-                children: [
-                  Container(
-                    height: 36,
-                    child: TabBar(
-                      controller: _tabController,
-                      isScrollable: false,
-                      labelPadding: EdgeInsets.all(0),
-                      labelColor: Colors.black,
-                      labelStyle: GoogleFonts.openSans(
-                          fontWeight: FontWeight.bold, fontSize: 12),
-                      unselectedLabelStyle: GoogleFonts.openSans(
-                          fontWeight: FontWeight.w400, fontSize: 12),
-                      unselectedLabelColor: Colors.black.withOpacity(0.5),
-                      indicator: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(20),
-                          topLeft: Radius.circular(20),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 36,
+                          child: TabBar(
+                            controller: _tabController,
+                            isScrollable: false,
+                            labelPadding: EdgeInsets.all(0),
+                            labelColor: Colors.black,
+                            labelStyle: GoogleFonts.openSans(
+                                fontWeight: FontWeight.bold, fontSize: 12),
+                            unselectedLabelStyle: GoogleFonts.openSans(
+                                fontWeight: FontWeight.w400, fontSize: 12),
+                            unselectedLabelColor: Colors.black.withOpacity(0.5),
+                            indicator: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(20),
+                                topLeft: Radius.circular(20),
+                              ),
+                            ),
+                            tabs: <Widget>[
+                              Tab(
+                                text: "Daftar Barang",
+                              ),
+                              Tab(
+                                text: "List Komplain",
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      tabs: <Widget>[
-                        Tab(
-                          text: "Daftar Barang",
-                        ),
-                        Tab(
-                          text: "List Komplain",
-                        ),
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(0),
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20),
+                              ),
+                            ),
+                            child: new TabBarView(controller: _tabController,
+                                //physics: NeverScrollableScrollPhysics(),
+                                children: [
+                                  // TAB VIEW LIST BARANG
+                                  StreamBuilder(
+                                    stream: FirebaseDatabase.instance
+                                        .reference()
+                                        .child('trigger')
+                                        .onValue,
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<Event> snapshot) {
+                                      if (snapshot.hasData) {
+                                        _cekIsiBarang();
+                                        Map valueTrigger =
+                                            snapshot.data.snapshot.value;
+                                        if (valueTrigger['adaBarang'] !=
+                                            "false") {
+                                          _cekIsiBarang();
+                                          return MediaQuery.removePadding(
+                                            context: context,
+                                            removeTop: true,
+                                            child: CupertinoScrollbar(
+                                              controller: _scrollController,
+                                              child: FirebaseAnimatedList(
+                                                padding: EdgeInsets.all(0),
+                                                query: _queryBarang,
+                                                itemBuilder: (BuildContext
+                                                        context,
+                                                    DataSnapshot snapshot,
+                                                    Animation<double> animation,
+                                                    int index) {
+                                                  Map barang = snapshot.value;
+                                                  barang['key'] = snapshot.key;
+                                                  if (barang == null) {
+                                                    return Container(
+                                                      height: 100,
+                                                      color: Colors.red,
+                                                    );
+                                                  } else {
+                                                    return _buildListBarang(
+                                                        barang: barang,
+                                                        theme: theme);
+                                                  }
+                                                },
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          _cekIsiBarang();
+                                          return MediaQuery.removePadding(
+                                            context: context,
+                                            removeTop: true,
+                                            child: CupertinoScrollbar(
+                                                controller: _scrollController,
+                                                child: Center(
+                                                  child: Text(
+                                                    "Belum ada barang",
+                                                    style: GoogleFonts.openSans(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.black
+                                                            .withOpacity(0.25)),
+                                                  ),
+                                                )),
+                                          );
+                                        }
+                                      } else {
+                                        return Container();
+                                      }
+                                    },
+                                  ),
+
+                                  // TAB VIEW KOMPLAIN
+                                  StreamBuilder(
+                                    stream: FirebaseDatabase.instance
+                                        .reference()
+                                        .child('trigger')
+                                        .child('adaKomplainPegawai')
+                                        .onValue,
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<Event> snapshot) {
+                                      if (snapshot.hasData) {
+                                        _cekIsiKomplain();
+                                        Map valueTrigger =
+                                            snapshot.data.snapshot.value;
+                                        if (valueTrigger[uid] != "false") {
+                                          _cekIsiKomplain();
+                                          return MediaQuery.removePadding(
+                                            context: context,
+                                            removeTop: true,
+                                            child: CupertinoScrollbar(
+                                              controller: _scrollController,
+                                              child: FirebaseAnimatedList(
+                                                query: _compref
+                                                    .child(uid)
+                                                    .child('komplain')
+                                                    .orderByKey(),
+                                                itemBuilder: (BuildContext
+                                                        context,
+                                                    DataSnapshot snapshot,
+                                                    Animation<double> animation,
+                                                    int index) {
+                                                  Map komplain = snapshot.value;
+                                                  //komplain['key'] = snapshot.key;
+                                                  return _buildListKomplain(
+                                                      komplain: komplain,
+                                                      theme: theme);
+                                                },
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          _cekIsiKomplain();
+                                          return MediaQuery.removePadding(
+                                            context: context,
+                                            removeTop: true,
+                                            child: CupertinoScrollbar(
+                                                controller: _scrollController,
+                                                child: Center(
+                                                  child: Text(
+                                                    "Anda belum pernah komplain",
+                                                    style: GoogleFonts.openSans(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.black
+                                                            .withOpacity(0.25)),
+                                                  ),
+                                                )),
+                                          );
+                                        }
+                                      } else {
+                                        return Container();
+                                      }
+                                    },
+                                  ),
+                                ]),
+                          ),
+                        )
                       ],
                     ),
                   ),
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(0),
-                          bottomLeft: Radius.circular(20),
-                          bottomRight: Radius.circular(20),
-                        ),
-                      ),
-                      child: new TabBarView(controller: _tabController,
-                          //physics: NeverScrollableScrollPhysics(),
-                          children: [
-                            // TAB VIEW LIST BARANG
-                            MediaQuery.removePadding(
-                              context: context,
-                              removeTop: true,
-                              child: CupertinoScrollbar(
-                                controller: _scrollController,
-                                child: FirebaseAnimatedList(
-                                  padding: EdgeInsets.all(0),
-                                  query: _queryBarang,
-                                  itemBuilder: (BuildContext context,
-                                      DataSnapshot snapshot,
-                                      Animation<double> animation,
-                                      int index) {
-                                    Map barang = snapshot.value;
-                                    barang['key'] = snapshot.key;
-                                    if (barang == null) {
-                                      return Container(
-                                        height: 100,
-                                        color: Colors.red,
-                                      );
-                                    } else {
-                                      return _buildListBarang(
-                                          barang: barang, theme: theme);
-                                    }
-                                  },
-                                ),
-                              ),
-                            ),
-
-                            // TAB VIEW LAPORAN
-                            MediaQuery.removePadding(
-                              context: context,
-                              removeTop: true,
-                              child: CupertinoScrollbar(
-                                controller: _scrollController,
-                                child: FirebaseAnimatedList(
-                                  query: _compref
-                                      .child(uid)
-                                      .child('komplain')
-                                      .orderByKey(),
-                                  itemBuilder: (BuildContext context,
-                                      DataSnapshot snapshot,
-                                      Animation<double> animation,
-                                      int index) {
-                                    Map komplain = snapshot.value;
-                                    //komplain['key'] = snapshot.key;
-                                    return _buildListKomplain(
-                                        komplain: komplain, theme: theme);
-                                  },
-                                ),
-                              ),
-                            ),
-                          ]),
-                    ),
-                  )
-                ],
+                ),
               ),
-            ),
+            ],
           ),
         ],
       ),
@@ -833,7 +965,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
         'note': valueKomplainStr,
         'date': formattedDate,
         'time':
-        "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
+            "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
       });
       _comprefAdmin.child(barangKey).set({
         'komplain': "",
@@ -847,7 +979,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
           'uidPekomplain': uid,
           'date': formattedDate,
           'time':
-          "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
+              "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
         });
       });
       resetAndClose();
@@ -859,7 +991,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
         'note': valueKomplainStr,
         'date': formattedDate,
         'time':
-        "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
+            "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
       });
       _comprefAdmin.child(barangKey).set({
         'komplain': "",
@@ -873,7 +1005,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
           'uidPekomplain': uid,
           'date': formattedDate,
           'time':
-          "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
+              "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
         });
       });
       resetAndClose();
