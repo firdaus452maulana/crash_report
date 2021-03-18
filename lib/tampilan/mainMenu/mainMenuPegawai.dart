@@ -831,14 +831,20 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
         'time':
             "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
       });
-      _comprefAdmin.child(barangKey).child('komplain').push().set({
-        'namaPekomplain': name,
-        'uidPekomplain': uid,
+      _comprefAdmin.child(barangKey).set({
+        'komplain': "",
+        'letak': lokasi,
         'nama': nama,
-        'note': valueKomplainStr,
-        'date': formattedDate,
-        'time':
-        "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
+        'divisi': divisi,
+      }).then((value) {
+        _comprefAdmin.child(barangKey).child('komplain').push().set({
+          'note': valueKomplainStr,
+          'namaPekomplain': name,
+          'uidPekomplain': uid,
+          'date': formattedDate,
+          'time':
+          "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
+        });
       });
       resetAndClose();
       SnackBar snackbar = SnackBar(content: Text('Komplain Tersampaikan'));
@@ -851,14 +857,20 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
         'time':
             "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
       });
-      _comprefAdmin.child(barangKey).child('komplain').push().set({
-        'namaPekomplain': name,
-        'uidPekomplain': uid,
+      _comprefAdmin.child(barangKey).set({
+        'komplain': "",
+        'letak': lokasi,
         'nama': nama,
-        'note': valueKomplainStr,
-        'date': formattedDate,
-        'time':
-        "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
+        'divisi': divisi,
+      }).then((value) {
+        _comprefAdmin.child(barangKey).child('komplain').push().set({
+          'note': valueKomplainStr,
+          'namaPekomplain': name,
+          'uidPekomplain': uid,
+          'date': formattedDate,
+          'time':
+          "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
+        });
       });
       resetAndClose();
       SnackBar snackbar = SnackBar(content: Text('Komplain Tersampaikan'));

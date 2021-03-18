@@ -978,7 +978,8 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                                             child: CupertinoScrollbar(
                                                 controller: _scrollController,
                                                 child: Center(
-                                                  child: Text("KOSONG"),
+
+                                                  child: Text("Belum ada laporan", style: GoogleFonts.openSans(fontWeight: FontWeight.bold, color: Colors.black.withOpacity(0.25)),),
                                                 )),
                                           );
                                         }
