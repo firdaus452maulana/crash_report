@@ -34,12 +34,13 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
 
   List divisi = ["ATC", "ARO", "PIA"];
 
-  Query _query, _queryLaporan;
-  DatabaseReference _ref, _repref;
+  Query _query, _queryLaporan, _queryKomplain;
+  DatabaseReference _ref, _repref, _compref;
   String uid = '';
   String name = '';
   String role = '';
   File image;
+  Map barangGlobal;
 
   //
   String _error = 'No Error Dectected';
@@ -58,6 +59,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
     _timeController = TextEditingController();
     _ref = FirebaseDatabase.instance.reference().child('listBarang');
     _repref = FirebaseDatabase.instance.reference().child('listLaporan');
+    _compref = FirebaseDatabase.instance.reference().child('listKomplainAdmin');
     _query = FirebaseDatabase.instance
         .reference()
         .child('listBarang')
@@ -66,6 +68,10 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
         .reference()
         .child('listLaporan')
         .orderByChild('nama');
+    _queryKomplain = FirebaseDatabase.instance
+        .reference()
+        .child('listKomplainAdmin')
+        .orderByKey();
     _ambilPreference();
     _indogs();
   }
@@ -354,6 +360,187 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                   ),
                 ),
               ],
+            )),
+      );
+    }
+
+  }
+
+  //LIST KOMPLAIN
+  Widget _buildListKomplain({Map komplain, final theme}) {
+    if (_compref.onValue == null){
+      return Text("KOSONG");
+    } else {
+      return Container(
+        child: Container(
+            margin: EdgeInsets.only(left: 16, right: 16, top: 16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  spreadRadius: 2,
+                  blurRadius: 6,
+                  offset: Offset(0, 0),
+                )
+              ],
+              borderRadius: BorderRadius.circular(17.5),
+            ),
+            child: Theme(
+              data: theme,
+              child: ExpansionTile(
+                tilePadding: EdgeInsets.all(0),
+                childrenPadding: EdgeInsets.all(0),
+                trailing: Text(''),
+                title: Container(
+                  width: double.infinity,
+                  //color: Colors.green,
+                  margin: EdgeInsets.only(
+                      left: 24, top: 16, bottom: 16, right: 72),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    //posisi
+                    mainAxisSize: MainAxisSize.min,
+                    // untuk mengatur agar widget column mengikuti widget
+                    children: <Widget>[
+                      Text(
+                        komplain['nama'],
+                        style: GoogleFonts.openSans(
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Text(
+                        komplain['letak'],
+                        style: GoogleFonts.openSans(
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 12,
+                            color: Colors.black.withOpacity(0.25)),
+                      ),
+                      Text(
+                        komplain['divisi'],
+                        style: GoogleFonts.openSans(
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w300,
+                          fontSize: 12,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                children: <Widget>[
+                  Container(
+                    height: 150,
+                    child: Expanded(
+                        child: FirebaseAnimatedList(
+                          query: _compref.child(komplain['key']).child('komplain').orderByChild('note'),
+                          itemBuilder: (BuildContext context,
+                              DataSnapshot snapshot,
+                              Animation<double> animation,
+                              int index) {
+                            Map komplain = snapshot.value;
+                            komplain['key'] = snapshot.key;
+                            return Container(
+                              child: Container(
+                                  margin: EdgeInsets.only(left: 16, right: 16),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.05),
+                                        spreadRadius: 2,
+                                        blurRadius: 6,
+                                        offset: Offset(0, 0),
+                                      )
+                                    ],
+                                    borderRadius: BorderRadius.circular(17.5),
+                                  ),
+                                  child: Theme(
+                                    data: theme,
+                                    child: ExpansionTile(
+                                      tilePadding: EdgeInsets.all(0),
+                                      childrenPadding: EdgeInsets.all(0),
+                                      title: Container(
+                                        width: double.infinity,
+                                        //color: Colors.green,
+                                        margin: EdgeInsets.only(
+                                            left: 24, top: 16, bottom: 16, right: 72),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                                          //posisi
+                                          mainAxisSize: MainAxisSize.min,
+                                          // untuk mengatur agar widget column mengikuti widget
+                                          children: <Widget>[
+                                            Text(
+                                              komplain['note'],
+                                              style: GoogleFonts.openSans(
+                                                fontStyle: FontStyle.normal,
+                                                fontWeight: FontWeight.normal,
+                                                fontSize: 12,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                            Text(
+                                              komplain['date'],
+                                              style: GoogleFonts.openSans(
+                                                  fontStyle: FontStyle.normal,
+                                                  fontWeight: FontWeight.normal,
+                                                  fontSize: 12,
+                                                  color: Colors.black.withOpacity(0.25)),
+                                            ),
+                                            Text(
+                                              komplain['time'],
+                                              style: GoogleFonts.openSans(
+                                                fontStyle: FontStyle.normal,
+                                                fontWeight: FontWeight.w300,
+                                                fontSize: 12,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      children: <Widget>[
+                                        Container(
+                                          width: double.infinity,
+                                          //color: Colors.cyan,
+                                          margin: EdgeInsets.only(left: 24, bottom: 8, right: 24),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                'Komplain',
+                                                style: GoogleFonts.openSans(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 12,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              Text(
+                                                komplain['namaPekomplain'],
+                                                style: GoogleFonts.openSans(
+                                                    fontWeight: FontWeight.w300,
+                                                    fontSize: 12,
+                                                    color: Colors.black.withOpacity(0.25)),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  )),
+                            );
+                          },
+                        ),
+                    ),
+                  ),
+                ],
+              ),
             )),
       );
     }
@@ -1647,8 +1834,21 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                             ),
 
                             // TAB VIEW KOMPLAIN
-                            Center(
-                                child: Text("Ini nanti ubah ke list KOMPLAIN")),
+                            CupertinoScrollbar(
+                              controller: _scrollController,
+                              child: FirebaseAnimatedList(
+                                query: _queryKomplain,
+                                itemBuilder: (BuildContext context,
+                                    DataSnapshot snapshot,
+                                    Animation<double> animation,
+                                    int index) {
+                                  Map komplain = snapshot.value;
+                                  komplain['key'] = snapshot.key;
+                                  return _buildListKomplain(
+                                      komplain: komplain, theme: theme);
+                                },
+                              ),
+                            ),
 
                             // TAB VIEW LAPORAN
                             CupertinoScrollbar(
