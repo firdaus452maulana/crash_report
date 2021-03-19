@@ -2,6 +2,7 @@ import 'package:crash_report/tampilan/login/forgotPasswordPage.dart';
 import 'package:crash_report/tampilan/mainMenu/mainMenuTeknisi.dart';
 import 'package:crash_report/tampilan/mainMenu/mainMenuPegawai.dart';
 import 'package:crash_report/tampilan/mainMenu/mainMenuAdmin.dart';
+import 'package:crash_report/tampilan/register/daftarSebagaiPage.dart';
 import 'package:crash_report/tampilan/register/pilihBagianPage.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -475,7 +476,7 @@ class _loginPageState extends State<loginPage> {
                                                         context,
                                                         MaterialPageRoute(
                                                             builder: (context) =>
-                                                                pilihBagianPage()));
+                                                                daftarSebagai()));
                                                     _emailContoller.clear();
                                                     _passwordController.clear();
                                                   },
