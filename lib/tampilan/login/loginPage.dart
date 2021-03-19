@@ -233,7 +233,7 @@ class _loginPageState extends State<loginPage> {
                                         Container(
                                           //color: Colors.red,
                                           alignment: Alignment.centerLeft,
-                                          margin: EdgeInsets.only(left: 15,top: 10),
+                                          margin: EdgeInsets.only(left: 15,top: 10, right: 15),
                                           child: Text(
                                             "Masuk",
                                             style: GoogleFonts.openSans(
