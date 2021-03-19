@@ -252,6 +252,8 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                       alignment: Alignment.centerRight,
                       child: RaisedButton(
                         color: Color(0xFF031F4B),
+                        disabledColor: Color(0xFFC3CEDA),
+                        disabledTextColor: Colors.black.withOpacity(0.2),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)),
                         textColor: Colors.white,

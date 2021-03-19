@@ -155,7 +155,7 @@ class _sideBarState extends State<sideBar> {
                     ),
                     RaisedButton.icon(
                       label: Text(
-                        "Log Out",
+                        "Keluar",
                         style: GoogleFonts.openSans(
                             fontWeight: FontWeight.bold, fontSize: 12),
                       ),

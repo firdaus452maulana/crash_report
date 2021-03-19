@@ -215,9 +215,8 @@ class _daftarSebagaiState extends State<daftarSebagai> {
         padding: EdgeInsets.all(0),
         color: selectedIndex == index ? Color(0xFF031F4B) : Color(0xFFC3CEDA),
         child: Container(
-          height: 60,
           width: double.infinity,
-          margin: EdgeInsets.only(left: 20, right: 20),
+          margin: EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
           alignment: Alignment.centerLeft,
           child: Text(
             txt,
