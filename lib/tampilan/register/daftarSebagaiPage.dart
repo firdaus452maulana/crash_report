@@ -200,7 +200,7 @@ class _daftarSebagaiState extends State<daftarSebagai> {
           'Lanjut',
           textAlign: TextAlign.center,
           style: GoogleFonts.openSans(
-              fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
+              fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
         ),
       ),
     );
