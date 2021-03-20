@@ -1082,112 +1082,6 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
 
                           SizedBox(height: 16),
 
-                          Center(
-                            child: Text(
-                              "--- Deskripsi Alat ---",
-                              style: GoogleFonts.openSans(
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                                color: Colors.black.withOpacity(0.25),
-                              ),
-                            ),
-                          ),
-
-                          SizedBox(height: 4),
-
-                          Container(
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                //posisi
-                                mainAxisSize: MainAxisSize.min,
-                                // untuk mengatur agar widget column mengikuti widget
-                                children: <Widget>[
-                                  Text(
-                                    _namaAlatController.text,
-                                    style: GoogleFonts.openSans(
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  Text(
-                                    _lokasiController.text,
-                                    style: GoogleFonts.openSans(
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 12,
-                                        color: Colors.black.withOpacity(0.25)),
-                                  ),
-                                  Text(
-                                    _divisiController.text,
-                                    style: GoogleFonts.openSans(
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.w300,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                ]),
-                          ),
-
-                          SizedBox(height: 16),
-
-                          Center(
-                            child: Text(
-                              "--- Identitas Diri ---",
-                              style: GoogleFonts.openSans(
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                                color: Colors.black.withOpacity(0.25),
-                              ),
-                            ),
-                          ),
-
-                          SizedBox(height: 4),
-
-                          Container(
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                //posisi
-                                mainAxisSize: MainAxisSize.min,
-                                // untuk mengatur agar widget column mengikuti widget
-                                children: <Widget>[
-                                  Text(
-                                    name,
-                                    style: GoogleFonts.openSans(
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  Text(
-                                    role,
-                                    style: GoogleFonts.openSans(
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 12,
-                                        color: Colors.black.withOpacity(0.5)),
-                                  ),
-                                ]),
-                          ),
-
-                          SizedBox(height: 16),
-
-                          Center(
-                            child: Text(
-                              "--- Laporan ---",
-                              style: GoogleFonts.openSans(
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
-                                color: Colors.black.withOpacity(0.25),
-                              ),
-                            ),
-                          ),
-
-                          SizedBox(height: 4),
-
                           Container(
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1208,6 +1102,8 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                   "${now.hour.toString()}:${now.minute
                                       .toString().padLeft(2, '0')}"),
 
+                                  SizedBox(height: 16),
+
                                   //LAPORAN KERUSAKAN
                                   Container(
                                     child: Form(
@@ -1216,7 +1112,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                         cursorColor: Colors.black,
                                         style: GoogleFonts.openSans(
                                             fontSize: 12),
-                                        maxLines: null,
+                                        maxLines: 10,
                                         controller: _laporanController,
                                         decoration: new InputDecoration(
                                             fillColor: Colors.white,
@@ -1237,7 +1133,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                                     color: Color(0xFF031F4B))),
                                             filled: false,
                                             contentPadding: EdgeInsets.only(
-                                                left: 24.0, right: 24.0),
+                                                left: 24.0, right: 24.0, top: 12.0, bottom: 12.0),
                                             hintStyle: GoogleFonts.openSans(
                                                 fontSize: 12,
                                                 color: Color(0xFF000000)
