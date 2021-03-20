@@ -35,8 +35,8 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
   File image;
   String valueKomplainStr;
   String komplainNoteKey;
-  Map<dynamic, dynamic> isiBarang, isiKomplain;
-  String isiBarangStr, isiKomplainStr;
+  Map<dynamic, dynamic> isiBarang, isiKomplain, isiKomplainAdmin;
+  String isiBarangStr, isiKomplainStr, isiKomplainAdminStr;
 
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -64,6 +64,12 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
 
   Future<void> _indogs() async {
     await initializeDateFormatting('id_ID', null);
+  }
+
+  _cekIsiKomplainAdmin({String barangKey}) async {
+    DataSnapshot snapshotKomplain = await _comprefAdmin.child(barangKey).once();
+    Map isiKomplain = snapshotKomplain.value;
+    print("isiKomplainAdmin: " + isiKomplain.toString());
   }
 
   _cekIsiKomplain() {
@@ -328,7 +334,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
   //DIALOG ADD KOMPLAIN
   Widget _showDialogKomplain(String barangKey) {
     getBarangDetail(barangKey: barangKey);
-
+    _cekIsiKomplainAdmin(barangKey: barangKey);
     showDialog(
         context: context,
         builder: (context) {
@@ -441,7 +447,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                                   ),
                                 ),
                               ),
-                              onPressed: () {
+                              onPressed: () async {
                                 updateKomplain(barangKey: barangKey);
                               },
                             ),
@@ -947,7 +953,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
     String formattedDate = format.format(now);
 
     DataSnapshot snapshot = await _ref.child(barangKey).once();
-    DataSnapshot snapshotKomplain = await _compref.child(uid).once();
+    DataSnapshot snapshotKomplain = await _comprefAdmin.child(barangKey).once();
 
     Map barang = snapshot.value;
     Map isiKomplain = snapshotKomplain.value;
@@ -968,12 +974,11 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
             "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
       });
       _comprefAdmin.child(barangKey).set({
-        'komplain': "",
         'letak': lokasi,
         'nama': nama,
         'divisi': divisi,
       }).then((value) {
-        _comprefAdmin.child(barangKey).child('komplain').push().set({
+        _comprefAdmin.child(barangKey).child('komplain').child(uid).set({
           'note': valueKomplainStr,
           'namaPekomplain': name,
           'uidPekomplain': uid,
@@ -986,6 +991,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
       SnackBar snackbar = SnackBar(content: Text('Komplain Tersampaikan'));
       scaffoldKey.currentState.showSnackBar(snackbar);
     } else {
+      print("isiKomplain: " + isiKomplain.toString());
       _compref.child(uid).child('komplain').child(barangKey).set({
         'nama': nama,
         'note': valueKomplainStr,
@@ -993,20 +999,13 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
         'time':
             "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
       });
-      _comprefAdmin.child(barangKey).set({
-        'komplain': "",
-        'letak': lokasi,
-        'nama': nama,
-        'divisi': divisi,
-      }).then((value) {
-        _comprefAdmin.child(barangKey).child('komplain').push().set({
-          'note': valueKomplainStr,
-          'namaPekomplain': name,
-          'uidPekomplain': uid,
-          'date': formattedDate,
-          'time':
-              "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
-        });
+      _comprefAdmin.child(barangKey).child('komplain').child(uid).set({
+        'note': valueKomplainStr,
+        'namaPekomplain': name,
+        'uidPekomplain': uid,
+        'date': formattedDate,
+        'time':
+        "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
       });
       resetAndClose();
       SnackBar snackbar = SnackBar(content: Text('Komplain Tersampaikan'));
