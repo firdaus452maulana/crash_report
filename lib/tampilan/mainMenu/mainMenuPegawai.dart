@@ -69,6 +69,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
   _cekIsiKomplainAdmin({String barangKey}) async {
     DataSnapshot snapshotKomplain = await _comprefAdmin.child(barangKey).once();
     Map isiKomplain = snapshotKomplain.value;
+    isiKomplainStr = isiKomplain.toString();
     print("isiKomplainAdmin: " + isiKomplain.toString());
   }
 
@@ -964,7 +965,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
     divisi = barang['divisi'];
     status = barang['status'];
 
-    if (isiKomplain.toString() == "null") {
+    if (isiKomplainStr == "null") {
       print("isiKomplain: " + isiKomplain.toString());
       _compref.child(uid).child('komplain').child(barangKey).set({
         'nama': nama,
