@@ -43,6 +43,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
   Map barangGlobal;
   Map<dynamic, dynamic> isiLaporan, isiBarang, isiKomplain;
   String isiLaporanStr, isiBarangStr, isiKomplainStr;
+  int selected = 0;
 
   //
   String _error = 'No Error Dectected';
@@ -400,7 +401,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
   }
 
   //LIST KOMPLAIN
-  Widget _buildListKomplain({Map barang, final theme}) {
+  Widget _buildListKomplain({Map barang, final theme, int index}) {
     List<String> uidPekomplain = <String>[];
     if (_compref.onValue == null) {
       return Text("KOSONG");
@@ -423,6 +424,8 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
             child: Theme(
               data: theme,
               child: ExpansionTile(
+                key: Key(index.toString()),
+                initiallyExpanded: index==selected,
                 tilePadding: EdgeInsets.all(0),
                 childrenPadding: EdgeInsets.all(0),
                 trailing: Text(''),
@@ -561,7 +564,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                                 .start,
                                             children: <Widget>[
                                               Text(
-                                                'Komplain',
+                                                'Nama Pekomplain',
                                                 style: GoogleFonts.openSans(
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: 12,
@@ -617,6 +620,16 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                     ],
                   ),
                 ],
+                onExpansionChanged: ((newState){
+                  if(newState)
+                    setState(() {
+                      Duration(seconds: 20000);
+                      selected = index;
+                    });
+                  else setState(() {
+                    selected = -1;
+                  });
+                }),
               ),
             )),
       );
@@ -1882,6 +1895,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                             child: CupertinoScrollbar(
                                               controller: _scrollController,
                                               child: FirebaseAnimatedList(
+                                                key: Key('builder ${selected.toString()}'),
                                                 query: _queryKomplain,
                                                 itemBuilder: (
                                                     BuildContext context,
@@ -1893,7 +1907,8 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                                       snapshot.key;
                                                   return _buildListKomplain(
                                                       barang: komplain,
-                                                      theme: theme);
+                                                      theme: theme,
+                                                      index: index);
                                                 },
                                               ),
                                             ),
