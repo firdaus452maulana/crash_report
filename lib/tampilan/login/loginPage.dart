@@ -8,7 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,8 +19,6 @@ class loginPage extends StatefulWidget {
 
 class _loginPageState extends State<loginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final CollectionReference usersList =
-      FirebaseFirestore.instance.collection('users');
   final auth = FirebaseAuth.instance;
   DatabaseReference userData =
       FirebaseDatabase.instance.reference().child('users');
