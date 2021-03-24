@@ -31,7 +31,7 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
               title: Text(
-                "Something went wrong.",
+                "Terjadi kesalahan",
                 style: GoogleFonts.openSans(fontWeight: FontWeight.bold),
               ),
               content: Text("Terjadi kesalahan, mohon isi kembali.",
@@ -41,7 +41,7 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
 
   void showToastSignUpSuccess() {
     Fluttertoast.showToast(
-        msg: 'Sign Up Success',
+        msg: 'Daftar berhasil',
         fontSize: 12,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
@@ -58,7 +58,7 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
     dynamic result = await _auth.createTeknisi(
         _nameController.text, _emailContoller.text, _passwordController.text);
     if (result == null) {
-      print("Something went wrong");
+      print("Terjadi kesalahan");
       _showErrorDialog();
     } else {
       print(result.toString());
@@ -133,7 +133,7 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                             children: [
                               // TULISAN SIGN UP
                               Text(
-                                "Sign Up",
+                                "Daftar",
                                 style: GoogleFonts.openSans(
                                     fontSize: 24, fontWeight: FontWeight.bold),
                               ),
@@ -181,7 +181,7 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                                         fontSize: 12,
                                         color:
                                             Color(0xFF000000).withOpacity(0.25)),
-                                    hintText: "full name",
+                                    hintText: "nama lengkap",
                                     errorBorder: OutlineInputBorder(
                                         borderRadius:
                                             BorderRadius.all(Radius.circular(30)),
@@ -326,7 +326,7 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                                   hintStyle: GoogleFonts.openSans(
                                       fontSize: 12,
                                       color: Color(0xFF000000).withOpacity(0.25)),
-                                  hintText: "password",
+                                  hintText: "kata sandi",
                                   errorBorder: OutlineInputBorder(
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(30)),
@@ -343,7 +343,7 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                                 obscureText: _secureText,
                                 validator: (value) {
                                   if (value.isEmpty) {
-                                    return "Password harus diisi!";
+                                    return "Kata sandi harus diisi!";
                                   }
                                   return null;
                                 },
@@ -367,7 +367,7 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                                   height: 48,
                                   alignment: Alignment.center,
                                   child: Text(
-                                    "Sign Up",
+                                    "Daftar",
                                     style: GoogleFonts.openSans(
                                         fontSize: 12,
                                         fontWeight: FontWeight.bold),
@@ -385,7 +385,7 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        "Already have an account?",
+                                        "Sudah punya akun?",
                                         style: GoogleFonts.openSans(
                                             fontSize: 12,
                                             color: Color(0xFF000000)
@@ -400,7 +400,7 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                                           splashColor: Colors.transparent,
                                           highlightColor: Colors.transparent,
                                           child: Text(
-                                            "Sign In",
+                                            "Masuk",
                                             style: GoogleFonts.openSans(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold),

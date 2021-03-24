@@ -153,14 +153,14 @@ class _daftarSebagaiState extends State<daftarSebagai> {
           break;
         case 1:
           textUser = 'Admin';
-          textBaca = 'pe.ga.wai';
+          textBaca = 'ad.min';
           textFitur = 'fitur';
           textIsiFitur =
               '1. menambahkan list barang \n2. melakukan pelaporan kerusakan barang';
           break;
         case 2:
           textUser = 'Teknisi';
-          textBaca = 'pe.ga.wai';
+          textBaca = 'tek.ni.si';
           textFitur = 'fitur';
           textIsiFitur =
               '1. menambahkan list barang \n2. melakukan pelaporan kerusakan barang';

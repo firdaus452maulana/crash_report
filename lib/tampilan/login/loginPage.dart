@@ -136,7 +136,7 @@ class _loginPageState extends State<loginPage> {
         fontSize: 12,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
-        backgroundColor: Color(0xFFF5F7FA),
+        backgroundColor: Color(0xFF515151),
         textColor: Colors.black);
   }
 

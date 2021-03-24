@@ -29,7 +29,7 @@ class _forgotPasswordPageState extends State<forgotPasswordPage> {
 
   void showToastResetSuccess() {
     Fluttertoast.showToast(
-      msg: "A password reset link has been sent to\n" + _emailContoller.text,
+      msg: "tautan ubah kata sandi sudah dikirim ke\n" + _emailContoller.text,
       fontSize: 12,
       toastLength: Toast.LENGTH_LONG,
       gravity: ToastGravity.BOTTOM,
@@ -46,7 +46,7 @@ class _forgotPasswordPageState extends State<forgotPasswordPage> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
               title: Text(
-                "Something went wrong.",
+                "Terjadi kesalahan.",
                 style: GoogleFonts.openSans(fontWeight: FontWeight.bold),
               ),
               content: Text("Terjadi kesalahan, mohon isi kembali.",
@@ -91,7 +91,7 @@ class _forgotPasswordPageState extends State<forgotPasswordPage> {
                         children: [
                           // TULISAN RESET PASSWORD
                           Text(
-                            "Reset Password",
+                            "Ubah Kata Sandi",
                             style: GoogleFonts.openSans(
                                 fontSize: 24, fontWeight: FontWeight.bold),
                           ),
@@ -186,7 +186,7 @@ class _forgotPasswordPageState extends State<forgotPasswordPage> {
                               height: 48,
                               alignment: Alignment.center,
                               child: Text(
-                                "Reset Password",
+                                "Ubah kata sandi",
                                 style: GoogleFonts.openSans(
                                     fontSize: 12, fontWeight: FontWeight.bold),
                               ),
