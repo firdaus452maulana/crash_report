@@ -45,8 +45,8 @@ class _registerPageAdminState extends State<registerPageAdmin> {
         fontSize: 12,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
-        backgroundColor: Color(0xFFF5F7FA),
-        textColor: Colors.black);
+        backgroundColor: Color(0xFF515151),
+        textColor: Colors.white);
   }
 
   // SUBMIT
@@ -133,7 +133,7 @@ class _registerPageAdminState extends State<registerPageAdmin> {
                             children: [
                               // TULISAN SIGN UP
                               Container(
-                                margin: EdgeInsets.only(left: 15,top: 10),
+                                margin: EdgeInsets.only(left: 15,top: 10, right: 15),
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   "Daftar",

@@ -132,8 +132,8 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
           if (laporan != null) {
             if (laporan['kerjakan'] != 'true') {
               return Container(
-                width: double.infinity,
                 margin: EdgeInsets.only(top: 16),
+                alignment: Alignment.centerRight,
                 child: RaisedButton(
                   color: Color(0xFF031F4B),
                   shape: RoundedRectangleBorder(
@@ -250,6 +250,7 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                     Container(
                       margin: EdgeInsets.only(top: 24),
                       alignment: Alignment.centerRight,
+                      //color: Colors.red,
                       child: RaisedButton(
                         color: Color(0xFF031F4B),
                         disabledColor: Color(0xFFC3CEDA),
@@ -257,13 +258,10 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)),
                         textColor: Colors.white,
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            "Selesai",
-                            style: GoogleFonts.openSans(
-                                fontSize: 12, fontWeight: FontWeight.bold),
-                          ),
+                        child: Text(
+                          "Selesai",
+                          style: GoogleFonts.openSans(
+                              fontSize: 12, fontWeight: FontWeight.bold),
                         ),
                         onPressed: laporan['isPerbaikan'] != 'true' ? () => _showDialogSave(
                             barangKey: barangKey,
@@ -342,7 +340,7 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                           ),
                           SizedBox(height: 16),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               FlatButton(
                                 color: Colors.grey[400],
@@ -350,8 +348,7 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                                     borderRadius: BorderRadius.circular(30)),
                                 textColor: Colors.white,
                                 child: Container(
-                                  height: 42.5,
-                                  width: 75,
+                                  width: 64,
                                   alignment: Alignment.center,
                                   child: Text(
                                     "Tidak",
@@ -365,14 +362,14 @@ class _mainMenuTeknisiState extends State<mainMenuTeknisi>
                                   Navigator.pop(context);
                                 },
                               ),
+                              SizedBox(width: 12,),
                               FlatButton(
                                 color: Color(0xFF031F4B),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30)),
                                 textColor: Colors.white,
                                 child: Container(
-                                  height: 42.5,
-                                  width: 75,
+                                  width: 64,
                                   alignment: Alignment.center,
                                   child: Text(
                                     "Ya",

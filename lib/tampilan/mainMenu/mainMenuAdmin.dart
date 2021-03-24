@@ -290,13 +290,27 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                     ),
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.only(left: 24, right: 24),
+                        padding: const EdgeInsets.only(left: 24, right: 24, top: 8),
                         child: Column(
                           children: <Widget>[
-                            Card(
-                              child: IconButton(
-                                icon: Icon(Icons.add),
-                                onPressed: () {
+                            Container(
+                              height: 28,
+                              width: 28,
+                              decoration: BoxDecoration(
+                                color: Color(0xFF031F4B),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.05),
+                                    spreadRadius: 2,
+                                    blurRadius: 4,
+                                    offset: Offset(0, 0),
+                                  )
+                                ],
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: GestureDetector(
+                                child: Icon(Icons.add, size: 18, color: Colors.white,),
+                                onTap: () {
                                   setState(() async {
                                     File imageFile;
                                     await ImagePicker.pickImage(
@@ -325,6 +339,9 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                 },
                               ),
                             ),
+
+                            SizedBox(height: 12,),
+
                             Container(
                               height: 100,
                               //color: Colors.grey[200],
@@ -486,106 +503,104 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                             komplain['key'] = snapshot.key;
                             uidPekomplain.add(komplain['uidPekomplain']);
                             return Container(
-                              child: Container(
-                                  margin: EdgeInsets.only(left: 16, right: 16),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.05),
-                                        spreadRadius: 2,
-                                        blurRadius: 6,
-                                        offset: Offset(0, 0),
-                                      )
-                                    ],
-                                    borderRadius: BorderRadius.circular(17.5),
-                                  ),
-                                  child: Theme(
-                                    data: theme,
-                                    child: ExpansionTile(
-                                      tilePadding: EdgeInsets.all(0),
-                                      childrenPadding: EdgeInsets.all(0),
-                                      trailing: Text(""),
-                                      title: Container(
-                                        width: double.infinity,
-                                        //color: Colors.green,
-                                        margin: EdgeInsets.only(
-                                            left: 24,
-                                            top: 4,
-                                            bottom: 4,
-                                            right: 72),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment
-                                              .stretch,
-                                          //posisi
-                                          mainAxisSize: MainAxisSize.min,
-                                          // untuk mengatur agar widget column mengikuti widget
-                                          children: <Widget>[
-                                            Text(
-                                              komplain['note'],
-                                              style: GoogleFonts.openSans(
+                                margin: EdgeInsets.only(left: 16, right: 16, top: 8),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.05),
+                                      spreadRadius: 2,
+                                      blurRadius: 6,
+                                      offset: Offset(0, 0),
+                                    )
+                                  ],
+                                  borderRadius: BorderRadius.circular(17.5),
+                                ),
+                                child: Theme(
+                                  data: theme,
+                                  child: ExpansionTile(
+                                    tilePadding: EdgeInsets.all(0),
+                                    childrenPadding: EdgeInsets.all(0),
+                                    trailing: Text(""),
+                                    title: Container(
+                                      width: double.infinity,
+                                      //color: Colors.green,
+                                      margin: EdgeInsets.only(
+                                          left: 24,
+                                          top: 4,
+                                          bottom: 4,
+                                          right: 72),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .stretch,
+                                        //posisi
+                                        mainAxisSize: MainAxisSize.min,
+                                        // untuk mengatur agar widget column mengikuti widget
+                                        children: <Widget>[
+                                          Text(
+                                            komplain['note'],
+                                            style: GoogleFonts.openSans(
+                                              fontStyle: FontStyle.normal,
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 12,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Text(
+                                            komplain['date'],
+                                            style: GoogleFonts.openSans(
                                                 fontStyle: FontStyle.normal,
                                                 fontWeight: FontWeight.normal,
+                                                fontSize: 12,
+                                                color: Colors.black
+                                                    .withOpacity(0.25)),
+                                          ),
+                                          Text(
+                                            komplain['time'],
+                                            style: GoogleFonts.openSans(
+                                              fontStyle: FontStyle.normal,
+                                              fontWeight: FontWeight.w300,
+                                              fontSize: 12,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    children: <Widget>[
+                                      Container(
+                                        width: double.infinity,
+                                        //color: Colors.cyan,
+                                        margin: EdgeInsets.only(
+                                            left: 24, bottom: 8, right: 24),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment
+                                              .start,
+                                          crossAxisAlignment: CrossAxisAlignment
+                                              .start,
+                                          children: <Widget>[
+                                            Text(
+                                              'Oleh',
+                                              style: GoogleFonts.openSans(
+                                                fontWeight: FontWeight.w600,
                                                 fontSize: 12,
                                                 color: Colors.black,
                                               ),
                                             ),
                                             Text(
-                                              komplain['date'],
+                                              komplain['namaPekomplain'],
                                               style: GoogleFonts.openSans(
-                                                  fontStyle: FontStyle.normal,
-                                                  fontWeight: FontWeight.normal,
+                                                  fontWeight: FontWeight.w300,
                                                   fontSize: 12,
                                                   color: Colors.black
                                                       .withOpacity(0.25)),
                                             ),
-                                            Text(
-                                              komplain['time'],
-                                              style: GoogleFonts.openSans(
-                                                fontStyle: FontStyle.normal,
-                                                fontWeight: FontWeight.w300,
-                                                fontSize: 12,
-                                                color: Colors.black,
-                                              ),
-                                            ),
                                           ],
                                         ),
-                                      ),
-                                      children: <Widget>[
-                                        Container(
-                                          width: double.infinity,
-                                          //color: Colors.cyan,
-                                          margin: EdgeInsets.only(
-                                              left: 24, bottom: 8, right: 24),
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment
-                                                .start,
-                                            crossAxisAlignment: CrossAxisAlignment
-                                                .start,
-                                            children: <Widget>[
-                                              Text(
-                                                'Nama Pekomplain',
-                                                style: GoogleFonts.openSans(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 12,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                              Text(
-                                                komplain['namaPekomplain'],
-                                                style: GoogleFonts.openSans(
-                                                    fontWeight: FontWeight.w300,
-                                                    fontSize: 12,
-                                                    color: Colors.black
-                                                        .withOpacity(0.25)),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  )),
-                            );
+                                      )
+                                    ],
+                                  ),
+                                ));
                           },
                         ),
                       ),
@@ -777,9 +792,9 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
           return Dialog(
             shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            child: SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.all(24),
+            child: Container(
+              margin: EdgeInsets.all(24),
+              child: SingleChildScrollView(
                 child: Stack(
                   children: <Widget>[
                     Form(
@@ -1006,14 +1021,14 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                     borderRadius: BorderRadius.circular(30)),
                                 textColor: Colors.white,
                                 child: Container(
-                                  height: 42.5,
                                   width: 85,
                                   alignment: Alignment.center,
                                   child: Text(
-                                    "Save",
+                                    "Simpan",
                                     style: GoogleFonts.openSans(
                                       fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.bold,
+                                      fontSize: 12
                                     ),
                                   ),
                                 ),
@@ -1037,10 +1052,11 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                         child: Align(
                           alignment: Alignment.topRight,
                           child: CircleAvatar(
-                            radius: 14,
+                            radius: 10,
                             backgroundColor: Color(0xFF031F4B),
                             child: Icon(
                               Icons.close,
+                              size: 14,
                               color: Colors.white,
                             ),
                           ),
@@ -1212,6 +1228,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                       ),
                     ),
                     //Icon Close
+                    //Icon Close
                     Positioned(
                       right: 0.0,
                       child: GestureDetector(
@@ -1222,10 +1239,11 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                         child: Align(
                           alignment: Alignment.topRight,
                           child: CircleAvatar(
-                            radius: 14,
+                            radius: 10,
                             backgroundColor: Color(0xFF031F4B),
                             child: Icon(
                               Icons.close,
+                              size: 14,
                               color: Colors.white,
                             ),
                           ),
@@ -1289,53 +1307,57 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                 ),
                               )),
                           SizedBox(height: 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              FlatButton(
-                                color: Colors.grey[400],
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30)),
-                                textColor: Colors.white,
-                                child: Container(
-                                  height: 42.5,
-                                  width: 75,
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "Tidak",
-                                    style: GoogleFonts.openSans(
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.bold,
+                          Container(
+                            //color: Colors.red,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                FlatButton(
+                                  color: Colors.grey[400],
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30)),
+                                  textColor: Colors.white,
+                                  child: Container(
+                                    width: 64,
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "Tidak",
+                                      style: GoogleFonts.openSans(
+                                        fontStyle: FontStyle.normal,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12
+                                      ),
                                     ),
                                   ),
+                                  onPressed: () {
+                                    justReset();
+                                    Navigator.pop(context);
+                                  },
                                 ),
-                                onPressed: () {
-                                  justReset();
-                                  Navigator.pop(context);
-                                },
-                              ),
-                              FlatButton(
-                                color: Color(0xFF031F4B),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30)),
-                                textColor: Colors.white,
-                                child: Container(
-                                  height: 42.5,
-                                  width: 75,
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "Ya",
-                                    style: GoogleFonts.openSans(
-                                      fontStyle: FontStyle.normal,
-                                      fontWeight: FontWeight.bold,
+                                SizedBox(width: 12,),
+                                FlatButton(
+                                  color: Color(0xFF031F4B),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30)),
+                                  textColor: Colors.white,
+                                  child: Container(
+                                    width: 64,
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "Ya",
+                                      style: GoogleFonts.openSans(
+                                          fontStyle: FontStyle.normal,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12
+                                      ),
                                     ),
                                   ),
+                                  onPressed: () {
+                                    hapusBarangLaporan(barangKey: barangKey);
+                                  },
                                 ),
-                                onPressed: () {
-                                  hapusBarangLaporan(barangKey: barangKey);
-                                },
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ],
                       ),
@@ -1351,16 +1373,15 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
   //DIALOG EDIT BARANG
   Widget _showDialogEdit(String barangKey) {
     getBarangDetail(barangKey: barangKey);
-
     showDialog(
         context: context,
         builder: (context) {
           return Dialog(
             shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            child: SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.all(24),
+            child: Container(
+              margin: EdgeInsets.all(24),
+              child: SingleChildScrollView(
                 child: Stack(
                   children: <Widget>[
                     Form(
@@ -1587,14 +1608,14 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                                     borderRadius: BorderRadius.circular(30)),
                                 textColor: Colors.white,
                                 child: Container(
-                                  height: 42.5,
                                   width: 85,
                                   alignment: Alignment.center,
                                   child: Text(
-                                    "Save",
+                                    "Simpan",
                                     style: GoogleFonts.openSans(
                                       fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.bold,
+                                      fontSize: 12
                                     ),
                                   ),
                                 ),
@@ -1607,6 +1628,7 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                         ),
                       ),
                     ),
+
                     //Icon Close
                     Positioned(
                       right: 0.0,
@@ -1618,10 +1640,11 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
                         child: Align(
                           alignment: Alignment.topRight,
                           child: CircleAvatar(
-                            radius: 14,
+                            radius: 10,
                             backgroundColor: Color(0xFF031F4B),
                             child: Icon(
                               Icons.close,
+                              size: 14,
                               color: Colors.white,
                             ),
                           ),
@@ -2012,13 +2035,18 @@ class _mainMenuAdminState extends State<mainMenuAdmin>
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        backgroundColor: Color(0xFF031F4B),
-        onPressed: () {
-          justReset();
-          _showDialogPenambahan();
-        },
+      floatingActionButton: Container(
+        height: 36,
+        width: 36,
+        margin: EdgeInsets.only(bottom: 24, left: 12, right: 12),
+        child: FloatingActionButton(
+          child: Icon(Icons.add),
+          backgroundColor: Color(0xFF031F4B),
+          onPressed: () {
+            justReset();
+            _showDialogPenambahan();
+          },
+        ),
       ),
     );
   }

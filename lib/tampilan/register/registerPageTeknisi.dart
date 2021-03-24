@@ -45,8 +45,8 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
         fontSize: 12,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
-        backgroundColor: Color(0xFFF5F7FA),
-        textColor: Colors.black);
+        backgroundColor: Color(0xFF515151),
+        textColor: Colors.white);
   }
 
   // SUBMIT
@@ -132,10 +132,14 @@ class _registerPageTeknisiState extends State<registerPageTeknisi> {
                           child: Column(
                             children: [
                               // TULISAN SIGN UP
-                              Text(
-                                "Daftar",
-                                style: GoogleFonts.openSans(
-                                    fontSize: 24, fontWeight: FontWeight.bold),
+                              Container(
+                                margin: EdgeInsets.only(left: 15,top: 10, right: 15),
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Daftar",
+                                  style: GoogleFonts.openSans(
+                                      fontSize: 24, fontWeight: FontWeight.bold),
+                                ),
                               ),
 
                               SizedBox(

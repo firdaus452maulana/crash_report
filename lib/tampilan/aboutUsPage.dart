@@ -134,7 +134,7 @@ class _aboutUsPageState extends State<aboutUsPage> {
                         margin: EdgeInsets.only(right: 10),
                         child: GestureDetector(
                             onTap: () {
-                              const url = 'https://instagram.com/atharian007';
+                              const url = 'https://www.instagram.com/nomadev.co/';
                               if (canLaunch(url) != null) {
                                 launch(url);
                               } else {

@@ -38,81 +38,86 @@ class _daftarSebagaiState extends State<daftarSebagai> {
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(17.5)),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(top: 40, left: 40, right: 40),
-                    //color:Colors.red,
-                    child: Text(
-                      "Daftar sebagai :",
-                      textAlign: TextAlign.left,
-                      style: GoogleFonts.openSans(
-                          fontSize: 18, fontWeight: FontWeight.bold),
+              child: Container(
+                //color: Colors.red,
+                alignment: Alignment.center,
+                margin:
+                    EdgeInsets.only(left: 24, right: 24, top: 24, bottom: 24),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 16, left: 8, right: 8),
+                      child: Text(
+                        "Daftar sebagai :",
+                        textAlign: TextAlign.left,
+                        style: GoogleFonts.openSans(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
                     ),
-                  ),
-                  Container(
-                    //color: Colors.red,
-                    width: double.infinity,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        customRadio(lst[0], 0),
-                        customRadio(lst[1], 1),
-                        customRadio(lst[2], 2),
-                      ],
+                    Container(
+                      margin: EdgeInsets.only(left: 8, right: 8),
+                      //color: Colors.red,
+                      width: double.infinity,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          customRadio(lst[0], 0),
+                          customRadio(lst[1], 1),
+                          customRadio(lst[2], 2),
+                        ],
+                      ),
                     ),
-                  ),
-                  Container(
-                    //color: Colors.red,
-                    margin: EdgeInsets.only(left: 45, top: 20, right: 45),
-                    child: Text(
-                      '$textUser',
-                      style: GoogleFonts.openSans(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
+                    Container(
+                      margin: EdgeInsets.only(top: 12, left: 8, right: 8),
+                      //color: Colors.red,
+                      child: Text(
+                        '$textUser',
+                        style: GoogleFonts.openSans(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
+                      ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 45, right: 45),
-                    child: Text(
-                      '$textBaca',
-                      style: GoogleFonts.openSans(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w300,
-                          color: Colors.black.withOpacity(0.5)),
+                    /*Container(
+                      margin: EdgeInsets.only(left: 8, right: 8),
+                      child: Text(
+                        '$textBaca',
+                        style: GoogleFonts.openSans(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w300,
+                            color: Colors.black.withOpacity(0.5)),
+                      ),
+                    ),*/
+                    Container(
+                      margin: EdgeInsets.only(left: 12, right: 12),
+                      child: Text(
+                        '$textFitur',
+                        style: GoogleFonts.openSans(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w300,
+                            color: Colors.black.withOpacity(0.5)),
+                      ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 45, right: 45),
-                    child: Text(
-                      '$textFitur',
-                      style: GoogleFonts.openSans(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w300,
-                          color: Colors.black.withOpacity(0.5)),
+                    Container(
+                      margin: EdgeInsets.only(left: 12, right: 12),
+                      child: Text(
+                        '$textIsiFitur',
+                        style: GoogleFonts.openSans(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w300,
+                            color: Colors.black.withOpacity(0.5)),
+                      ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 45, right: 45),
-                    child: Text(
-                      '$textIsiFitur',
-                      style: GoogleFonts.openSans(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w300,
-                          color: Colors.black.withOpacity(0.5)),
+                    Container(
+                      margin: EdgeInsets.only(top: 24, bottom: 24),
+                      alignment: Alignment.topRight,
+                      //color: Colors.red,
+                      child: ButtonMulai(indexnavigate),
                     ),
-                  ),
-                  Container(
-                    alignment: Alignment.topRight,
-                    margin: EdgeInsets.only(
-                        left: 45, right: 45, bottom: 40, top: 24),
-                    //color: Colors.red,
-                    child: ButtonMulai(indexnavigate),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),
@@ -145,25 +150,25 @@ class _daftarSebagaiState extends State<daftarSebagai> {
     setState(() {
       switch (index) {
         case 0:
-          textUser = 'Pegawai';
-          textBaca = 'pe.ga.wai';
+          textUser = 'User';
+          textBaca = 'yu.ser';
           textFitur = 'fitur';
           textIsiFitur =
-              '1. menambahkan list barang \n2. melakukan pelaporan kerusakan barang';
+              '1. monitoring barang \n2. melakukan komplain (keluhan) terhadap kondisi barang';
           break;
         case 1:
           textUser = 'Admin';
           textBaca = 'ad.min';
           textFitur = 'fitur';
           textIsiFitur =
-              '1. menambahkan list barang \n2. melakukan pelaporan kerusakan barang';
+              '1. menambahkan list barang \n2. melakukan pelaporan kondisi barang berdasarkan komplain dari user';
           break;
         case 2:
           textUser = 'Teknisi';
           textBaca = 'tek.ni.si';
           textFitur = 'fitur';
           textIsiFitur =
-              '1. menambahkan list barang \n2. melakukan pelaporan kerusakan barang';
+              '1. monitoring barang \n2. menindaklanjuti laporan kondisi barang \n3. mengubah status kondisi barang';
           break;
       }
     });
@@ -192,10 +197,12 @@ class _daftarSebagaiState extends State<daftarSebagai> {
     return RaisedButton(
       color: Color(0xFF031F4B),
       onPressed: () => NavigateUser(nav),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(17.5)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       padding: EdgeInsets.all(0),
       child: Container(
+        alignment: Alignment.center,
         width: double.infinity,
+        height: 48,
         child: Text(
           'Lanjut',
           textAlign: TextAlign.center,
@@ -208,7 +215,7 @@ class _daftarSebagaiState extends State<daftarSebagai> {
 
   Widget customRadio(String txt, int index) {
     return Container(
-      margin: EdgeInsets.only(top: 10, left: 38, right: 38),
+      margin: EdgeInsets.only(top: 10),
       child: RaisedButton(
         onPressed: () => changeAll(index),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),

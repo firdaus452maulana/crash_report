@@ -124,7 +124,7 @@ class _loginPageState extends State<loginPage> {
       showToastSignInSuccess();
     } catch (error) {
       //print(error.message);
-      var errorMessage = 'Email atau password salah!';
+      var errorMessage = 'Terjadi kesalahan, mohon isi kembali.';
       _showErrorDialog(errorMessage);
     }
   }
@@ -137,7 +137,7 @@ class _loginPageState extends State<loginPage> {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: Color(0xFF515151),
-        textColor: Colors.black);
+        textColor: Colors.white);
   }
 
   // ERROR DIALOGBOX
@@ -148,7 +148,7 @@ class _loginPageState extends State<loginPage> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
               title: Text(
-                "Something went wrong.",
+                "Terjadi kesalahan.",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               content: Text(msg, style: TextStyle(fontSize: 12)),

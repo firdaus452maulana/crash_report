@@ -101,27 +101,7 @@ class _historyLaporanState extends State<historyLaporan> {
                           SizedBox(
                             height: 8,
                           ),
-                          Text(
-                            "Kondisi akhir",
-                            style: GoogleFonts.openSans(
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Text(
-                            history['status'],
-                            style: GoogleFonts.openSans(
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.w300,
-                              fontSize: 12,
-                              color: Colors.black,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
+
                           Text(
                             "Tanggal Laporan",
                             style: GoogleFonts.openSans(
@@ -179,6 +159,28 @@ class _historyLaporanState extends State<historyLaporan> {
                               color: Colors.black,
                             ),
                           ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Text(
+                            "Kondisi akhir",
+                            style: GoogleFonts.openSans(
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Text(
+                            history['status'],
+                            style: GoogleFonts.openSans(
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w300,
+                              fontSize: 12,
+                              color: Colors.black,
+                            ),
+                          ),
+
                         ],
                       ),
                     ),

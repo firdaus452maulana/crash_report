@@ -146,11 +146,6 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                       animationCurve: Curves.fastOutSlowIn,
                       animationDuration: Duration(milliseconds: 2000)),
                 ),
-                Container(
-                  height: 1,
-                  width: MediaQuery.of(context).size.width,
-                  color: Color(0xFF031F4B),
-                )
               ],
             );
           } else {
@@ -365,7 +360,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
                             ),
-                          )),
+                          ),),
                           SizedBox(height: 16),
 
                           Container(
@@ -437,12 +432,12 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                                   borderRadius: BorderRadius.circular(30)),
                               textColor: Colors.white,
                               child: Container(
-                                height: 42.5,
                                 width: 85,
                                 alignment: Alignment.center,
                                 child: Text(
-                                  "Komplain",
+                                  "Kirim",
                                   style: GoogleFonts.openSans(
+                                    fontSize: 12,
                                     fontStyle: FontStyle.normal,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -467,10 +462,11 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                         child: Align(
                           alignment: Alignment.topRight,
                           child: CircleAvatar(
-                            radius: 14,
+                            radius: 10,
                             backgroundColor: Color(0xFF031F4B),
                             child: Icon(
                               Icons.close,
+                              size: 14,
                               color: Colors.white,
                             ),
                           ),
@@ -530,6 +526,35 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
           ),
           child: Stack(
             children: [
+              Container(
+                margin: EdgeInsets.only(
+                    left: 24, top: 16, bottom: 16, right: 24),
+                alignment: Alignment.topRight,
+                //color: Colors.red,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      komplain['date'],
+                      textAlign: TextAlign.right,
+                      style: GoogleFonts.openSans(
+                        fontStyle: FontStyle.normal,
+                        fontSize: 12,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      komplain['time'],
+                      textAlign: TextAlign.right,
+                      style: GoogleFonts.openSans(
+                        fontStyle: FontStyle.normal,
+                        fontSize: 12,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Theme(
                 data: theme,
                 child: ExpansionTile(
@@ -542,7 +567,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                         width: double.infinity,
                         //color: Colors.green,
                         margin: EdgeInsets.only(
-                            left: 24, top: 16, bottom: 16, right: 24),
+                            left: 24, top: 16, bottom: 16, right: 72),
                         child: Row(
                           //posisi
                           mainAxisSize: MainAxisSize.min,
@@ -557,35 +582,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
                                 color: Colors.black,
                               ),
                             ),
-                            Expanded(
-                              child: Container(
-                                alignment: Alignment.topRight,
-                                //color: Colors.red,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      komplain['date'],
-                                      textAlign: TextAlign.right,
-                                      style: GoogleFonts.openSans(
-                                        fontStyle: FontStyle.normal,
-                                        fontSize: 12,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                    Text(
-                                      komplain['time'],
-                                      textAlign: TextAlign.right,
-                                      style: GoogleFonts.openSans(
-                                        fontStyle: FontStyle.normal,
-                                        fontSize: 12,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
+
                           ],
                         ),
                       ),
@@ -1006,7 +1003,7 @@ class _mainMenuPegawaiState extends State<mainMenuPegawai>
         'uidPekomplain': uid,
         'date': formattedDate,
         'time':
-        "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
+            "${now.hour.toString()}:${now.minute.toString().padLeft(2, '0')}",
       });
       resetAndClose();
       SnackBar snackbar = SnackBar(content: Text('Komplain Tersampaikan'));
